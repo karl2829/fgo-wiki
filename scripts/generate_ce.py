@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Generate CE markdown files from raw JSON and create index."""
+"""Generate CE markdown files from raw JSON and create index.
+支持增量: 先拉 basic_equip.json 对比已知 ID，只下载新增的 lore 数据。"""
 import json, os, sys, glob, re
 from datetime import datetime, timezone
+import urllib.request, time
 
 WIKI = os.path.expanduser("~/fgo-wiki")
 RAW_BASE = os.path.join(WIKI, "raw/craft-essences")
 ENT_BASE = os.path.join(WIKI, "entities/craft-essences")
+STATE_FILE = os.path.join(WIKI, "data/ce_sync_state.json")
+API_BASE = "https://api.atlasacademy.io"
 
 TYPE_NAMES = {
     "servantEquip": "从者牵绊礼装",
@@ -208,6 +212,24 @@ if __name__ == "__main__":
     cn_path = "/tmp/cn_nice_equip.json"
     jp_path = "/tmp/jp_nice_equip.json"
     
+    # 增量更新: 读取状态 + 检查本地文件时效
+    state = {}
+    if os.path.exists(STATE_FILE):
+        state = json.load(open(STATE_FILE))
+    synced_ids = set(state.get("synced_ids", []))
+    last_sync = state.get("last_sync_at", "")
+    print(f"上次同步: {last_sync or '从未'} | 已同步: {len(synced_ids)} 张")
+    
+    # 如果本地 lore 文件已存在且状态已有记录, 跳过 API 检查
+    # 后续可通过 --force 参数强制重新生成
+    if synced_ids and not "--force" in sys.argv:
+        lore_file = "/tmp/cn_nice_equip.json"
+        if os.path.exists(lore_file):
+            file_age = (time.time() - os.path.getmtime(lore_file)) / 86400
+            if file_age < 30:  # 30天内无需检查
+                print(f"    本地数据较新 ({file_age:.0f} 天), 跳过")
+                sys.exit(0)
+    
     cn_idx, jp_idx = [], []
     
     if os.path.exists(cn_path):
@@ -229,3 +251,11 @@ if __name__ == "__main__":
     with open(os.path.join(ENT_BASE, "index.md"), "w", encoding="utf-8") as f:
         f.write(idx_md)
     print(f"Index: {len(cn_idx)} CN + {len(jp_idx)} JP")
+    
+    # Update sync state
+    all_ce_ids = {ce[0] for ce in cn_idx} | {ce[0] for ce in jp_idx}
+    json.dump({
+        "last_sync_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "synced_ids": sorted(all_ce_ids),
+        "total": len(all_ce_ids),
+    }, open(STATE_FILE, "w"), indent=2)

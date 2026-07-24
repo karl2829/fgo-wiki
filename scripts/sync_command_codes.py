@@ -9,9 +9,9 @@ WIKI = os.path.expanduser("~/fgo-wiki")
 RAW_FILE = f"{WIKI}/raw/command-codes/all.json"
 ENT_DIR = f"{WIKI}/entities/command-codes"
 INDEX_FILE = f"{ENT_DIR}/index.md"
+STATE_FILE = f"{WIKI}/data/command_code_sync_state.json"
 RARITY_STARS = {1: "★", 2: "★★", 3: "★★★", 4: "★★★★", 5: "★★★★★"}
 MAX_CN = 200
-
 
 def fetch_cc(cn: int):
     url = f"https://api.atlasacademy.io/nice/CN/CC/{cn}"
@@ -24,6 +24,7 @@ def fetch_cc(cn: int):
 
 
 def generate_md(cc: dict) -> str:
+    cc_id = cc.get("id", "?")
     name = cc.get("name", "?").replace("/", "·")
     stars = RARITY_STARS.get(cc.get("rarity", 1), "★")
     skills = cc.get("skills", [])
@@ -64,18 +65,28 @@ def generate_md(cc: dict) -> str:
 def main():
     os.makedirs(ENT_DIR, exist_ok=True)
     os.makedirs(f"{WIKI}/raw/command-codes", exist_ok=True)
-
+    
+    # 增量更新: 读取上次同步状态
+    state = {}
+    if os.path.exists(STATE_FILE):
+        state = json.load(open(STATE_FILE))
+    last_max = state.get("last_collection_no", 0)
+    last_sync = state.get("last_sync_at", "")
+    synced_ids = set(state.get("synced_ids", []))
+    print(f"上次同步: {last_sync or '从未'} | 已同步: {len(synced_ids)} 个 | 最大编号: {last_max}")
+    
     all_cc = []
     omit = []
-    for cn in range(1, MAX_CN + 1):
+    start_from = max(1, last_max + 1)
+    for cn in range(start_from, MAX_CN + 1):
         data = fetch_cc(cn)
         if data:
             all_cc.append(data)
         else:
             omit.append(cn)
-        if cn % 50 == 0:
-            print(f"{cn}/{MAX_CN} ({len(all_cc)} 个)")
-        time.sleep(0.05)
+        if cn % 50 == 0 or cn == start_from:
+            print(f"  {cn}/{MAX_CN} ({len(all_cc)} 个)")
+        time.sleep(0.5)
 
     print(f"成功: {len(all_cc)}, 空缺: {len(omit)} ({omit[:5]}...)")
 
@@ -86,10 +97,10 @@ def main():
     # Generate MD files
     by_rarity = {}
     for cc in all_cc:
-        name = cc.get("name", f"CC_{cc['id']}").replace("/", "·")
+        cc_id = str(cc.get("id", f"CC_{cc['id']}"))
         r = cc.get("rarity", 1)
         by_rarity.setdefault(r, []).append(cc)
-        path = os.path.join(ENT_DIR, f"{name}.md")
+        path = os.path.join(ENT_DIR, f"{cc_id}.md")
         with open(path, "w") as f:
             f.write(generate_md(cc))
 
@@ -105,12 +116,25 @@ def main():
         for cc in sorted(by_rarity[r], key=lambda x: x.get("collectionNo", 0)):
             cn = cc.get("collectionNo", "?")
             ill = cc.get("illustrator", "—")
-            lines.append(f"| {cc['id']} | [[{cc['name']}]] | {cn} | {ill} |")
+            lines.append(f"| {cc['id']} | [[{cc_id}|{cc.get('name','?')}]] | {cn} | {ill} |")
         lines.append("")
     with open(INDEX_FILE, "w") as f:
         f.write("\n".join(lines))
     print("索引页已生成")
     print(f"完成！{len(all_cc)} 个纹章")
+    
+    # Update sync state
+    max_cn = max(cc.get("collectionNo", 0) for cc in all_cc) if all_cc else last_max
+    new_ids = {cc["id"] for cc in all_cc} - synced_ids
+    fresh_ids = synced_ids | {cc["id"] for cc in all_cc}
+    if all_cc:
+        json.dump({
+            "last_collection_no": max_cn,
+            "last_sync_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "synced_ids": sorted(fresh_ids),
+            "total": len(fresh_ids),
+        }, open(STATE_FILE, "w"), indent=2)
+    print(f"新增: {len(new_ids)} 个纹章, 总计: {len(fresh_ids)}")
 
 
 if __name__ == "__main__":

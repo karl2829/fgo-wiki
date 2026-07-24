@@ -28,7 +28,15 @@
 8. **容错优先**：字段缺失用默认值或跳过，不报错中断
 9. **目录结构统一**：所有实体类型目录下按 `{类型}/CN/` 和 `{类型}/JP/` 划分。不要在 `entities/` 下直接放文件，也不用 `_jp` 后缀。
 10. **增量生成**：单个实体独立生成，批量跑脚本
-11. **版权声明**：每个生成的 MD 文件底部必须包含：
+11. **增量更新标准**：所有数据类型的增量脚本统一用 `last_sync_at` + `synced_ids` 判断：
+    - **卡池**：`fetch_mooncell_gacha.py` — 从 Mooncell 主页面拉新增池
+    - **从者**：`fetch_servants.py` + `fetch_jp_only.py` — API 增量
+    - **活动**：`fetch_events.py` — 分界线 + 增量差集
+    - **道具**：`sync_items.py` — 全量对比 `synced_ids` ✅
+    - **御主礼装**：`sync_mystic_codes.py` — max_id 步长探测 ✅
+    - **指令纹章**：`sync_command_codes.py` — state 文件跳过已同步 ✅
+    - **礼装**：`generate_ce.py` — 30天内本地缓存跳过 ✅
+12. **版权声明**：每个生成的 MD 文件底部必须包含：
     ```
     *数据来源: [Atlas Academy API](https://api.atlasacademy.io) | 游戏素材版权归 TYPE-MOON / FGO PROJECT 所有*
     ```
