@@ -39,6 +39,10 @@ for img_url, page_path in all_images:
     page_name = unquote(page_path)
     page_images[page_name] = img_url
 
+# CDN config
+GACHA_CDN_DIR = "fgo/gacha"
+GACHA_CDN_BASE = "https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/gacha"
+
 raw_gacha = json.load(open(RAW_GACHA))
 updates = banner_hits = missing_svt = missing_ce = 0
 
@@ -49,25 +53,29 @@ for gid, gacha in raw_gacha["gachas"].items():
     
     name = gacha["name"]
     
-    # Find banner - match by name in page URL
+    # Use existing CDN banner if available, otherwise find from Mooncell
+    existing_banner = gacha.get("banner", "")
     banner = ""
-    for page, img in page_images.items():
-        # Match: if the gacha URL name appears in the page name
-        for kw in name.split()[:5]:
-            if len(kw) >= 3 and kw in page:
-                # Get full size (remove thumb)
-                banner = re.sub(r'/thumb(.*?)/\d+px-', r'\1/', img)
-                if not banner.startswith("http"):
-                    banner = "https://media.fgo.wiki" + banner
+    if existing_banner and "cdn.jsdelivr.net" in existing_banner:
+        banner = existing_banner
+        banner_hits += 1
+    else:
+        for page, img in page_images.items():
+            for kw in name.split()[:5]:
+                if len(kw) >= 3 and kw in page:
+                    # Get full size (remove thumb)
+                    banner = re.sub(r'/thumb(.*?)/\d+px-', r'\1/', img)
+                    if not banner.startswith("http"):
+                        banner = "https://media.fgo.wiki" + banner
+                    # Clean duplicate filename pattern
+                    banner = re.sub(r'(https?://media\.fgo\.wiki/[^/]+/[^/]+/[^?]+)/[^?]+(\?[^)]+)?', r'\1', banner)
+                    break
+            if banner:
                 break
         if banner:
-            break
-    
-    if banner:
-        banner_hits += 1
-        gacha["banner"] = banner
-    else:
-        gacha["banner"] = ""
+            banner_hits += 1
+        # Note: new banners should be uploaded to CDN separately
+    gacha["banner"] = banner
     
     # Build MD
     lines, h = [], lambda s="": lines.append(s)

@@ -36,7 +36,11 @@
     - **御主礼装**：`sync_mystic_codes.py` — max_id 步长探测 ✅
     - **指令纹章**：`sync_command_codes.py` — state 文件跳过已同步 ✅
     - **礼装**：`generate_ce.py` — 30天内本地缓存跳过 ✅
-12. **版权声明**：每个生成的 MD 文件底部必须包含：
+12. **卡池横幅 CDN**：当前/未来卡池的 banner 图上传至 `fgo/gacha/` 目录，CDN 路径为 `https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/gacha/{gid}.png`。新卡池获取流程：
+    - 从 Mooncell 拉取 → 下载 banner → 用 `zxgpcli upload` 上传
+    - `gacha_raw.json` 中 `banner` 字段使用 CDN URL
+    - MD 文件中 URL 需对中文文件名进行 `urllib.parse.quote` 编码
+13. **版权声明**：每个生成的 MD 文件底部必须包含：
     ```
     *数据来源: [Atlas Academy API](https://api.atlasacademy.io) | 游戏素材版权归 TYPE-MOON / FGO PROJECT 所有*
     ```
