@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyc
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# Temp / Cache
+tmp/
+cache/
+*.log
+
+# Config (may contain API tokens if zxgpcli is configured)
+.zxgpclirc*
+.env
+*.pem
+*.key
+
+# Raw JSON data (re-downloadable from API)
+raw/
+
+# Node
+node_modules/
+package-lock.json
+
+# Large generated data (raw JSON can be re-downloaded)
+raw/servants/CN/*.json
+raw/servants/JP/*.json
+raw/craft-essences/CN/*.json
+raw/craft-essences/JP/*.json
+raw/events/CN/*.json
+raw/events/JP/*.json
+
+# Keep the generated markdown files (they're the knowledge base)
+# Keep LICENSE, README, RULES.md, scripts, references

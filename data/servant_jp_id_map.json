@@ -1,0 +1,188 @@
+{
+  "1001900": {
+    "name": "ジュネス・クレーン",
+    "collectionNo": 451,
+    "className": "alterEgo",
+    "region": "JP"
+  },
+  "1002000": {
+    "name": "フローラ",
+    "collectionNo": 464,
+    "className": "alterEgo",
+    "region": "JP"
+  },
+  "1002200": {
+    "name": "アスカラポス",
+    "collectionNo": 471,
+    "className": "alterEgo",
+    "region": "JP"
+  },
+  "106300": {
+    "name": "パッションリップ",
+    "collectionNo": 445,
+    "className": "saber",
+    "region": "JP"
+  },
+  "106400": {
+    "name": "近藤勇",
+    "collectionNo": 456,
+    "className": "saber",
+    "region": "JP"
+  },
+  "106500": {
+    "name": "ロード・ログレス",
+    "collectionNo": 461,
+    "className": "saber",
+    "region": "JP"
+  },
+  "106600": {
+    "name": "ジャック・ド・モレー",
+    "collectionNo": 466,
+    "className": "saber",
+    "region": "JP"
+  },
+  "106700": {
+    "name": "グレイ・リリィ",
+    "collectionNo": 472,
+    "className": "saber",
+    "region": "JP"
+  },
+  "1102000": {
+    "name": "ジョン・ラックランド",
+    "collectionNo": 469,
+    "className": "avenger",
+    "region": "JP"
+  },
+  "1102100": {
+    "name": "藤堂平助",
+    "collectionNo": 454,
+    "className": "avenger",
+    "region": "JP"
+  },
+  "1102200": {
+    "name": "終わりのエリザベート",
+    "collectionNo": 458,
+    "className": "avenger",
+    "region": "JP"
+  },
+  "205400": {
+    "name": "ラーヴァ／ティアマト",
+    "collectionNo": 450,
+    "className": "archer",
+    "region": "JP"
+  },
+  "205500": {
+    "name": "ウルズ",
+    "collectionNo": 470,
+    "className": "archer",
+    "region": "JP"
+  },
+  "2301100": {
+    "name": "玉兎",
+    "collectionNo": 448,
+    "className": "moonCancer",
+    "region": "JP"
+  },
+  "2801200": {
+    "name": "ソロモン",
+    "collectionNo": 459,
+    "className": "pretender",
+    "region": "JP"
+  },
+  "306000": {
+    "name": "美遊・エーデルフェルト",
+    "collectionNo": 449,
+    "className": "lancer",
+    "region": "JP"
+  },
+  "306100": {
+    "name": "原田左之助",
+    "collectionNo": 455,
+    "className": "lancer",
+    "region": "JP"
+  },
+  "306200": {
+    "name": "エリザベート・バートリー",
+    "collectionNo": 457,
+    "className": "lancer",
+    "region": "JP"
+  },
+  "306300": {
+    "name": "グレイ・リリィ",
+    "collectionNo": 473,
+    "className": "lancer",
+    "region": "JP"
+  },
+  "306400": {
+    "name": "デメテル",
+    "collectionNo": 465,
+    "className": "lancer",
+    "region": "JP"
+  },
+  "4000100": {
+    "name": "Ｕ－オルガマリー",
+    "collectionNo": 444,
+    "className": "unBeastOlgaMarie",
+    "region": "JP"
+  },
+  "405600": {
+    "name": "ヒッポリュテ",
+    "collectionNo": 468,
+    "className": "rider",
+    "region": "JP"
+  },
+  "405700": {
+    "name": "ネモ／ノア",
+    "collectionNo": 452,
+    "className": "rider",
+    "region": "JP"
+  },
+  "405800": {
+    "name": "クリームヒルト",
+    "collectionNo": 446,
+    "className": "rider",
+    "region": "JP"
+  },
+  "505600": {
+    "name": "フランソワ・プレラーティ",
+    "collectionNo": 467,
+    "className": "caster",
+    "region": "JP"
+  },
+  "505900": {
+    "name": "花咲翁",
+    "collectionNo": 462,
+    "className": "caster",
+    "region": "JP"
+  },
+  "605100": {
+    "name": "河上彦斎",
+    "collectionNo": 453,
+    "className": "assassin",
+    "region": "JP"
+  },
+  "605200": {
+    "name": "蛇女房",
+    "collectionNo": 463,
+    "className": "assassin",
+    "region": "JP"
+  },
+  "705200": {
+    "name": "呼延灼",
+    "collectionNo": 447,
+    "className": "berserker",
+    "region": "JP"
+  },
+  "9946760": {
+    "name": "Ｅ－ステラマリー",
+    "collectionNo": 443,
+    "className": "uOlgaMarieStellarCollection",
+    "region": "JP"
+  },
+  "9947530": {
+    "name": "マリス・カルデアス",
+    "collectionNo": 460,
+    "className": "beastVII",
+    "region": "JP"
+  }
+}

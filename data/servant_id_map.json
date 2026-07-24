@@ -1,0 +1,2212 @@
+{
+  "1000100": {
+    "name": "Passionlip",
+    "collectionNo": 164,
+    "className": "alterEgo"
+  },
+  "1000200": {
+    "name": "Meltryllis",
+    "collectionNo": 163,
+    "className": "alterEgo"
+  },
+  "1000300": {
+    "name": "瞑生院祈荒",
+    "collectionNo": 167,
+    "className": "alterEgo"
+  },
+  "1000400": {
+    "name": "机械伊丽亲",
+    "collectionNo": 190,
+    "className": "alterEgo"
+  },
+  "1000500": {
+    "name": "机械伊丽亲Ⅱ号机",
+    "collectionNo": 191,
+    "className": "alterEgo"
+  },
+  "1000700": {
+    "name": "冲田总司〔Alter〕",
+    "collectionNo": 209,
+    "className": "alterEgo"
+  },
+  "1000800": {
+    "name": "志度内",
+    "collectionNo": 224,
+    "className": "alterEgo"
+  },
+  "1000900": {
+    "name": "Kingprotea",
+    "collectionNo": 238,
+    "className": "alterEgo"
+  },
+  "100100": {
+    "name": "阿尔托莉雅·潘德拉贡",
+    "collectionNo": 2,
+    "className": "saber"
+  },
+  "1001000": {
+    "name": "芦屋道满",
+    "collectionNo": 297,
+    "className": "alterEgo"
+  },
+  "1001100": {
+    "name": "马纳南·麦克·利尔〔巴泽特〕",
+    "collectionNo": 336,
+    "className": "alterEgo"
+  },
+  "1001200": {
+    "name": "太岁星君",
+    "collectionNo": 338,
+    "className": "alterEgo"
+  },
+  "1001300": {
+    "name": "超级班扬",
+    "collectionNo": 339,
+    "className": "alterEgo"
+  },
+  "1001400": {
+    "name": "方巿",
+    "collectionNo": 352,
+    "className": "alterEgo"
+  },
+  "1001500": {
+    "name": "言峰绮礼",
+    "collectionNo": 369,
+    "className": "alterEgo"
+  },
+  "1001600": {
+    "name": "幼体／提亚马特",
+    "collectionNo": 376,
+    "className": "alterEgo"
+  },
+  "1001700": {
+    "name": "响＆千键",
+    "collectionNo": 416,
+    "className": "alterEgo"
+  },
+  "1001800": {
+    "name": "Kazuradrop",
+    "collectionNo": 426,
+    "className": "alterEgo"
+  },
+  "100200": {
+    "name": "阿尔托莉雅·潘德拉贡〔Alter〕",
+    "collectionNo": 3,
+    "className": "saber"
+  },
+  "100300": {
+    "name": "阿尔托莉雅·潘德拉贡〔Lily〕",
+    "collectionNo": 4,
+    "className": "saber"
+  },
+  "100500": {
+    "name": "尼禄·克劳狄乌斯",
+    "collectionNo": 5,
+    "className": "saber"
+  },
+  "100600": {
+    "name": "尼禄·克劳狄乌斯〔新娘〕",
+    "collectionNo": 90,
+    "className": "saber"
+  },
+  "100700": {
+    "name": "高文",
+    "collectionNo": 123,
+    "className": "saber"
+  },
+  "100800": {
+    "name": "齐格飞",
+    "collectionNo": 6,
+    "className": "saber"
+  },
+  "100900": {
+    "name": "莫德雷德",
+    "collectionNo": 76,
+    "className": "saber"
+  },
+  "101000": {
+    "name": "伊丽莎白·巴托里〔勇者〕",
+    "collectionNo": 138,
+    "className": "saber"
+  },
+  "101200": {
+    "name": "贝德维尔",
+    "collectionNo": 126,
+    "className": "saber"
+  },
+  "101300": {
+    "name": "盖乌斯·尤利乌斯·恺撒",
+    "collectionNo": 7,
+    "className": "saber"
+  },
+  "101400": {
+    "name": "弗格斯·马克·罗伊",
+    "collectionNo": 72,
+    "className": "saber"
+  },
+  "101700": {
+    "name": "宫本武藏",
+    "collectionNo": 153,
+    "className": "saber"
+  },
+  "101800": {
+    "name": "阿蒂拉",
+    "collectionNo": 8,
+    "className": "saber"
+  },
+  "101900": {
+    "name": "罗摩",
+    "collectionNo": 101,
+    "className": "saber"
+  },
+  "102000": {
+    "name": "兰斯洛特",
+    "collectionNo": 121,
+    "className": "saber"
+  },
+  "102200": {
+    "name": "吉尔·德·雷",
+    "collectionNo": 9,
+    "className": "saber"
+  },
+  "102600": {
+    "name": "骑士迪昂",
+    "collectionNo": 10,
+    "className": "saber"
+  },
+  "102700": {
+    "name": "冲田总司",
+    "collectionNo": 68,
+    "className": "saber"
+  },
+  "102800": {
+    "name": "两仪式",
+    "collectionNo": 91,
+    "className": "saber"
+  },
+  "102900": {
+    "name": "亚瑟·潘德拉贡〔Prototype〕",
+    "collectionNo": 160,
+    "className": "saber"
+  },
+  "103000": {
+    "name": "铃鹿御前",
+    "collectionNo": 165,
+    "className": "saber"
+  },
+  "103100": {
+    "name": "弗兰肯斯坦",
+    "collectionNo": 176,
+    "className": "saber"
+  },
+  "103200": {
+    "name": "柳生但马守宗矩",
+    "collectionNo": 187,
+    "className": "saber"
+  },
+  "103300": {
+    "name": "齐格鲁德",
+    "collectionNo": 213,
+    "className": "saber"
+  },
+  "103400": {
+    "name": "女王梅芙",
+    "collectionNo": 221,
+    "className": "saber"
+  },
+  "103500": {
+    "name": "迪尔姆德·奥迪那",
+    "collectionNo": 223,
+    "className": "saber"
+  },
+  "103600": {
+    "name": "兰陵王",
+    "collectionNo": 227,
+    "className": "saber"
+  },
+  "103700": {
+    "name": "红阎魔",
+    "collectionNo": 234,
+    "className": "saber"
+  },
+  "103800": {
+    "name": "伊阿宋",
+    "collectionNo": 254,
+    "className": "saber"
+  },
+  "103900": {
+    "name": "拉克什米·芭伊",
+    "collectionNo": 245,
+    "className": "saber"
+  },
+  "104000": {
+    "name": "葛饰北斋",
+    "collectionNo": 264,
+    "className": "saber"
+  },
+  "104100": {
+    "name": "阿斯托尔福",
+    "collectionNo": 270,
+    "className": "saber"
+  },
+  "104200": {
+    "name": "狄俄斯库里",
+    "collectionNo": 278,
+    "className": "saber"
+  },
+  "104300": {
+    "name": "罗兰",
+    "collectionNo": 344,
+    "className": "saber"
+  },
+  "104400": {
+    "name": "斋藤一",
+    "collectionNo": 293,
+    "className": "saber"
+  },
+  "104500": {
+    "name": "巴御前",
+    "collectionNo": 290,
+    "className": "saber"
+  },
+  "104600": {
+    "name": "伊吹童子",
+    "collectionNo": 299,
+    "className": "saber"
+  },
+  "104700": {
+    "name": "渡边纲",
+    "collectionNo": 298,
+    "className": "saber"
+  },
+  "104800": {
+    "name": "迦尔纳〔圣诞〕",
+    "collectionNo": 301,
+    "className": "saber"
+  },
+  "104900": {
+    "name": "千子村正",
+    "collectionNo": 302,
+    "className": "saber"
+  },
+  "105000": {
+    "name": "巴格斯特",
+    "collectionNo": 310,
+    "className": "saber"
+  },
+  "105100": {
+    "name": "冲田总司〔Alter〕",
+    "collectionNo": 317,
+    "className": "saber"
+  },
+  "105200": {
+    "name": "查理曼",
+    "collectionNo": 343,
+    "className": "saber"
+  },
+  "105300": {
+    "name": "征氏姐妹",
+    "collectionNo": 337,
+    "className": "saber"
+  },
+  "105400": {
+    "name": "加雷斯",
+    "collectionNo": 354,
+    "className": "saber"
+  },
+  "105500": {
+    "name": "山南敬助",
+    "collectionNo": 363,
+    "className": "saber"
+  },
+  "105600": {
+    "name": "美杜莎",
+    "collectionNo": 384,
+    "className": "saber"
+  },
+  "105700": {
+    "name": "瑟坦特",
+    "collectionNo": 379,
+    "className": "saber"
+  },
+  "105800": {
+    "name": "忒修斯",
+    "collectionNo": 396,
+    "className": "saber"
+  },
+  "105900": {
+    "name": "大和武尊",
+    "collectionNo": 402,
+    "className": "saber"
+  },
+  "106000": {
+    "name": "宫本伊织",
+    "collectionNo": 405,
+    "className": "saber"
+  },
+  "106100": {
+    "name": "理查一世",
+    "collectionNo": 432,
+    "className": "saber"
+  },
+  "106200": {
+    "name": "黑姬",
+    "collectionNo": 434,
+    "className": "saber"
+  },
+  "1100100": {
+    "name": "安哥拉曼纽",
+    "collectionNo": 107,
+    "className": "avenger"
+  },
+  "1100200": {
+    "name": "岩窟王",
+    "collectionNo": 96,
+    "className": "avenger"
+  },
+  "1100300": {
+    "name": "贞德〔Alter〕",
+    "collectionNo": 106,
+    "className": "avenger"
+  },
+  "1100400": {
+    "name": "戈耳工",
+    "collectionNo": 147,
+    "className": "avenger"
+  },
+  "1100500": {
+    "name": "黑森·罗伯",
+    "collectionNo": 158,
+    "className": "avenger"
+  },
+  "1100600": {
+    "name": "安东尼奥·萨列里",
+    "collectionNo": 204,
+    "className": "avenger"
+  },
+  "1100700": {
+    "name": "魔王信长",
+    "collectionNo": 250,
+    "className": "avenger"
+  },
+  "1100900": {
+    "name": "太空伊什塔尔",
+    "collectionNo": 268,
+    "className": "avenger"
+  },
+  "1101000": {
+    "name": "平景清",
+    "collectionNo": 303,
+    "className": "avenger"
+  },
+  "1101100": {
+    "name": "迦摩",
+    "collectionNo": 321,
+    "className": "avenger"
+  },
+  "1101200": {
+    "name": "谜之兰丸X",
+    "collectionNo": 328,
+    "className": "avenger"
+  },
+  "1101300": {
+    "name": "玛丽·安托瓦内特〔Alter〕",
+    "collectionNo": 407,
+    "className": "avenger"
+  },
+  "1101400": {
+    "name": "宇津见绘里濑",
+    "collectionNo": 356,
+    "className": "avenger"
+  },
+  "1101500": {
+    "name": "尼托克丽丝〔Alter〕",
+    "collectionNo": 370,
+    "className": "avenger"
+  },
+  "1101600": {
+    "name": "克洛伊·冯·爱因兹贝伦",
+    "collectionNo": 388,
+    "className": "avenger"
+  },
+  "1101700": {
+    "name": "岩窟王　基督山",
+    "collectionNo": 409,
+    "className": "avenger"
+  },
+  "1101800": {
+    "name": "源赖光／丑御前",
+    "collectionNo": 403,
+    "className": "avenger"
+  },
+  "1101900": {
+    "name": "方巿",
+    "collectionNo": 420,
+    "className": "avenger"
+  },
+  "1700100": {
+    "name": "所罗门",
+    "collectionNo": 83,
+    "className": "loreGrandCaster"
+  },
+  "200100": {
+    "name": "卫宫",
+    "collectionNo": 11,
+    "className": "archer"
+  },
+  "200200": {
+    "name": "吉尔伽美什",
+    "collectionNo": 12,
+    "className": "archer"
+  },
+  "200300": {
+    "name": "罗宾汉",
+    "collectionNo": 13,
+    "className": "archer"
+  },
+  "200500": {
+    "name": "阿塔兰忒",
+    "collectionNo": 14,
+    "className": "archer"
+  },
+  "200600": {
+    "name": "大卫",
+    "collectionNo": 63,
+    "className": "archer"
+  },
+  "200800": {
+    "name": "崔斯坦",
+    "collectionNo": 122,
+    "className": "archer"
+  },
+  "200900": {
+    "name": "俄里翁",
+    "collectionNo": 60,
+    "className": "archer"
+  },
+  "201000": {
+    "name": "比利小子",
+    "collectionNo": 105,
+    "className": "archer"
+  },
+  "201100": {
+    "name": "尼古拉·特斯拉",
+    "collectionNo": 77,
+    "className": "archer"
+  },
+  "201200": {
+    "name": "尤瑞艾莉",
+    "collectionNo": 15,
+    "className": "archer"
+  },
+  "201300": {
+    "name": "阿拉什",
+    "collectionNo": 16,
+    "className": "archer"
+  },
+  "201400": {
+    "name": "俵藤太",
+    "collectionNo": 125,
+    "className": "archer"
+  },
+  "201500": {
+    "name": "阿周那",
+    "collectionNo": 84,
+    "className": "archer"
+  },
+  "201600": {
+    "name": "卫宫〔Alter〕",
+    "collectionNo": 157,
+    "className": "archer"
+  },
+  "201800": {
+    "name": "幼吉尔",
+    "collectionNo": 95,
+    "className": "archer"
+  },
+  "202000": {
+    "name": "伊什塔尔",
+    "collectionNo": 142,
+    "className": "archer"
+  },
+  "202100": {
+    "name": "巴御前",
+    "collectionNo": 184,
+    "className": "archer"
+  },
+  "202200": {
+    "name": "阿蒂拉·the·San〔ta〕",
+    "collectionNo": 197,
+    "className": "archer"
+  },
+  "202300": {
+    "name": "詹姆斯·莫里亚蒂",
+    "collectionNo": 156,
+    "className": "archer"
+  },
+  "202400": {
+    "name": "织田信长",
+    "collectionNo": 69,
+    "className": "archer"
+  },
+  "202500": {
+    "name": "安妮·伯妮＆玛莉·瑞德",
+    "collectionNo": 131,
+    "className": "archer"
+  },
+  "202600": {
+    "name": "阿尔托莉雅·潘德拉贡",
+    "collectionNo": 129,
+    "className": "archer"
+  },
+  "202700": {
+    "name": "克洛伊·冯·爱因兹贝伦",
+    "collectionNo": 137,
+    "className": "archer"
+  },
+  "202800": {
+    "name": "海伦娜·布拉瓦茨基",
+    "collectionNo": 180,
+    "className": "archer"
+  },
+  "202900": {
+    "name": "浅上藤乃",
+    "collectionNo": 200,
+    "className": "archer"
+  },
+  "203000": {
+    "name": "喀戎",
+    "collectionNo": 207,
+    "className": "archer"
+  },
+  "203100": {
+    "name": "拿破仑",
+    "collectionNo": 212,
+    "className": "archer"
+  },
+  "203200": {
+    "name": "贞德",
+    "collectionNo": 216,
+    "className": "archer"
+  },
+  "203300": {
+    "name": "马嘶",
+    "collectionNo": 248,
+    "className": "archer"
+  },
+  "203400": {
+    "name": "威廉·退尔",
+    "collectionNo": 246,
+    "className": "archer"
+  },
+  "203500": {
+    "name": "帕里斯",
+    "collectionNo": 255,
+    "className": "archer"
+  },
+  "203600": {
+    "name": "刑部姬",
+    "collectionNo": 262,
+    "className": "archer"
+  },
+  "203700": {
+    "name": "灾星简",
+    "collectionNo": 269,
+    "className": "archer"
+  },
+  "203800": {
+    "name": "超人俄里翁",
+    "collectionNo": 272,
+    "className": "archer"
+  },
+  "203900": {
+    "name": "南丁格尔〔圣诞〕",
+    "collectionNo": 271,
+    "className": "archer"
+  },
+  "204000": {
+    "name": "清少纳言",
+    "collectionNo": 276,
+    "className": "archer"
+  },
+  "204100": {
+    "name": "织田信胜",
+    "collectionNo": 294,
+    "className": "archer"
+  },
+  "204200": {
+    "name": "伊莉雅丝菲尔·冯·爱因兹贝伦",
+    "collectionNo": 286,
+    "className": "archer"
+  },
+  "204300": {
+    "name": "芭万·希",
+    "collectionNo": 311,
+    "className": "archer"
+  },
+  "204400": {
+    "name": "阿纳斯塔西娅＆维",
+    "collectionNo": 318,
+    "className": "archer"
+  },
+  "204500": {
+    "name": "芝诺比阿",
+    "collectionNo": 325,
+    "className": "archer"
+  },
+  "204600": {
+    "name": "源为朝",
+    "collectionNo": 350,
+    "className": "archer"
+  },
+  "204700": {
+    "name": "高杉晋作",
+    "collectionNo": 375,
+    "className": "archer"
+  },
+  "204800": {
+    "name": "杜尔伽",
+    "collectionNo": 383,
+    "className": "archer"
+  },
+  "204900": {
+    "name": "ＵＤＫ－巴格斯特",
+    "collectionNo": 391,
+    "className": "archer"
+  },
+  "205000": {
+    "name": "托勒密",
+    "collectionNo": 394,
+    "className": "archer"
+  },
+  "205100": {
+    "name": "杉谷善住坊",
+    "collectionNo": 395,
+    "className": "archer"
+  },
+  "205200": {
+    "name": "杂贺孙一",
+    "collectionNo": 399,
+    "className": "archer"
+  },
+  "205300": {
+    "name": "图坦卡蒙",
+    "collectionNo": 427,
+    "className": "archer"
+  },
+  "2300100": {
+    "name": "BB",
+    "collectionNo": 166,
+    "className": "moonCancer"
+  },
+  "2300200": {
+    "name": "BB",
+    "collectionNo": 220,
+    "className": "moonCancer"
+  },
+  "2300300": {
+    "name": "吉娜可·加里吉利",
+    "collectionNo": 244,
+    "className": "moonCancer"
+  },
+  "2300400": {
+    "name": "瞑生院祈荒",
+    "collectionNo": 285,
+    "className": "moonCancer"
+  },
+  "2300500": {
+    "name": "Archetype：Earth",
+    "collectionNo": 351,
+    "className": "moonCancer"
+  },
+  "2300600": {
+    "name": "ＢＢ迪拜",
+    "collectionNo": 421,
+    "className": "moonCancer"
+  },
+  "2300700": {
+    "name": "岸波白野",
+    "collectionNo": 424,
+    "className": "moonCancer"
+  },
+  "2300800": {
+    "name": "岸波白野",
+    "collectionNo": 425,
+    "className": "moonCancer"
+  },
+  "2300900": {
+    "name": "谜之代行者C.I.E.L",
+    "collectionNo": 418,
+    "className": "moonCancer"
+  },
+  "2301000": {
+    "name": "特诺奇蒂特兰",
+    "collectionNo": 422,
+    "className": "moonCancer"
+  },
+  "2500100": {
+    "name": "阿比盖尔·威廉姆斯",
+    "collectionNo": 195,
+    "className": "foreigner"
+  },
+  "2500200": {
+    "name": "葛饰北斋",
+    "collectionNo": 198,
+    "className": "foreigner"
+  },
+  "2500300": {
+    "name": "谜之女主角XX",
+    "collectionNo": 222,
+    "className": "foreigner"
+  },
+  "2500400": {
+    "name": "琰女",
+    "collectionNo": 275,
+    "className": "foreigner"
+  },
+  "2500500": {
+    "name": "旅行者",
+    "collectionNo": 281,
+    "className": "foreigner"
+  },
+  "2500600": {
+    "name": "梵高",
+    "collectionNo": 295,
+    "className": "foreigner"
+  },
+  "2500700": {
+    "name": "阿比盖尔·威廉姆斯〔夏〕",
+    "collectionNo": 289,
+    "className": "foreigner"
+  },
+  "2500800": {
+    "name": "谜之偶像X〔Alter〕",
+    "collectionNo": 308,
+    "className": "foreigner"
+  },
+  "2500900": {
+    "name": "暗之高扬斯卡娅",
+    "collectionNo": 334,
+    "className": "foreigner"
+  },
+  "2501000": {
+    "name": "雅克·德·莫莱",
+    "collectionNo": 324,
+    "className": "foreigner"
+  },
+  "2501100": {
+    "name": "库库尔坎",
+    "collectionNo": 373,
+    "className": "foreigner"
+  },
+  "2501200": {
+    "name": "诺克娜蕾·雅兰杜",
+    "collectionNo": 389,
+    "className": "foreigner"
+  },
+  "2501300": {
+    "name": "旺吉娜",
+    "collectionNo": 393,
+    "className": "foreigner"
+  },
+  "2501400": {
+    "name": "苍崎青子",
+    "collectionNo": 413,
+    "className": "foreigner"
+  },
+  "2501600": {
+    "name": "谜之女主角XX〔Alter〕",
+    "collectionNo": 423,
+    "className": "foreigner"
+  },
+  "2800100": {
+    "name": "奥伯龙",
+    "collectionNo": 316,
+    "className": "pretender"
+  },
+  "2800200": {
+    "name": "赫费斯提翁",
+    "collectionNo": 335,
+    "className": "pretender"
+  },
+  "2800300": {
+    "name": "阿瓦隆女士",
+    "collectionNo": 353,
+    "className": "pretender"
+  },
+  "2800400": {
+    "name": "九纹龙伊丽莎",
+    "collectionNo": 367,
+    "className": "pretender"
+  },
+  "2800500": {
+    "name": "特诺奇蒂特兰",
+    "collectionNo": 372,
+    "className": "pretender"
+  },
+  "2800600": {
+    "name": "凯特·库·米可科尔",
+    "collectionNo": 392,
+    "className": "pretender"
+  },
+  "2800700": {
+    "name": "亚历山德罗·迪·卡利奥斯特罗",
+    "collectionNo": 410,
+    "className": "pretender"
+  },
+  "2800800": {
+    "name": "阿比盖尔·威廉姆斯〔圣诞〕",
+    "collectionNo": 430,
+    "className": "pretender"
+  },
+  "2800900": {
+    "name": "Phantasmoon",
+    "collectionNo": 431,
+    "className": "pretender"
+  },
+  "2801000": {
+    "name": "但丁·阿利吉耶里",
+    "collectionNo": 437,
+    "className": "pretender"
+  },
+  "2801100": {
+    "name": "堤丰·厄斐墨洛斯",
+    "collectionNo": 441,
+    "className": "pretender"
+  },
+  "300100": {
+    "name": "库·丘林",
+    "collectionNo": 17,
+    "className": "lancer"
+  },
+  "300200": {
+    "name": "迪尔姆德·奥迪那",
+    "collectionNo": 71,
+    "className": "lancer"
+  },
+  "300300": {
+    "name": "弗拉德三世〔EXTRA〕",
+    "collectionNo": 140,
+    "className": "lancer"
+  },
+  "300400": {
+    "name": "迦尔纳",
+    "collectionNo": 85,
+    "className": "lancer"
+  },
+  "300500": {
+    "name": "伊丽莎白·巴托里",
+    "collectionNo": 18,
+    "className": "lancer"
+  },
+  "300600": {
+    "name": "武藏坊弁庆",
+    "collectionNo": 19,
+    "className": "lancer"
+  },
+  "300700": {
+    "name": "库·丘林〔Prototype〕",
+    "collectionNo": 20,
+    "className": "lancer"
+  },
+  "300800": {
+    "name": "恩奇都",
+    "collectionNo": 143,
+    "className": "lancer"
+  },
+  "300900": {
+    "name": "列奥尼达一世",
+    "collectionNo": 21,
+    "className": "lancer"
+  },
+  "301000": {
+    "name": "罗穆路斯",
+    "collectionNo": 22,
+    "className": "lancer"
+  },
+  "301100": {
+    "name": "芬恩·麦克库尔",
+    "collectionNo": 87,
+    "className": "lancer"
+  },
+  "301200": {
+    "name": "布伦希尔德",
+    "collectionNo": 88,
+    "className": "lancer"
+  },
+  "301300": {
+    "name": "斯卡哈",
+    "collectionNo": 70,
+    "className": "lancer"
+  },
+  "301400": {
+    "name": "宝藏院胤舜",
+    "collectionNo": 186,
+    "className": "lancer"
+  },
+  "301600": {
+    "name": "赫克托耳",
+    "collectionNo": 64,
+    "className": "lancer"
+  },
+  "301700": {
+    "name": "李书文",
+    "collectionNo": 102,
+    "className": "lancer"
+  },
+  "301900": {
+    "name": "阿尔托莉雅·潘德拉贡〔Alter〕",
+    "collectionNo": 78,
+    "className": "lancer"
+  },
+  "302000": {
+    "name": "阿尔托莉雅·潘德拉贡",
+    "collectionNo": 119,
+    "className": "lancer"
+  },
+  "302400": {
+    "name": "玉藻前",
+    "collectionNo": 128,
+    "className": "lancer"
+  },
+  "302500": {
+    "name": "清姬",
+    "collectionNo": 134,
+    "className": "lancer"
+  },
+  "302600": {
+    "name": "贞德·Alter·Santa·Lily",
+    "collectionNo": 141,
+    "className": "lancer"
+  },
+  "302700": {
+    "name": "美杜莎",
+    "collectionNo": 146,
+    "className": "lancer"
+  },
+  "302800": {
+    "name": "豹人",
+    "collectionNo": 148,
+    "className": "lancer"
+  },
+  "302900": {
+    "name": "源赖光",
+    "collectionNo": 181,
+    "className": "lancer"
+  },
+  "303000": {
+    "name": "帕尔瓦蒂",
+    "collectionNo": 183,
+    "className": "lancer"
+  },
+  "303100": {
+    "name": "莲偶",
+    "collectionNo": 193,
+    "className": "lancer"
+  },
+  "303200": {
+    "name": "埃列什基伽勒",
+    "collectionNo": 196,
+    "className": "lancer"
+  },
+  "303300": {
+    "name": "瓦尔基里",
+    "collectionNo": 214,
+    "className": "lancer"
+  },
+  "303400": {
+    "name": "茨木童子",
+    "collectionNo": 217,
+    "className": "lancer"
+  },
+  "303500": {
+    "name": "忠贞",
+    "collectionNo": 228,
+    "className": "lancer"
+  },
+  "303600": {
+    "name": "布拉达曼特",
+    "collectionNo": 232,
+    "className": "lancer"
+  },
+  "303800": {
+    "name": "长尾景虎",
+    "collectionNo": 252,
+    "className": "lancer"
+  },
+  "303900": {
+    "name": "加雷斯",
+    "collectionNo": 256,
+    "className": "lancer"
+  },
+  "304000": {
+    "name": "谜之Alterego·Λ",
+    "collectionNo": 266,
+    "className": "lancer"
+  },
+  "304100": {
+    "name": "凯妮斯",
+    "collectionNo": 279,
+    "className": "lancer"
+  },
+  "304200": {
+    "name": "罗穆路斯·奎里努斯",
+    "collectionNo": 280,
+    "className": "lancer"
+  },
+  "304300": {
+    "name": "宇津见绘里濑",
+    "collectionNo": 283,
+    "className": "lancer"
+  },
+  "304400": {
+    "name": "雏罂",
+    "collectionNo": 288,
+    "className": "lancer"
+  },
+  "304600": {
+    "name": "弗栗多",
+    "collectionNo": 300,
+    "className": "lancer"
+  },
+  "304700": {
+    "name": "珀西瓦尔",
+    "collectionNo": 313,
+    "className": "lancer"
+  },
+  "304800": {
+    "name": "梅柳齐娜",
+    "collectionNo": 312,
+    "className": "lancer"
+  },
+  "304900": {
+    "name": "玛丽·安宁",
+    "collectionNo": 341,
+    "className": "lancer"
+  },
+  "305000": {
+    "name": "坂本龙马",
+    "collectionNo": 329,
+    "className": "lancer"
+  },
+  "305100": {
+    "name": "堂·吉诃德",
+    "collectionNo": 347,
+    "className": "lancer"
+  },
+  "305300": {
+    "name": "布里托玛特",
+    "collectionNo": 368,
+    "className": "lancer"
+  },
+  "305400": {
+    "name": "怖军",
+    "collectionNo": 381,
+    "className": "lancer"
+  },
+  "305500": {
+    "name": "多布雷尼亚·尼基季奇",
+    "collectionNo": 419,
+    "className": "lancer"
+  },
+  "305600": {
+    "name": "梵高〔矿工〕",
+    "collectionNo": 428,
+    "className": "lancer"
+  },
+  "305700": {
+    "name": "比肖内",
+    "collectionNo": 433,
+    "className": "lancer"
+  },
+  "305800": {
+    "name": "阿育王",
+    "collectionNo": 439,
+    "className": "lancer"
+  },
+  "305900": {
+    "name": "因陀罗",
+    "collectionNo": 442,
+    "className": "lancer"
+  },
+  "3300100": {
+    "name": "所多玛之兽／德拉科",
+    "collectionNo": 377,
+    "className": "beast"
+  },
+  "3300200": {
+    "name": "埃列什基伽勒",
+    "collectionNo": 417,
+    "className": "beastEresh"
+  },
+  "400100": {
+    "name": "歌果",
+    "collectionNo": 23,
+    "className": "rider"
+  },
+  "400200": {
+    "name": "伊斯坎达尔",
+    "collectionNo": 108,
+    "className": "rider"
+  },
+  "400300": {
+    "name": "弗朗西斯·德雷克",
+    "collectionNo": 65,
+    "className": "rider"
+  },
+  "400400": {
+    "name": "阿斯托尔福",
+    "collectionNo": 94,
+    "className": "rider"
+  },
+  "400600": {
+    "name": "乔尔乔斯",
+    "collectionNo": 24,
+    "className": "rider"
+  },
+  "400800": {
+    "name": "爱迪·萨奇",
+    "collectionNo": 25,
+    "className": "rider"
+  },
+  "400900": {
+    "name": "安妮·伯妮＆玛莉·瑞德",
+    "collectionNo": 66,
+    "className": "rider"
+  },
+  "401100": {
+    "name": "布狄卡",
+    "collectionNo": 26,
+    "className": "rider"
+  },
+  "401200": {
+    "name": "奥斯曼狄斯",
+    "collectionNo": 118,
+    "className": "rider"
+  },
+  "401300": {
+    "name": "女王梅芙",
+    "collectionNo": 99,
+    "className": "rider"
+  },
+  "401400": {
+    "name": "牛若丸",
+    "collectionNo": 27,
+    "className": "rider"
+  },
+  "401500": {
+    "name": "亚历山大",
+    "collectionNo": 28,
+    "className": "rider"
+  },
+  "401700": {
+    "name": "玛丽·安托瓦内特",
+    "collectionNo": 29,
+    "className": "rider"
+  },
+  "401800": {
+    "name": "魁札尔·科亚特尔",
+    "collectionNo": 144,
+    "className": "rider"
+  },
+  "401900": {
+    "name": "玛尔达",
+    "collectionNo": 30,
+    "className": "rider"
+  },
+  "402200": {
+    "name": "阿尔托莉雅·潘德拉贡〔圣诞Alter〕",
+    "collectionNo": 73,
+    "className": "rider"
+  },
+  "402300": {
+    "name": "坂田金时",
+    "collectionNo": 115,
+    "className": "rider"
+  },
+  "402400": {
+    "name": "莫德雷德",
+    "collectionNo": 132,
+    "className": "rider"
+  },
+  "402500": {
+    "name": "克里斯托弗·哥伦布",
+    "collectionNo": 172,
+    "className": "rider"
+  },
+  "402600": {
+    "name": "伊什塔尔",
+    "collectionNo": 182,
+    "className": "rider"
+  },
+  "402700": {
+    "name": "阿尔托莉雅·潘德拉贡〔Alter〕",
+    "collectionNo": 179,
+    "className": "rider"
+  },
+  "402800": {
+    "name": "伊凡雷帝",
+    "collectionNo": 205,
+    "className": "rider"
+  },
+  "402900": {
+    "name": "阿喀琉斯",
+    "collectionNo": 206,
+    "className": "rider"
+  },
+  "403000": {
+    "name": "坂本龙马",
+    "collectionNo": 211,
+    "className": "rider"
+  },
+  "403100": {
+    "name": "丹驹",
+    "collectionNo": 231,
+    "className": "rider"
+  },
+  "403200": {
+    "name": "莱妮丝",
+    "collectionNo": 241,
+    "className": "rider"
+  },
+  "403400": {
+    "name": "巴沙洛缪·罗伯茨",
+    "collectionNo": 257,
+    "className": "rider"
+  },
+  "403500": {
+    "name": "莱昂纳多·达·芬奇",
+    "collectionNo": 253,
+    "className": "rider"
+  },
+  "403600": {
+    "name": "卡米拉",
+    "collectionNo": 263,
+    "className": "rider"
+  },
+  "403700": {
+    "name": "尼莫",
+    "collectionNo": 296,
+    "className": "rider"
+  },
+  "403800": {
+    "name": "奥德修斯",
+    "collectionNo": 277,
+    "className": "rider"
+  },
+  "403900": {
+    "name": "曼迪卡尔多",
+    "collectionNo": 273,
+    "className": "rider"
+  },
+  "404000": {
+    "name": "欧罗巴",
+    "collectionNo": 274,
+    "className": "rider"
+  },
+  "404100": {
+    "name": "紫式部",
+    "collectionNo": 291,
+    "className": "rider"
+  },
+  "404200": {
+    "name": "哈贝特洛特",
+    "collectionNo": 315,
+    "className": "rider"
+  },
+  "404300": {
+    "name": "太公望",
+    "collectionNo": 331,
+    "className": "rider"
+  },
+  "404400": {
+    "name": "多布雷尼亚·尼基季奇",
+    "collectionNo": 332,
+    "className": "rider"
+  },
+  "404500": {
+    "name": "凯妮斯",
+    "collectionNo": 322,
+    "className": "rider"
+  },
+  "404600": {
+    "name": "伊丽莎白·巴托里〔灰姑娘〕",
+    "collectionNo": 326,
+    "className": "rider"
+  },
+  "404700": {
+    "name": "君士坦丁十一世",
+    "collectionNo": 342,
+    "className": "rider"
+  },
+  "404800": {
+    "name": "曲亭马琴",
+    "collectionNo": 349,
+    "className": "rider"
+  },
+  "404900": {
+    "name": "黄飞虎",
+    "collectionNo": 366,
+    "className": "rider"
+  },
+  "405000": {
+    "name": "铃鹿御前〔暑假〕",
+    "collectionNo": 387,
+    "className": "rider"
+  },
+  "405200": {
+    "name": "武田晴信",
+    "collectionNo": 397,
+    "className": "rider"
+  },
+  "405300": {
+    "name": "尼莫〔圣诞〕",
+    "collectionNo": 401,
+    "className": "rider"
+  },
+  "405500": {
+    "name": "安德洛墨达",
+    "collectionNo": 406,
+    "className": "rider"
+  },
+  "500100": {
+    "name": "美狄亚",
+    "collectionNo": 31,
+    "className": "caster"
+  },
+  "500200": {
+    "name": "吉尔·德·雷",
+    "collectionNo": 32,
+    "className": "caster"
+  },
+  "500300": {
+    "name": "玉藻前",
+    "collectionNo": 62,
+    "className": "caster"
+  },
+  "500400": {
+    "name": "童谣",
+    "collectionNo": 74,
+    "className": "caster"
+  },
+  "500500": {
+    "name": "汉斯·克里斯蒂安·安徒生",
+    "collectionNo": 33,
+    "className": "caster"
+  },
+  "500700": {
+    "name": "威廉·莎士比亚",
+    "collectionNo": 34,
+    "className": "caster"
+  },
+  "500800": {
+    "name": "梅林",
+    "collectionNo": 150,
+    "className": "caster"
+  },
+  "500900": {
+    "name": "莱昂纳多·达·芬奇",
+    "collectionNo": 127,
+    "className": "caster"
+  },
+  "501000": {
+    "name": "冯·霍恩海姆·帕拉塞尔苏斯",
+    "collectionNo": 79,
+    "className": "caster"
+  },
+  "501100": {
+    "name": "查尔斯·巴贝奇",
+    "collectionNo": 80,
+    "className": "caster"
+  },
+  "501200": {
+    "name": "尼托克丽丝",
+    "collectionNo": 120,
+    "className": "caster"
+  },
+  "501400": {
+    "name": "梅菲斯托费勒斯",
+    "collectionNo": 35,
+    "className": "caster"
+  },
+  "501500": {
+    "name": "沃尔夫冈·阿马德乌斯·莫扎特",
+    "collectionNo": 36,
+    "className": "caster"
+  },
+  "501600": {
+    "name": "杰罗尼莫",
+    "collectionNo": 104,
+    "className": "caster"
+  },
+  "501700": {
+    "name": "美狄亚〔Lily〕",
+    "collectionNo": 67,
+    "className": "caster"
+  },
+  "501800": {
+    "name": "吉尔伽美什",
+    "collectionNo": 145,
+    "className": "caster"
+  },
+  "501900": {
+    "name": "诸葛孔明〔埃尔梅罗Ⅱ世〕",
+    "collectionNo": 37,
+    "className": "caster"
+  },
+  "502000": {
+    "name": "爱丽丝菲尔〔天之衣〕",
+    "collectionNo": 111,
+    "className": "caster"
+  },
+  "502100": {
+    "name": "库·丘林",
+    "collectionNo": 38,
+    "className": "caster"
+  },
+  "502200": {
+    "name": "西行者",
+    "collectionNo": 113,
+    "className": "caster"
+  },
+  "502300": {
+    "name": "海伦娜·布拉瓦茨基",
+    "collectionNo": 100,
+    "className": "caster"
+  },
+  "502500": {
+    "name": "托马斯·爱迪生",
+    "collectionNo": 103,
+    "className": "caster"
+  },
+  "502600": {
+    "name": "伊丽莎白·巴托里〔万圣节〕",
+    "collectionNo": 61,
+    "className": "caster"
+  },
+  "502700": {
+    "name": "玛丽·安托瓦内特",
+    "collectionNo": 130,
+    "className": "caster"
+  },
+  "502800": {
+    "name": "伊莉雅丝菲尔·冯·爱因兹贝伦",
+    "collectionNo": 136,
+    "className": "caster"
+  },
+  "503000": {
+    "name": "山鲁佐德",
+    "collectionNo": 169,
+    "className": "caster"
+  },
+  "503200": {
+    "name": "尼禄·克劳狄乌斯",
+    "collectionNo": 175,
+    "className": "caster"
+  },
+  "503300": {
+    "name": "喀耳刻",
+    "collectionNo": 192,
+    "className": "caster"
+  },
+  "503400": {
+    "name": "示巴女王",
+    "collectionNo": 194,
+    "className": "caster"
+  },
+  "503500": {
+    "name": "阿纳斯塔西娅",
+    "collectionNo": 201,
+    "className": "caster"
+  },
+  "503600": {
+    "name": "阿维斯布隆",
+    "collectionNo": 203,
+    "className": "caster"
+  },
+  "503800": {
+    "name": "齐格",
+    "collectionNo": 208,
+    "className": "caster"
+  },
+  "503900": {
+    "name": "斯卡哈·斯卡蒂",
+    "collectionNo": 215,
+    "className": "caster"
+  },
+  "504000": {
+    "name": "酒吞童子",
+    "collectionNo": 225,
+    "className": "caster"
+  },
+  "504100": {
+    "name": "美游·艾德费尔特",
+    "collectionNo": 236,
+    "className": "caster"
+  },
+  "504200": {
+    "name": "紫式部",
+    "collectionNo": 237,
+    "className": "caster"
+  },
+  "504300": {
+    "name": "阿斯克勒庇俄斯",
+    "collectionNo": 249,
+    "className": "caster"
+  },
+  "504400": {
+    "name": "陈宫",
+    "collectionNo": 258,
+    "className": "caster"
+  },
+  "504500": {
+    "name": "阿尔托莉雅·卡斯特",
+    "collectionNo": 284,
+    "className": "caster"
+  },
+  "504600": {
+    "name": "克莱恩小姐",
+    "collectionNo": 307,
+    "className": "caster"
+  },
+  "504700": {
+    "name": "大黑天",
+    "collectionNo": 340,
+    "className": "caster"
+  },
+  "504800": {
+    "name": "夏洛特·科黛",
+    "collectionNo": 319,
+    "className": "caster"
+  },
+  "504900": {
+    "name": "出云阿国",
+    "collectionNo": 327,
+    "className": "caster"
+  },
+  "505000": {
+    "name": "玛尔达〔圣诞〕",
+    "collectionNo": 330,
+    "className": "caster"
+  },
+  "505100": {
+    "name": "张角",
+    "collectionNo": 348,
+    "className": "caster"
+  },
+  "505200": {
+    "name": "周照",
+    "collectionNo": 358,
+    "className": "caster"
+  },
+  "505300": {
+    "name": "雨之魔女梣",
+    "collectionNo": 385,
+    "className": "caster"
+  },
+  "505400": {
+    "name": "由井正雪",
+    "collectionNo": 404,
+    "className": "caster"
+  },
+  "505500": {
+    "name": "久远寺有珠",
+    "collectionNo": 415,
+    "className": "caster"
+  },
+  "505800": {
+    "name": "小野小町",
+    "collectionNo": 435,
+    "className": "caster"
+  },
+  "600100": {
+    "name": "佐佐木小次郎",
+    "collectionNo": 39,
+    "className": "assassin"
+  },
+  "600200": {
+    "name": "咒腕哈桑",
+    "collectionNo": 40,
+    "className": "assassin"
+  },
+  "600300": {
+    "name": "百貌哈桑",
+    "collectionNo": 110,
+    "className": "assassin"
+  },
+  "600500": {
+    "name": "雾都弃子",
+    "collectionNo": 75,
+    "className": "assassin"
+  },
+  "600700": {
+    "name": "亨利·杰基尔＆海德",
+    "collectionNo": 81,
+    "className": "assassin"
+  },
+  "600800": {
+    "name": "克娄巴特拉",
+    "collectionNo": 139,
+    "className": "assassin"
+  },
+  "600900": {
+    "name": "静谧哈桑",
+    "collectionNo": 124,
+    "className": "assassin"
+  },
+  "601000": {
+    "name": "斯忒诺",
+    "collectionNo": 41,
+    "className": "assassin"
+  },
+  "601100": {
+    "name": "匕见",
+    "collectionNo": 42,
+    "className": "assassin"
+  },
+  "601200": {
+    "name": "夏尔·亨利·桑松",
+    "collectionNo": 43,
+    "className": "assassin"
+  },
+  "601300": {
+    "name": "剧院魅影",
+    "collectionNo": 44,
+    "className": "assassin"
+  },
+  "601400": {
+    "name": "玛塔·哈丽",
+    "collectionNo": 45,
+    "className": "assassin"
+  },
+  "601500": {
+    "name": "卫宫〔Assassin〕",
+    "collectionNo": 109,
+    "className": "assassin"
+  },
+  "601700": {
+    "name": "卡米拉",
+    "collectionNo": 46,
+    "className": "assassin"
+  },
+  "601800": {
+    "name": "谜之女主角X",
+    "collectionNo": 86,
+    "className": "assassin"
+  },
+  "601900": {
+    "name": "风魔小太郎",
+    "collectionNo": 117,
+    "className": "assassin"
+  },
+  "602100": {
+    "name": "酒吞童子",
+    "collectionNo": 112,
+    "className": "assassin"
+  },
+  "602300": {
+    "name": "两仪式",
+    "collectionNo": 92,
+    "className": "assassin"
+  },
+  "602400": {
+    "name": "斯卡哈",
+    "collectionNo": 133,
+    "className": "assassin"
+  },
+  "602500": {
+    "name": "“山中老人”",
+    "collectionNo": 154,
+    "className": "assassin"
+  },
+  "602600": {
+    "name": "燕青",
+    "collectionNo": 159,
+    "className": "assassin"
+  },
+  "602700": {
+    "name": "周照",
+    "collectionNo": 170,
+    "className": "assassin"
+  },
+  "602800": {
+    "name": "尼托克丽丝",
+    "collectionNo": 177,
+    "className": "assassin"
+  },
+  "602900": {
+    "name": "望月千代女",
+    "collectionNo": 185,
+    "className": "assassin"
+  },
+  "603000": {
+    "name": "加藤段藏",
+    "collectionNo": 188,
+    "className": "assassin"
+  },
+  "603100": {
+    "name": "刑部姬",
+    "collectionNo": 189,
+    "className": "assassin"
+  },
+  "603200": {
+    "name": "塞弥拉弥斯",
+    "collectionNo": 199,
+    "className": "assassin"
+  },
+  "603300": {
+    "name": "冈田以藏",
+    "collectionNo": 210,
+    "className": "assassin"
+  },
+  "603400": {
+    "name": "牛若丸",
+    "collectionNo": 218,
+    "className": "assassin"
+  },
+  "603500": {
+    "name": "雏罂",
+    "collectionNo": 230,
+    "className": "assassin"
+  },
+  "603600": {
+    "name": "李书文",
+    "collectionNo": 235,
+    "className": "assassin"
+  },
+  "603700": {
+    "name": "迦摩",
+    "collectionNo": 239,
+    "className": "assassin"
+  },
+  "603800": {
+    "name": "夏洛特·科黛",
+    "collectionNo": 259,
+    "className": "assassin"
+  },
+  "603900": {
+    "name": "格蕾",
+    "collectionNo": 243,
+    "className": "assassin"
+  },
+  "604000": {
+    "name": "冲田总司",
+    "collectionNo": 267,
+    "className": "assassin"
+  },
+  "604100": {
+    "name": "鬼一法眼",
+    "collectionNo": 304,
+    "className": "assassin"
+  },
+  "604200": {
+    "name": "光之高扬斯卡娅",
+    "collectionNo": 314,
+    "className": "assassin"
+  },
+  "604300": {
+    "name": "奥特琳德",
+    "collectionNo": 361,
+    "className": "assassin"
+  },
+  "604400": {
+    "name": "希露德",
+    "collectionNo": 360,
+    "className": "assassin"
+  },
+  "604500": {
+    "name": "斯露德",
+    "collectionNo": 359,
+    "className": "assassin"
+  },
+  "604600": {
+    "name": "吾绰",
+    "collectionNo": 365,
+    "className": "assassin"
+  },
+  "604700": {
+    "name": "特斯卡特利波卡",
+    "collectionNo": 371,
+    "className": "assassin"
+  },
+  "604800": {
+    "name": "洛库斯塔",
+    "collectionNo": 378,
+    "className": "assassin"
+  },
+  "604900": {
+    "name": "果心居士",
+    "collectionNo": 380,
+    "className": "assassin"
+  },
+  "605000": {
+    "name": "耀星哈桑",
+    "collectionNo": 408,
+    "className": "assassin"
+  },
+  "700100": {
+    "name": "赫拉克勒斯",
+    "collectionNo": 47,
+    "className": "berserker"
+  },
+  "700200": {
+    "name": "兰斯洛特",
+    "collectionNo": 48,
+    "className": "berserker"
+  },
+  "700300": {
+    "name": "虎狼",
+    "collectionNo": 49,
+    "className": "berserker"
+  },
+  "700400": {
+    "name": "弗兰肯斯坦",
+    "collectionNo": 82,
+    "className": "berserker"
+  },
+  "700500": {
+    "name": "斯巴达克斯",
+    "collectionNo": 50,
+    "className": "berserker"
+  },
+  "700600": {
+    "name": "坂田金时",
+    "collectionNo": 51,
+    "className": "berserker"
+  },
+  "700700": {
+    "name": "弗拉德三世",
+    "collectionNo": 52,
+    "className": "berserker"
+  },
+  "700800": {
+    "name": "贝奥武夫",
+    "collectionNo": 89,
+    "className": "berserker"
+  },
+  "700900": {
+    "name": "阿斯忒里俄斯",
+    "collectionNo": 53,
+    "className": "berserker"
+  },
+  "701000": {
+    "name": "卡利古拉",
+    "collectionNo": 54,
+    "className": "berserker"
+  },
+  "701100": {
+    "name": "大流士三世",
+    "collectionNo": 55,
+    "className": "berserker"
+  },
+  "701300": {
+    "name": "清姬",
+    "collectionNo": 56,
+    "className": "berserker"
+  },
+  "701400": {
+    "name": "南丁格尔",
+    "collectionNo": 97,
+    "className": "berserker"
+  },
+  "701500": {
+    "name": "血斧埃里克",
+    "collectionNo": 57,
+    "className": "berserker"
+  },
+  "701600": {
+    "name": "玉藻猫",
+    "collectionNo": 58,
+    "className": "berserker"
+  },
+  "702000": {
+    "name": "库·丘林〔Alter〕",
+    "collectionNo": 98,
+    "className": "berserker"
+  },
+  "702200": {
+    "name": "茨木童子",
+    "collectionNo": 116,
+    "className": "berserker"
+  },
+  "702300": {
+    "name": "源赖光",
+    "collectionNo": 114,
+    "className": "berserker"
+  },
+  "702400": {
+    "name": "谜之女主角X〔Alter〕",
+    "collectionNo": 155,
+    "className": "berserker"
+  },
+  "702500": {
+    "name": "土方岁三",
+    "collectionNo": 161,
+    "className": "berserker"
+  },
+  "702600": {
+    "name": "茶茶",
+    "collectionNo": 162,
+    "className": "berserker"
+  },
+  "702700": {
+    "name": "彭忒西勒亚",
+    "collectionNo": 171,
+    "className": "berserker"
+  },
+  "702800": {
+    "name": "保罗·班扬",
+    "collectionNo": 174,
+    "className": "berserker"
+  },
+  "702900": {
+    "name": "织田信长",
+    "collectionNo": 178,
+    "className": "berserker"
+  },
+  "703000": {
+    "name": "阿塔兰忒〔Alter〕",
+    "collectionNo": 202,
+    "className": "berserker"
+  },
+  "703100": {
+    "name": "贞德〔Alter〕",
+    "collectionNo": 219,
+    "className": "berserker"
+  },
+  "703200": {
+    "name": "重瞳",
+    "collectionNo": 226,
+    "className": "berserker"
+  },
+  "703300": {
+    "name": "阿周那〔Alter〕",
+    "collectionNo": 247,
+    "className": "berserker"
+  },
+  "703400": {
+    "name": "莎乐美",
+    "collectionNo": 260,
+    "className": "berserker"
+  },
+  "703500": {
+    "name": "森长可",
+    "collectionNo": 251,
+    "className": "berserker"
+  },
+  "703600": {
+    "name": "宫本武藏",
+    "collectionNo": 261,
+    "className": "berserker"
+  },
+  "703700": {
+    "name": "鬼女红叶",
+    "collectionNo": 282,
+    "className": "berserker"
+  },
+  "703800": {
+    "name": "布伦希尔德",
+    "collectionNo": 287,
+    "className": "berserker"
+  },
+  "703900": {
+    "name": "伽拉忒亚",
+    "collectionNo": 306,
+    "className": "berserker"
+  },
+  "704000": {
+    "name": "摩根",
+    "collectionNo": 309,
+    "className": "berserker"
+  },
+  "704100": {
+    "name": "清少纳言",
+    "collectionNo": 323,
+    "className": "berserker"
+  },
+  "704200": {
+    "name": "克里姆希尔德",
+    "collectionNo": 345,
+    "className": "berserker"
+  },
+  "704300": {
+    "name": "伊吹童子",
+    "collectionNo": 355,
+    "className": "berserker"
+  },
+  "704400": {
+    "name": "千利休",
+    "collectionNo": 362,
+    "className": "berserker"
+  },
+  "704600": {
+    "name": "难敌",
+    "collectionNo": 382,
+    "className": "berserker"
+  },
+  "704700": {
+    "name": "阿尔托莉雅·卡斯特",
+    "collectionNo": 386,
+    "className": "berserker"
+  },
+  "704800": {
+    "name": "永仓新八",
+    "collectionNo": 398,
+    "className": "berserker"
+  },
+  "704900": {
+    "name": "静希草十郎",
+    "collectionNo": 414,
+    "className": "berserker"
+  },
+  "705000": {
+    "name": "娄希",
+    "collectionNo": 429,
+    "className": "berserker"
+  },
+  "705100": {
+    "name": "莉莉丝",
+    "collectionNo": 440,
+    "className": "berserker"
+  },
+  "800100": {
+    "name": "玛修·基列莱特",
+    "collectionNo": 1,
+    "className": "shielder"
+  },
+  "900100": {
+    "name": "贞德",
+    "collectionNo": 59,
+    "className": "ruler"
+  },
+  "900200": {
+    "name": "天草四郎",
+    "collectionNo": 93,
+    "className": "ruler"
+  },
+  "900400": {
+    "name": "玛尔达",
+    "collectionNo": 135,
+    "className": "ruler"
+  },
+  "900500": {
+    "name": "夏洛克·福尔摩斯",
+    "collectionNo": 173,
+    "className": "ruler"
+  },
+  "900600": {
+    "name": "祖政",
+    "collectionNo": 229,
+    "className": "ruler"
+  },
+  "900700": {
+    "name": "魁札尔·科亚特尔〔桑巴／圣诞〕",
+    "collectionNo": 233,
+    "className": "ruler"
+  },
+  "900800": {
+    "name": "阿斯特赖亚",
+    "collectionNo": 242,
+    "className": "ruler"
+  },
+  "900900": {
+    "name": "阿尔托莉雅·潘德拉贡",
+    "collectionNo": 265,
+    "className": "ruler"
+  },
+  "901000": {
+    "name": "卑弥呼",
+    "collectionNo": 292,
+    "className": "ruler"
+  },
+  "901100": {
+    "name": "阿摩耳〔卡莲〕",
+    "collectionNo": 305,
+    "className": "ruler"
+  },
+  "901200": {
+    "name": "莱昂纳多·达·芬奇",
+    "collectionNo": 320,
+    "className": "ruler"
+  },
+  "901300": {
+    "name": "詹姆斯·莫里亚蒂",
+    "collectionNo": 346,
+    "className": "ruler"
+  },
+  "901400": {
+    "name": "斯卡哈·斯卡蒂",
+    "collectionNo": 357,
+    "className": "ruler"
+  },
+  "901500": {
+    "name": "壹与",
+    "collectionNo": 364,
+    "className": "ruler"
+  },
+  "901600": {
+    "name": "女教皇若安",
+    "collectionNo": 374,
+    "className": "ruler"
+  },
+  "901700": {
+    "name": "梅柳齐娜",
+    "collectionNo": 390,
+    "className": "ruler"
+  },
+  "901800": {
+    "name": "上杉谦信",
+    "collectionNo": 400,
+    "className": "ruler"
+  },
+  "901900": {
+    "name": "梅塔特隆·贞德",
+    "collectionNo": 438,
+    "className": "ruler"
+  },
+  "9935400": {
+    "name": "提亚马特",
+    "collectionNo": 149,
+    "className": "beastII"
+  },
+  "9935500": {
+    "name": "盖提亚",
+    "collectionNo": 151,
+    "className": "beastI"
+  },
+  "9935530": {
+    "name": "所罗门",
+    "collectionNo": 152,
+    "className": "caster"
+  },
+  "9939130": {
+    "name": "BeastⅢ／R",
+    "collectionNo": 168,
+    "className": "beastIIIR"
+  },
+  "9941730": {
+    "name": "BeastⅢ／L",
+    "collectionNo": 240,
+    "className": "beastIIIL"
+  },
+  "9943610": {
+    "name": "Beast Ⅳ",
+    "collectionNo": 333,
+    "className": "beastIV"
+  },
+  "9945590": {
+    "name": "Ｅ－火玛丽",
+    "collectionNo": 411,
+    "className": "uOlgaMarieFlareCollection"
+  },
+  "9945600": {
+    "name": "Ｅ－水玛丽",
+    "collectionNo": 412,
+    "className": "uOlgaMarieAquaCollection"
+  },
+  "9946280": {
+    "name": "Ｅ－宏玛丽",
+    "collectionNo": 436,
+    "className": "uOlgaMarieGrandCollection"
+  }
+}
