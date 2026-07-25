@@ -12,6 +12,9 @@ from fgo_api_types.nice import (
 
 WIKI = os.path.expanduser("~/fgo-wiki")
 
+# ── Footer toggle ──
+DISABLE_FOOTER = False  # False = 显示版权页脚
+
 # ── Item DB ──
 ITEMS_DB_PATH = os.path.join(WIKI, "entities/items/active_items.json")
 ITEMS_MAP = {}
@@ -27,6 +30,16 @@ if os.path.exists(JP_ITEM_PATH):
     with open(JP_ITEM_PATH) as f:
         for it in json.load(f):
             JP_ITEM_IDS.add(it["id"])
+
+# Load buff calculation rules
+BUFF_CALC = {}
+BUFF_CALC_PATH = os.path.join(WIKI, "data/buff_calc.json")
+if os.path.exists(BUFF_CALC_PATH):
+    try:
+        with open(BUFF_CALC_PATH, encoding="utf-8") as f:
+            BUFF_CALC = json.load(f)
+    except:
+        pass
 
 CARD_MAP = {"1": "Arts", "2": "Buster", "3": "Quick", "4": "Extra", "10": "Beast"}
 CARD_ICONS = {
@@ -240,40 +253,131 @@ SHARED_CLASS_JP = {
 }
 
 
-def get_scale_div(func_type):
-    """Return divisor for percentage conversion. gainNp uses /100, most buffs use /10, stars raw."""
-    if func_type == NiceFuncType.gainStar:
-        return 0  # no conversion
-    if func_type == NiceFuncType.gainNp:
-        return 100
-    return 10  # default: tenths-of-percent
+def get_buff_rule(fn):
+    """Get (field, divisor, unit) for a function from buff_calc.json or funcType fallback."""
+    buffs = fn.get("buffs", [])
+    if buffs:
+        bid = str(buffs[0].get("id", ""))
+        if bid in BUFF_CALC:
+            return (BUFF_CALC[bid]["field"], BUFF_CALC[bid]["divisor"], BUFF_CALC[bid].get("unit", "%"))
+    ft = fn.get("funcType", "")
+    if ft in (NiceFuncType.gainNp, NiceFuncType.lossNp):
+        return ("Value", 100, "%")
+    if ft in (NiceFuncType.delayNpturn, NiceFuncType.hastenNpturn):
+        return ("Value", 0, "回合")
+    if ft in (NiceFuncType.gainStar,):
+        return ("Value", 0, "颗")
+    return ("Value", 10, "%")
 
 
-def format_val(v, func_type=""):
-    """Format svals Value based on funcType scale."""
-    if v is None:
-        return None
-    if isinstance(v, str):
-        try:
-            v = int(v)
-        except ValueError:
-            return str(v)
-    div = get_scale_div(func_type)
-    if div == 0:
+def format_func_val(fn, v):
+    """Format a single value from a function using buff_calc rules."""
+    field, divisor, unit = get_buff_rule(fn)
+    if divisor == 0:
         return str(v)
-    if div == 100:
-        result = v / 100
-        if result == int(result):
-            return f"{int(result)}%"
-        return f"{result:.1f}%"
-    # div == 10: buff percentages (tenths-of-percent)
-    # Skip values < 5 for addState/addStateShort/hastenNpturn — these are flags, not percentages
-    if v < 5 and (func_type in (NiceFuncType.addStateShort, NiceFuncType.addState) or func_type == NiceFuncType.hastenNpturn):
-        return None  # caller should skip
-    result = v / 10
+    result = v / divisor
     if result == int(result):
         return f"{int(result)}%"
     return f"{result:.1f}%"
+
+
+def get_func_values(fn, next_fn=None):
+    """Get display-relevant values from a function. 
+    If fn has Value2, the actual value is in next_fn's Value.
+    Returns (values_list, is_fixed, formatter)."""
+    field, divisor, unit = get_buff_rule(fn)
+    svals = fn.get("svals", [])
+    
+    # Check for fixed_display override in buff_calc
+    buffs = fn.get("buffs", [])
+    if buffs:
+        bid = str(buffs[0].get("id", ""))
+        if bid in BUFF_CALC and BUFF_CALC[bid].get("fixed_display"):
+            return [BUFF_CALC[bid]["fixed_display"]], True, lambda v: str(v)
+    
+    # Check if this function is linked to next function (buff_calc has_link flag)
+    has_link = False
+    formula = None
+    buffs = fn.get("buffs", [])
+    if buffs:
+        bid = str(buffs[0].get("id", ""))
+        if bid in BUFF_CALC and BUFF_CALC[bid].get("has_link"):
+            has_link = True
+            formula = BUFF_CALC[bid].get("formula")
+    
+    if has_link and next_fn is not None:
+        # Read value from next function
+        next_svals = next_fn.get("svals", [])
+        vs = [int(sv.get("Value", 0)) for sv in next_svals]
+        while len(vs) < 10: vs.append(vs[-1] if vs else 0)
+        vs = vs[:10]
+        # Get Value2 from current function for formula
+        cur_v2s = [int(sv.get("Value2", 0)) for sv in fn.get("svals", [])]
+        while len(cur_v2s) < 10: cur_v2s.append(cur_v2s[-1] if cur_v2s else 0)
+        cur_v2s = cur_v2s[:10]
+        
+        if formula and "step" in formula:
+            # Variable formula: base + (v2-1) * step
+            result = [formula["base"] + (v2 - 1) * formula["step"] for v2 in cur_v2s]
+        elif formula and "mult" in formula:
+            # Fixed multiplier: v2 * mult
+            result = [v * formula["mult"] for v in cur_v2s]
+        else:
+            # Default: v2 * 10 = %
+            result = [v * 10 for v in vs]
+        
+        is_fixed = len(set(round(r, 2) for r in result)) <= 1
+        fmt = lambda v: f"{v:.0f}%" if v == int(v) else f"{v:.1f}%"
+        return result, is_fixed, fmt
+    
+    # Get formula for non-has_link buffs too
+    if formula is None and buffs:
+        bid = str(buffs[0].get("id", ""))
+        if bid in BUFF_CALC:
+            formula = BUFF_CALC[bid].get("formula")
+    
+    if field == "UseRate":
+        vs = [int(sv.get("UseRate", 0)) for sv in svals if sv.get("UseRate") is not None]
+    elif field == "Value2":
+        vs = [int(sv.get("Value2", 0)) for sv in svals]
+    else:
+        vs = [int(sv.get("Value", 0)) for sv in svals]
+    while len(vs) < 10:
+        vs.append(vs[-1] if vs else 0)
+    vs = vs[:10]
+    
+    # Apply formula if present (for non-has_link buffs like 1640, 1641)
+    if formula:
+        if "step" in formula:
+            # FGO standard: step for Lv.1-9, extra bump at Lv.10
+            vs = [formula["base"] + (v - 1) * formula["step"] for v in vs]
+            if "last_extra" in formula and len(vs) >= 10:
+                vs[9] += formula["last_extra"]
+            elif "last_val" in formula and len(vs) >= 10:
+                vs[9] = formula["last_val"]
+        elif "mult" in formula:
+            vs = [v * formula["mult"] for v in vs]
+        is_fixed = len(set(round(v, 2) for v in vs)) <= 1
+        fmt = lambda v: f"{v:.0f}%" if v == int(v) else f"{v:.1f}%"
+        return vs, is_fixed, fmt
+    
+    # Skip very large values (>50000, state references) 
+    if all(v > 50000 for v in vs):
+        return [], True, lambda v: ""
+    # Values of 0 or 1 for evasion/dodge/guts are flags, not percentages (only for Value field, not Value2)
+    if all(v < 5 for v in vs) and fn.get("funcType","") not in (NiceFuncType.delayNpturn,):
+        # Check if this is a Value2-based buff (like attack-trigger NP gain)
+        buffs = fn.get("buffs", [])
+        is_value2 = False
+        if buffs:
+            bid = str(buffs[0].get("id", ""))
+            if bid in BUFF_CALC and BUFF_CALC[bid].get("field") == "Value2":
+                is_value2 = True
+        if not is_value2:
+            return [], True, lambda v: ""
+    if divisor == 0:
+        return vs, len(set(vs)) <= 1, lambda v: str(v)
+    return [v/divisor for v in vs], len(set(vs)) <= 1, lambda v: f"{v:.0f}%" if v == int(v) else f"{v:.1f}%"
 
 
 def format_rate(v):
@@ -362,80 +466,140 @@ def format_cool_down(cd):
     return "→".join(transitions)
 
 
+def format_val(v, func_type=""):
+    """Backward-compat: format a value by funcType (no buff_calc)."""
+    if v is None:
+        return None
+    if isinstance(v, str):
+        try:
+            v = int(v)
+        except ValueError:
+            return str(v)
+    div = 100 if func_type in (NiceFuncType.gainNp, NiceFuncType.lossNp) else (0 if func_type == NiceFuncType.gainStar else 10)
+    if div == 0:
+        return str(v)
+    result = v / div
+    if result == int(result):
+        return f"{int(result)}%"
+    return f"{result:.1f}%"
+
+
+def get_scale_div(func_type):
+    """Backward-compat."""
+    return 100 if func_type in (NiceFuncType.gainNp, NiceFuncType.lossNp) else (0 if func_type == NiceFuncType.gainStar else 10)
+
+
+def match_func_to_segment(segment, funcs, used_indices):
+    """Match a detail segment to the best corresponding function by text similarity.
+    Uses substring match as priority, then bigram overlap as fallback."""
+    best_idx = None
+    best_score = 0
+    for fi, fn in enumerate(funcs):
+        if fi in used_indices:
+            continue
+        ft = fn.get("funcType", "")
+        if ft in (NiceFuncType.subState,):
+            continue
+        # Collect all searchable text from this function
+        texts = set()
+        for b in fn.get("buffs", []):
+            if b.get("detail"): texts.add(b["detail"])
+            if b.get("name"): texts.add(b["name"])
+        texts.add(fn.get("funcPopupText", ""))
+        texts.discard("")
+        
+        for txt in texts:
+            score = 0
+            # Strong priority: substring match
+            if txt in segment or segment in txt:
+                score = len(txt) + len(segment)  # High score for substring match
+            else:
+                # Bigram (2-char) overlap - more accurate than single chars
+                seg_bigrams = set(segment[i:i+2] for i in range(len(segment)-1))
+                txt_bigrams = set(txt[i:i+2] for i in range(len(txt)-1))
+                overlap = len(seg_bigrams & txt_bigrams)
+                # Penalize short bigrams that are common noise
+                noise = {"状态", "效果", "自身", "敌方", "单体", "全体", "付与", "回合"}
+                overlap -= len(seg_bigrams & noise & txt_bigrams)
+                score = max(0, overlap)
+            
+            if score > best_score:
+                best_score = score
+                best_idx = fi
+    return best_idx
+
+
 def format_skill_detail(sk, sk_icon=""):
-    """Format skill with per-effect descriptions and horizontal value rows."""
+    """Format skill: split detail -> match functions -> display values per segment."""
     cd = sk.get("coolDown", [])
     cd_str = f"充能时间：{format_cool_down(cd)}"
     sk_name = sk.get("name", "???")
     icon_md = f"![]({sk_icon})" if sk_icon else ""
     lines = [f"### {icon_md} {sk_name}    {cd_str}", ""]
 
-    fns = sk.get("functions", [])
-    for fn in fns:
-        ft = fn.get("funcType", "")
-        # Skip certain function types entirely
-        if ft in SKIP_FUNCTYPES:
-            continue
-        svals = fn.get("svals", [])
-        buffs = fn.get("buffs", [])
-        buff = buffs[0] if buffs else {}
-        # Skip blacklisted buff names
-        if buff.get("name", "") in SKIP_BUFFS:
-            continue
-        detail = buff.get("detail", "") or fn.get("funcPopupText", "") or fn.get("funcType", "")
-        if not detail:
-            continue
+    detail = sk.get("detail", "")
+    if not detail:
+        return "\n".join(lines)
 
-        # Split on ＆ or ＋ for multi-effect descriptions
-        sub_effects = re.split(r'[＆＋▲]', detail)
-        sub_effects = [s.strip() for s in sub_effects if s.strip()]
+    # Step 1: Split detail by ＆/＋
+    parts = [p.strip() for p in re.split(r'[＆&＋+]', detail) if p.strip()]
+    funcs = sk.get("functions", [])
+    used = set()
 
-        if not sub_effects:
-            sub_effects = [detail]
-
-        # Get numeric values
-        vals = [s.get("Value") for s in svals]
-        numeric_vals = [v for v in vals if v is not None and isinstance(v, (int, float))]
-        is_constant = len(set(numeric_vals)) <= 1
-        is_internal = numeric_vals and (numeric_vals[0] < 5 or numeric_vals[0] > 50000) if is_constant else False
-
-        # Show rate/probability
-        rates = [s.get("Rate") for s in svals]
-        rate_str = ""
-        if rates:
-            rate_first = rates[0] if rates else 1000
-            if rate_first and rate_first < 1000:
-                rate_str = f"({rate_first / 10:.0f}%概率)"
-
-        for i, se in enumerate(sub_effects):
-            prefix = rate_str + se if rate_str else se
-            lines.append(prefix)
-
-            if not numeric_vals:
-                lines.append("∅")
-            elif numeric_vals[0] > 50000:
-                lines.append("∅")
-            elif i == 0:
-                # First sub-effect shows values
-                formatted = [format_val(v, fn.get("funcType", "")) for v in numeric_vals]
-                formatted = [f for f in formatted if f is not None]
-                if formatted:
-                    if len(set(formatted)) == 1:
-                        lines.append(formatted[0])
-                    else:
-                        # 10-column markdown table
-                        cells = formatted[:10]
-                        while len(cells) < 10:
-                            cells.append("—")
-                        lines.append("")
-                        lines.append("| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |")
-                        lines.append("|---|---|---|---|---|---|---|---|---|---|")
-                        lines.append("| " + " | ".join(cells) + " |")
-            else:
-                # Subsequent sub-effects show ∅ (same values as first)
-                lines.append("∅")
-
+    for part in parts:
+        fi = match_func_to_segment(part, funcs, used)
+        if fi is None:
+            lines.append(part)
+            lines.append("—")
             lines.append("")
+            continue
+
+        used.add(fi)
+        fn = funcs[fi]
+        ft = fn.get("funcType", "")
+
+        # Check for linked function (buff_calc has_link flag)
+        skip_next = False
+        next_fn = None
+        has_link = False
+        b = fn.get("buffs", [])
+        if b:
+            bid = str(b[0].get("id", ""))
+            if bid in BUFF_CALC and BUFF_CALC[bid].get("has_link"):
+                has_link = True
+        if has_link and fi + 1 < len(funcs):
+            skip_next = True
+            next_fn = funcs[fi + 1]
+
+        # Get values
+        vals, is_fixed, formatter = get_func_values(fn, next_fn)
+        
+        # Skip if no displayable values (state refs)
+        if not vals:
+            lines.append(part)
+            lines.append("")
+            if skip_next and fi + 1 < len(funcs):
+                used.add(fi + 1)
+            continue
+
+        # Show segment text
+        lines.append(part)
+
+        if ft in (NiceFuncType.delayNpturn,):
+            lines.append(f"{int(vals[0])}")
+        elif is_fixed:
+            lines.append(f"{formatter(vals[0])}")
+        else:
+            cells = [formatter(v) for v in vals[:10]]
+            lines.append("")
+            lines.append("| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |")
+            lines.append("|---|---|---|---|---|---|---|---|---|---|")
+            lines.append("| " + " | ".join(cells) + " |")
+
+        lines.append("")
+
+        if skip_next and fi + 1 < len(funcs):
+            used.add(fi + 1)
 
     return "\n".join(lines)
 
@@ -1091,9 +1255,10 @@ def generate(data):
     h(f"- **卡池**: [[卡池/{name}]]")
     h()
 
-    h("---")
-    h()
-    h("*数据来源: [Atlas Academy API](https://api.atlasacademy.io) | 游戏素材版权归 TYPE-MOON / FGO PROJECT 所有*")
+    if not DISABLE_FOOTER:
+        h("---")
+        h()
+        h("*数据来源: [Atlas Academy API](https://api.atlasacademy.io) | 游戏素材版权归 TYPE-MOON / FGO PROJECT 所有*")
     
     return "\n".join(L)
 
