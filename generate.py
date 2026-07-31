@@ -55,7 +55,7 @@ CLASS_NAMES = {
     8: "Shielder", 9: "Ruler", 10: "Alterego",
     11: "Avenger", 23: "MoonCancer", 25: "Foreigner",
     28: "Pretender", 29: "BeastIV", 33: "Beast",
-    38: "BeastEresh",
+    38: "BeastEresh", 40: "Beast",
 }
 def get_class_icon(class_id, rarity):
     name = CLASS_NAMES.get(class_id, "Unknown")
@@ -414,6 +414,17 @@ def get_oc_values(fn, ft):
     if len(oc_vals) >= 5 and len(set(oc_vals)) > 1:
         return [format_val(v, ft) for v in oc_vals if format_val(v, ft) is not None], "value"
 
+    # Check Value2 mode (damageNpIndividualSum 特攻 OC values live in Value2 of svals1-5)
+    oc_v2 = []
+    for k in ["svals", "svals2", "svals3", "svals4", "svals5"]:
+        s = fn.get(k, [])
+        if s:
+            v2 = s[0].get("Value2")
+            if v2 is not None:
+                oc_v2.append(v2)
+    if len(oc_v2) >= 5 and len(set(oc_v2)) > 1:
+        return [format_val(v2, ft) for v2 in oc_v2 if format_val(v2, ft) is not None], "value2"
+
     # Check Rate mode (addState probability effects — 技能封印 etc.)
     oc_rates = []
     for k in ["svals", "svals2", "svals3", "svals4", "svals5"]:
@@ -541,6 +552,20 @@ def format_skill_detail(sk, sk_icon=""):
     if not detail:
         return "\n".join(lines)
 
+    # Multi-form skill (e.g. 【第一、第二再临形象时】/【第三再临形象时】):
+    # functions correspond to the current (last) form. Only process that section.
+    multi_form_marker = None
+    if "【" in detail and "再临形象" in detail:
+        markers = re.findall(r"【[^】]*再临形象[^】]*】", detail)
+        if markers:
+            last_marker = markers[-1]
+            multi_form_marker = last_marker
+            idx = detail.rfind(last_marker)
+            detail = detail[idx:]
+            detail = detail.replace(last_marker, "", 1)
+            # Reset lines, insert marker as context heading after title
+            lines = [lines[0], "", f"> {last_marker}", ""]
+
     # Step 1: Split detail by ＆/＋
     parts = [p.strip() for p in re.split(r'[＆&＋+]', detail) if p.strip()]
     funcs = sk.get("functions", [])
@@ -549,6 +574,7 @@ def format_skill_detail(sk, sk_icon=""):
     for part in parts:
         fi = match_func_to_segment(part, funcs, used)
         if fi is None:
+            # Multi-form: skip unmatched (other-form) segments silently
             lines.append(part)
             lines.append("—")
             lines.append("")
@@ -666,7 +692,9 @@ def format_np_new(np_data, is_current=False):
         has_oc = oc_mode not in ("none", "fixed") and len(oc_values) >= 5
 
         eff_desc = effects_clean[fi] if fi < len(effects_clean) else (buff_name or buff_det or ft)
-        is_damage = ft in ("damageNp", "damageNpIndividual", "damageNpPierce")
+        # Strip OC tag from base damage description (it belongs to the OC row)
+        eff_desc = re.sub(r"<过量充能时特攻威力提升>", "", eff_desc).strip()
+        is_damage = ft in ("damageNp", "damageNpIndividual", "damageNpPierce", "damageNpIndividualSum")
         handle_tokou = (tokou_target and is_damage and fi == tokou_effect_idx)
 
         if handle_tokou:
