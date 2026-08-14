@@ -464,6 +464,58 @@ def get_current_skills(skills):
     return result
 
 
+def get_skill_modules(skills):
+    """Detect multi-module servants (双模组: 多套技能组).
+
+    判断逻辑: 同 num 存在多个不同 priority 版本，且所有 num 都有相同数量的
+    版本（例如 num1/2/3 各有 priority=1 和 priority=2 两套）→ 多模组。
+    返回 (is_multi, modules)：
+      - is_multi=True: modules 为 [{priority, skills:[num1..numN]}, ...] 按 priority 升序
+      - is_multi=False: modules 为空，调用方走原 get_current_skills 逻辑。
+    注意: 强化前后(某单一 num 有旧版本)不属于多模组——只有全部 num 版本数一致才算。
+    """
+    by_num = defaultdict(list)
+    for sk in skills:
+        by_num[sk.get("num", 0)].append(sk)
+    nums = sorted(by_num.keys())
+    if not nums:
+        return False, []
+    counts = {len(by_num[n]) for n in nums}
+    # 所有 num 都有 ≥2 个版本且数量完全一致 → 多模组
+    if len(counts) == 1 and next(iter(counts)) >= 2:
+        nver = next(iter(counts))
+        modules = []
+        for v in range(nver):
+            mod_skills = []
+            for n in nums:
+                # 该 num 中第 v 优先级版本
+                vers = sorted(by_num[n], key=lambda s: s.get("priority", 0))
+                mod_skills.append(vers[v])
+            modules.append({"priority": v + 1, "skills": mod_skills})
+        return True, modules
+    return False, []
+
+
+def get_np_modules(nps):
+    """Detect multi-module NP servants (双宝具模组: 多套宝具, num 不同).
+
+    普通强化宝具: 所有宝具 num 相同（均为 1），仅 priority 不同（如 101/102
+    表示强化前/强化后）→ 单模组，走原逻辑。
+    双宝具模组: 存在多个不同 num（如玉兔 num=1 + num=98）→ 多模组，
+    每个 num 独立渲染为「宝具模组 N」。
+    返回 (is_multi, modules)：
+      - is_multi=True: modules 为 [{num, np}, ...] 按 num 升序
+      - is_multi=False: modules 为空，调用方走原 priority 排序逻辑。
+    """
+    if not nps:
+        return False, []
+    nums = {np.get("num", 1) for np in nps}
+    if len(nums) > 1:
+        modules = sorted(nps, key=lambda x: (x.get("num", 0), x.get("priority", 0)))
+        return True, modules
+    return False, []
+
+
 def format_cool_down(cd):
     """Format cooldown as 7→6→5 transitions."""
     if not cd:
@@ -868,6 +920,12 @@ def generate(data):
     aliases = data.get("_aliases", [])
     class_name = svt.className
     class_id = svt.classId
+    # 特殊职阶专名(如 unBeastOlgaMarie)映射为标准职阶名；标准职阶名保持不变
+    STANDARD_CLASS = {"saber", "archer", "lancer", "rider", "caster", "assassin",
+                      "berserker", "shielder", "ruler", "alterego", "avenger",
+                      "mooncancer", "foreigner", "pretender", "beast"}
+    if class_name.lower() not in STANDARD_CLASS:
+        class_name = CLASS_NAMES.get(class_id, class_name)
     rarity = svt.rarity
     cost = svt.cost
     attr = ATTR_MAP.get(svt.attribute.value if hasattr(svt.attribute, 'value') else str(svt.attribute), str(svt.attribute))
@@ -888,6 +946,17 @@ def generate(data):
         acquisition = "限定"
     elif svt_flag == "storyLimited":
         acquisition = "剧情限定"
+    # 卡池特殊覆盖: 个别从者 type/flag 不可靠(如 U-奥尔加玛丽 type=normal 但实际限定)
+    # key = collectionNo
+    POOL_OVERRIDE = {
+        444: "限定",   # U-奥尔加玛丽
+        2: "剧情限定",  # 阿尔托莉雅(Saber)
+        70: "限定",     # 斯卡哈(Lancer)
+        12: "限定",     # 吉尔伽美什
+        51: "限定",     # 坂田金时(Berserker)
+        20: "常驻",     # 库丘林(Proto)
+    }
+    acquisition = POOL_OVERRIDE.get(cno, acquisition)
 
     # Traits
     trait_names = []
@@ -953,7 +1022,11 @@ def generate(data):
     np_gain_def = np_gain_data.get("defence", [0])[0] if np_gain_data else 0
 
     # Skills
-    skills = get_current_skills(data.get("skills", []))
+    is_multi, skill_modules = get_skill_modules(data.get("skills", []))
+    if is_multi:
+        skills = []  # 多模组时 skills 由模组循环渲染
+    else:
+        skills = get_current_skills(data.get("skills", []))
     class_passive = data.get("classPassive", [])
     append_skills = data.get("appendPassive", [])
 
@@ -992,7 +1065,7 @@ def generate(data):
     h(f"# {name}")
     h()
     h(f"> **ID**: {sid} | **图鉴编号**: {cno} | "
-      f"**职阶**: ![{class_name}]({class_icon}) {class_name} | **星级**: {stars}")
+      f"**职阶**: ![{class_name}]({class_icon}) {class_name} | **星级**: {stars} | **No.**: {cno}")
     h()
 
     # ══ 基础信息 ══
@@ -1050,7 +1123,7 @@ def generate(data):
     # ══ 持有技能 ══
     h("## 持有技能")
     h()
-    for sk in skills:
+    def render_one_skill(sk):
         sk_name = sk.get("name", "???")
         sk_icon = sk.get("icon", "")
         sk_ss = sk.get("strengthStatus", 0)
@@ -1071,6 +1144,18 @@ def generate(data):
                 h(f"开放条件: 从者强化任务 (Quest ID: {qid})")
                 h()
         h()
+
+    if is_multi:
+        # 多模组: 每套技能模组独立成组渲染，标注模组序号
+        for mod in skill_modules:
+            pri = mod["priority"]
+            h(f"### 技能模组 {pri}")
+            h()
+            for sk in mod["skills"]:
+                render_one_skill(sk)
+    else:
+        for sk in skills:
+            render_one_skill(sk)
 
     # ══ 职阶技能 ══
     h("## 职阶技能")
@@ -1131,21 +1216,32 @@ def generate(data):
     # ══ 宝具 ══
     h("## 宝具")
     h()
-    sorted_nps = sorted(nps, key=lambda x: x.get("priority", 0))
-    for ni, np in enumerate(sorted_nps):
-        is_current = (ni == len(sorted_nps) - 1)
-        if len(sorted_nps) == 1:
-            status_tag = "**未强化**"
-        elif is_current:
-            status_tag = "**强化后**"
-        else:
-            status_tag = "**强化前**"
-        h(status_tag)
-        h()
-        h(format_np_new(np, is_current))
-        if not is_current:
-            h("---")
-        h()
+    is_multi_np, np_modules = get_np_modules(nps)
+    if is_multi_np:
+        # 双宝具模组（如玉兔 num=1 + num=98）：每个 num 独立标注模组序号
+        for mi, np in enumerate(np_modules, start=1):
+            h(f"**宝具模组 {mi}**")
+            h()
+            h(format_np_new(np, True))
+            if mi < len(np_modules):
+                h("---")
+            h()
+    else:
+        sorted_nps = sorted(nps, key=lambda x: x.get("priority", 0))
+        for ni, np in enumerate(sorted_nps):
+            is_current = (ni == len(sorted_nps) - 1)
+            if len(sorted_nps) == 1:
+                status_tag = "**未强化**"
+            elif is_current:
+                status_tag = "**强化后**"
+            else:
+                status_tag = "**强化前**"
+            h(status_tag)
+            h()
+            h(format_np_new(np, is_current))
+            if not is_current:
+                h("---")
+            h()
 
     # ══ 视觉资源 ══
     h("## 视觉资源")

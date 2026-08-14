@@ -89,6 +89,11 @@
     "collectionNo": 426,
     "className": "alterEgo"
   },
+  "1001900": {
+    "name": "热内斯·克莱恩",
+    "collectionNo": 451,
+    "className": "alterEgo"
+  },
   "100200": {
     "name": "阿尔托莉雅·潘德拉贡〔Alter〕",
     "collectionNo": 3,
@@ -352,6 +357,11 @@
   "106200": {
     "name": "黑姬",
     "collectionNo": 434,
+    "className": "saber"
+  },
+  "106300": {
+    "name": "Passionlip",
+    "collectionNo": 445,
     "className": "saber"
   },
   "1100100": {
@@ -694,6 +704,11 @@
     "collectionNo": 427,
     "className": "archer"
   },
+  "205400": {
+    "name": "幼体／提亚马特",
+    "collectionNo": 450,
+    "className": "archer"
+  },
   "2300100": {
     "name": "BB",
     "collectionNo": 166,
@@ -742,6 +757,11 @@
   "2301000": {
     "name": "特诺奇蒂特兰",
     "collectionNo": 422,
+    "className": "moonCancer"
+  },
+  "2301100": {
+    "name": "玉兔",
+    "collectionNo": 448,
     "className": "moonCancer"
   },
   "2500100": {
@@ -1129,6 +1149,11 @@
     "collectionNo": 442,
     "className": "lancer"
   },
+  "306000": {
+    "name": "美游·艾德费尔特",
+    "collectionNo": 449,
+    "className": "lancer"
+  },
   "3300100": {
     "name": "所多玛之兽／德拉科",
     "collectionNo": 377,
@@ -1138,6 +1163,11 @@
     "name": "埃列什基伽勒",
     "collectionNo": 417,
     "className": "beastEresh"
+  },
+  "4000100": {
+    "name": "Ｕ－奥尔加玛丽",
+    "collectionNo": 444,
+    "className": "unBeastOlgaMarie"
   },
   "400100": {
     "name": "歌果",
@@ -1367,6 +1397,11 @@
   "405500": {
     "name": "安德洛墨达",
     "collectionNo": 406,
+    "className": "rider"
+  },
+  "405800": {
+    "name": "克里姆希尔德",
+    "collectionNo": 446,
     "className": "rider"
   },
   "500100": {
@@ -2069,6 +2104,11 @@
     "collectionNo": 440,
     "className": "berserker"
   },
+  "705200": {
+    "name": "吾绰",
+    "collectionNo": 447,
+    "className": "berserker"
+  },
   "800100": {
     "name": "玛修·基列莱特",
     "collectionNo": 1,
@@ -2208,5 +2248,10 @@
     "name": "Ｅ－宏玛丽",
     "collectionNo": 436,
     "className": "uOlgaMarieGrandCollection"
+  },
+  "9946760": {
+    "name": "Ｅ－星玛丽",
+    "collectionNo": 443,
+    "className": "uOlgaMarieStellarCollection"
   }
 }
