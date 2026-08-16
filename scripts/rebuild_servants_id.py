@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Regenerate all servant MD files with ID-based naming + create mapping."""
+"""Rebuild servant ID map + generate missing servant MD files.
+
+默认：映射文件全量重建（必须包含全部条目），MD 仅生成缺失项（增量）。
+--full: 强制全量重新生成所有 MD（generate.py 模板/规则升级后使用）。
+"""
 import json, os, sys, glob, importlib.util
 
 WIKI = os.path.expanduser("~/fgo-wiki")
@@ -9,6 +13,8 @@ DATA_DIR = os.path.join(WIKI, "data")
 MAP_PATH = os.path.join(DATA_DIR, "servant_id_map.json")
 os.makedirs(ENTITY_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
+
+FULL = "--full" in sys.argv
 
 # Load generate module
 sys.path.insert(0, WIKI)
@@ -20,27 +26,31 @@ generate = gen_mod.generate
 raw_files = sorted(glob.glob(os.path.join(RAW_DIR, "*.json")))
 print(f"找到 {len(raw_files)} 个原始JSON文件")
 
-# Build ID map + regenerate
+# Build ID map + regenerate missing MD
 id_map = {}
 count = 0
+skipped = 0
 errors = []
 
 for fp in raw_files:
     sid = os.path.basename(fp).replace(".json", "")
     with open(fp, encoding="utf-8") as f:
         data = json.load(f)
-    
-    # Save mapping
+
+    # Save mapping（映射必须全量）
     name = data.get("name", "?")
     cno = data.get("collectionNo", "?")
     cls = data.get("className", "?")
     sid_int = data.get("id", sid)
     id_map[str(sid_int)] = {"name": name, "collectionNo": cno, "className": cls}
-    
-    # Generate MD with ID-based filename
+
+    # Generate MD with ID-based filename（默认增量，只补缺失）
+    out_path = os.path.join(ENTITY_DIR, f"{sid_int}.md")
+    if not FULL and os.path.exists(out_path):
+        skipped += 1
+        continue
     try:
         md = generate(data)
-        out_path = os.path.join(ENTITY_DIR, f"{sid_int}.md")
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(md)
         count += 1
@@ -53,7 +63,7 @@ for fp in raw_files:
 with open(MAP_PATH, "w", encoding="utf-8") as f:
     json.dump(id_map, f, ensure_ascii=False, indent=2)
 
-print(f"\n✅ 生成完成: {count} 个MD文件 (ID命名)")
+print(f"\n✅ 生成完成: 新增/更新 {count} 个MD文件 (ID命名)" + (f"，跳过已有 {skipped} 个" if skipped else ""))
 print(f"✅ 映射文件: {MAP_PATH} ({len(id_map)} 条目)")
 if errors:
     print(f"⚠  {len(errors)} 个错误:")

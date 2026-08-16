@@ -97,6 +97,8 @@ fgo-wiki/
 │   ├── wars/               # War MD（按 War ID 命名）
 │   ├── events/             # 活动 MD（按短名命名）
 │   ├── mechanics/          # 机制文档（13个子文件）
+│   ├── traits/             # 特性统计（按职阶分类的从者合集）
+│   ├── tokou/              # 特攻一览（从者/礼装/纹章）
 │   └── items/              # 道具 DB (active_items.json)
 ├── raw/
 │   ├── servants/           # 原始 API JSON
@@ -143,11 +145,13 @@ fgo-wiki/
 
 ## 更新维护清单
 
-- [ ] 新增从者 → 跑 `generate.py <id>` → 检查 NP/技能表格
-- [ ] 新增活动 → 跑 `generate_events.py <id>` → 检查商店/抽奖/加成从者
+- [ ] 新增从者 → 跑 `generate.py <id>` → 检查 NP/技能表格 → **根据该从者特性追加到 `entities/traits/特性：*.md`**（若已有对应特性文件则补充该从者，否则新建；含灵基/灵衣条件追加的标注形态）
+- [ ] 新增活动 → 跑 `generate_events.py <id>` → 检查商店/抽奖/加成从者 → **检查商店是否存在灵衣兑换权限，若存在则把对应从者更新到 `entities/traits/特性：持有灵衣之人.md`**（Atlas 可能未及时标注 hasCostume，以活动商店灵衣为准）
 - [ ] 新增 War → 检查主线/自由关卡、敌人配置
 - [ ] 机制文档变更 → 更新对应 `mechanics/*.md` + 头部日期
 - [ ] 道具 DB 更新 → 跑同步脚本 → 修复 icon 字段
+- [ ] 新增从者/礼装/纹章 → 重跑 `scripts/gen_tokou_overview.py` 更新特攻一览
+- [ ] 新增从者 → 重跑 `scripts/gen_trait_stats.py` 更新特性统计
 
 ---
 
