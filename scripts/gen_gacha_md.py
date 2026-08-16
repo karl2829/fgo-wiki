@@ -94,7 +94,10 @@ def render_detail(g, svt_by_cno, ce_names):
     L.append("## UP 从者")
     L.append("")
     svts = g.get("servant_ids", [])
-    if svts:
+    up_note = g.get("up_note", "")
+    if up_note:
+        L.append(f"- **{up_note}**：共 {len(svts)} 骑（全职阶从者）")
+    elif svts:
         L.append("| 从者 | 职阶 | 星级 |")
         L.append("|---|---|---|")
         for cno in svts:
@@ -139,14 +142,18 @@ def render_future_timeline(fv_items, svt_by_cno):
          "> ⚠ 数据来源 [Mooncell 未来视卡池](https://fgo.wiki/w/卡池一览/未来视卡池)：预计时间为用户根据日服进度推算的**个人预测**，仅供参考，与国服实际实装可能不符。",
          "", "| 卡池 | 预估开始 | 预估结束 | UP 从者 |", "|---|---|---|---|"]
     for g in sorted(fv_items, key=lambda x: x.get("start_date", "")):
-        names = []
-        for cno in g.get("servant_ids", [])[:8]:
-            info = svt_by_cno.get(cno)
-            names.append(info["name"] if info else f"#{cno}")
-        if len(g.get("servant_ids", [])) > 8:
-            names.append("…")
-        if not names:
-            names.append("待补充")
+        up_note = g.get("up_note", "")
+        if up_note:
+            names = [f"{up_note}({len(g.get('servant_ids', []))}骑)"]
+        else:
+            names = []
+            for cno in g.get("servant_ids", [])[:8]:
+                info = svt_by_cno.get(cno)
+                names.append(info["name"] if info else f"#{cno}")
+            if len(g.get("servant_ids", [])) > 8:
+                names.append("…")
+            if not names:
+                names.append("待补充")
         L.append(f"| [{g['name']}](JP/{g['id']}.md) | {g.get('start_date', '?')} | {g.get('end_date', '?')} | {'、'.join(names)} |")
     L.append("")
     L.append(FOOTER)

@@ -16,7 +16,7 @@
 
 ## UP 从者
 
-待补充（Mooncell 未在页面列出，或从者数 >15 需查卡池详情页）
+- **职阶UP：alterEgo+avenger+foreigner+lancer+moonCancer+pretender+ruler**：共 156 骑（全职阶从者）
 
 
 ---
