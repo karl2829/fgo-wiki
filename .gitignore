@@ -47,3 +47,12 @@ raw/events/JP/*.json
 
 # Keep the generated markdown files (they're the knowledge base)
 # Keep LICENSE, README, RULES.md, scripts, references
+
+# Renderer output artifacts (regenerated on demand, not source)
+scripts/bg_sky.png
+scripts/corner.png
+scripts/noble_card_out.png
+scripts/np_card_full.png
+scripts/np_card_full_template.png
+scripts/np_card_out.png
+scripts/*_card_out.png
