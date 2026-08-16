@@ -509,6 +509,10 @@ def get_np_modules(nps):
     """
     if not nps:
         return False, []
+    # 过滤 ??? 占位宝具版本（与正式版本成对、效果重复）；全占位时兜底保留
+    nps = [n for n in nps if n.get("name") != "？？？"]
+    if not nps:
+        return False, []
     nums = {np.get("num", 1) for np in nps}
     if len(nums) > 1:
         modules = sorted(nps, key=lambda x: (x.get("num", 0), x.get("priority", 0)))
@@ -914,6 +918,14 @@ def mat_table(title, mats_dict, format_key=None, offset=0, show_total=True):
 def generate(data):
     svt = NiceServant.model_validate(data)
     sid = svt.id
+    # 国服未实装强化预览（data/servant_preview/{sid}.json，由 scripts/sync_preview.py 生成）
+    preview = None
+    pv_path = os.path.join(WIKI, "data", "servant_preview", f"{sid}.json")
+    if os.path.exists(pv_path):
+        try:
+            preview = json.load(open(pv_path, encoding="utf-8"))
+        except Exception:
+            preview = None
     cno = svt.collectionNo
     name = svt.name
     jp_name = data.get("_jp_name", svt.originalName)
@@ -1143,6 +1155,27 @@ def generate(data):
             if qid:
                 h(f"开放条件: 从者强化任务 (Quest ID: {qid})")
                 h()
+        # 国服未实装强化预览（日服已实装，CN 未实装）
+        if preview:
+            pv_sk = preview.get("skills", {}).get(str(sk.get("num", 0)))
+            if pv_sk:
+                pv_date = pv_sk.get("jp_opened_at")
+                pv_event = pv_sk.get("event_name")
+                pv_qid = pv_sk.get("condQuestId")
+                if pv_event and pv_date:
+                    pv_when = f"（{pv_event}，{pv_date} 实装）"
+                elif pv_date:
+                    pv_when = f"（{pv_date} 实装）"
+                elif pv_event:
+                    pv_when = f"（{pv_event} 实装）"
+                else:
+                    pv_when = ""
+                h(f"⚠ 国服未实装：日服已强化为「{pv_sk.get('name', '?')}」{pv_when}")
+                h()
+                h(format_skill_detail(pv_sk, pv_sk.get("icon", "")))
+                if pv_qid:
+                    h(f"开放条件: 从者强化任务 (Quest ID: {pv_qid})")
+                h()
         h()
 
     if is_multi:
@@ -1227,7 +1260,11 @@ def generate(data):
                 h("---")
             h()
     else:
-        sorted_nps = sorted(nps, key=lambda x: x.get("priority", 0))
+        # 过滤 ??? 占位宝具版本（与正式版本成对、效果重复）；全占位时兜底保留
+        filtered_nps = [n for n in nps if n.get("name") != "？？？"]
+        if not filtered_nps:
+            filtered_nps = nps
+        sorted_nps = sorted(filtered_nps, key=lambda x: x.get("priority", 0))
         for ni, np in enumerate(sorted_nps):
             is_current = (ni == len(sorted_nps) - 1)
             if len(sorted_nps) == 1:
@@ -1242,6 +1279,26 @@ def generate(data):
             if not is_current:
                 h("---")
             h()
+        # 国服未实装强化预览（日服已实装，CN 未实装）— 宝具
+        if preview:
+            for pv_num, pv_np in preview.get("nps", {}).items():
+                pv_date = pv_np.get("jp_opened_at")
+                pv_event = pv_np.get("event_name")
+                pv_qid = pv_np.get("condQuestId")
+                if pv_event and pv_date:
+                    pv_when = f"（{pv_event}，{pv_date} 实装）"
+                elif pv_date:
+                    pv_when = f"（{pv_date} 实装）"
+                elif pv_event:
+                    pv_when = f"（{pv_event} 实装）"
+                else:
+                    pv_when = ""
+                h(f"⚠ 国服未实装：日服已强化为「{pv_np.get('name', '?')}」{pv_when}")
+                h()
+                h(format_np_new(pv_np, False))
+                if pv_qid:
+                    h(f"开放条件: 从者强化任务 (Quest ID: {pv_qid})")
+                h()
 
     # ══ 视觉资源 ══
     h("## 视觉资源")

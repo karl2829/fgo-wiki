@@ -43,10 +43,52 @@ def make_gacha_id(start, name):
     return f"{ds}_{short}" if ds else f"gacha_{short}"
 
 def extract_sids(text):
-    return sorted(set(int(m) for m in re.findall(r'Servant0*(\d+)\.(?:jpg|png)', text)))
+    # 兼容 Servant385.png（主页面）与 Servant_385.png（未来视页）两种格式
+    return sorted(set(int(m) for m in re.findall(r'Servant_?0*(\d+)\.(?:jpg|png)', text)))
 
 def extract_cids(text):
-    return sorted(set(int(m) for m in re.findall(r'礼装0*(\d+)\.jpg', text)))
+    # 兼容 礼装2406.jpg / 礼装_2406.jpg / URL编码 %E7%A4%BC%E8%A3%852406.jpg
+    return sorted(set(int(m) for m in re.findall(r'(?:礼装|%E7%A4%BC%E8%A3%85)_?0*(\d+)\.jpg', text)))
+
+
+def parse_future_view(html):
+    """Parse 卡池一览/未来视卡池 page.
+
+    国服未来一年卡池预测（预估国服时间，依据日服进度推算，个人预测仅供参考）。
+    标记 region=JP + estimated=True，与正式国服卡池区分。
+    """
+    gachas = []
+    for m in re.finditer(r'<tr[^>]*>(.*?)</tr>', html, re.DOTALL):
+        cells = re.findall(r'<td[^>]*>(.*?)</td>', m.group(1), re.DOTALL)
+        if len(cells) < 2:
+            continue
+        names = re.findall(r'<a[^>]*title="([^"]+)"[^>]*>', cells[0])
+        name = ""
+        for n in names:
+            if "推荐召唤" in n or "福袋" in n or "召唤" in n:
+                name = n
+                break
+        if not name:
+            continue
+        time_text = cells[1] if len(cells) > 1 else ""
+        dates = re.findall(r'(\d{4})年(\d+)月(\d+)日', time_text)
+        if not dates:
+            continue
+        start = f"{dates[0][0]}-{dates[0][1].zfill(2)}-{dates[0][2].zfill(2)}"
+        end = f"{dates[-1][0]}-{dates[-1][1].zfill(2)}-{dates[-1][2].zfill(2)}"
+        cell_text = " ".join(cells)
+        gachas.append({
+            "id": make_gacha_id(start, name),
+            "name": name,
+            "type": "福袋召唤" if "福袋" in name else "推荐召唤",
+            "status": "未来",
+            "region": "JP",
+            "estimated": True,
+            "start_date": start, "end_date": end,
+            "servant_ids": extract_sids(cell_text),
+            "ce_ids": extract_cids(cell_text),
+        })
+    return gachas
 
 def fetch_mooncell(url):
     """Fetch a Mooncell page and return text. Uses urllib for reliability."""
@@ -128,6 +170,25 @@ def run_incremental():
             new_count += 1
             print(f"  + {g['id']}: {g['name'][:40]}")
     
+    # 1.5 未来视卡池（国服未来一年预测，region=JP + estimated）
+    import time as _time
+    print("\n拉取未来视卡池页...")
+    try:
+        fv_html = fetch_mooncell(f"{MOONCELL}/w/%E5%8D%A1%E6%B1%A0%E4%B8%80%E8%A7%88/%E6%9C%AA%E6%9D%A5%E8%A7%86%E5%8D%A1%E6%B1%A0")
+        _time.sleep(0.5)
+        fv_gachas = parse_future_view(fv_html)
+        fv_added = 0
+        for g in fv_gachas:
+            if g["id"] not in existing:
+                raw["gachas"][g["id"]] = g
+                existing.add(g["id"])
+                new_count += 1
+                fv_added += 1
+                print(f"  + [未来视] {g['id']}: {g['name'][:40]}")
+        print(f"  未来视卡池: 页面 {len(fv_gachas)} 个, 新增 {fv_added} 个")
+    except Exception as e:
+        print(f"  - 未来视页拉取失败: {e}")
+    
     # 2. Check ended pools yearly pages (current year only for incremental)
     # Only check if the previous sync was more than 1 day ago
     if raw.get("last_sync_at"):
@@ -203,8 +264,9 @@ def run_incremental():
     print(f"   当前总计: {len(existing)} 个卡池")
     print(f"   同步时间: {raw['last_sync_at']}")
     
-    # Update summary (regenerate expired_gacha.md)
-    update_summary()
+    # Regenerate gacha MD（CN/JP 分目录 + expired_gacha.md + 未来视.md）
+    from gen_gacha_md import main as gen_gacha_main
+    gen_gacha_main()
 
 def update_summary():
     """Regenerate expired_gacha.md and index.md."""

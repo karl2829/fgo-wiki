@@ -1,0 +1,752 @@
+{
+  "sid": "500200",
+  "collectionNo": 32,
+  "servant_name": "ジル・ド・レェ",
+  "updated_at": "2026-08-16",
+  "skills": {
+    "3": {
+      "id": 214453,
+      "num": 3,
+      "name": "深淵の邪視 B+++",
+      "originalName": "深淵の邪視 B+++",
+      "ruby": "しんえんのじゃし",
+      "detail": "敵全体に恐怖状態を付与(5ターン)＆呪い状態を付与(5ターン)▲＆防御力をダウン(5ターン)▲ ＋ 自身に〔呪い〕特攻状態を付与(3ターン)▲＆「攻撃時のダメージ前に対象に呪い状態(5ターン)を付与する状態」を付与(3ターン)▲＆NPを増やす▲",
+      "unmodifiedDetail": "敵全体に恐怖状態を付与[{0}](5ターン)＆呪い状態を付与(5ターン)[g][o]▲[/o][/g]＆防御力をダウン[{0}](5ターン)[g][o]▲[/o][/g] ＋ 自身に〔呪い〕特攻状態を付与[{0}](3ターン)[g][o]▲[/o][/g]＆「攻撃時のダメージ前に対象に呪い状態(5ターン)を付与する状態」を付与(3ターン)[g][o]▲[/o][/g]＆NPを増やす[{0}][g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 500200,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94158905,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 3,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00508.png",
+      "coolDown": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        7
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 500200,
+          "num": 3,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94158905,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 3,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 855,
+          "funcType": "addState",
+          "funcTargetType": "enemyAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "恐怖",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_525.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 243,
+              "name": "恐怖",
+              "originalName": "恐怖",
+              "detail": "毎ターン確率で一度だけスタン状態を付与",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_525.png",
+              "type": "selfturnendFunction",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3005,
+                  "name": "buffNegativeEffect"
+                },
+                {
+                  "id": 3010,
+                  "name": "buffMentalEffect"
+                },
+                {
+                  "id": 3049,
+                  "name": "buffTerrorStunChanceAfterTurn"
+                },
+                {
+                  "id": 3063,
+                  "name": "buffNegativeEffectAtTurnEnd"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 1,
+              "UseRate": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 2,
+              "UseRate": 310
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 3,
+              "UseRate": 320
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 4,
+              "UseRate": 330
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 5,
+              "UseRate": 340
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 6,
+              "UseRate": 350
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 7,
+              "UseRate": 360
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 8,
+              "UseRate": 370
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 9,
+              "UseRate": 380
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 930010,
+              "Value2": 10,
+              "UseRate": 400
+            }
+          ]
+        },
+        {
+          "funcId": 321,
+          "funcType": "addState",
+          "funcTargetType": "enemyAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "呪い",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_521.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 125,
+              "name": "呪い",
+              "originalName": "呪い",
+              "detail": "ターン終了時にHPが減る",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_521.png",
+              "type": "reduceHp",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3005,
+                  "name": "buffNegativeEffect"
+                },
+                {
+                  "id": 3026,
+                  "name": "buffCurse"
+                },
+                {
+                  "id": 3140,
+                  "name": "unknown"
+                },
+                {
+                  "id": 2729,
+                  "name": "curse"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            }
+          ]
+        },
+        {
+          "funcId": 197,
+          "funcType": "addStateShort",
+          "funcTargetType": "enemyAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "防御力ダウン",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_504.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 148,
+              "name": "防御力ダウン",
+              "originalName": "防御力ダウン",
+              "detail": "防御力をダウン",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_504.png",
+              "type": "downDefence",
+              "buffGroup": 0,
+              "script": {
+                "ProgressSelfTurn": 0
+              },
+              "originalScript": {
+                "ProgressSelfTurn": 0
+              },
+              "vals": [
+                {
+                  "id": 3005,
+                  "name": "buffNegativeEffect"
+                },
+                {
+                  "id": 3009,
+                  "name": "buffDecreaseDefence"
+                },
+                {
+                  "id": 3110,
+                  "name": "buffDefenceDown"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 110
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 120
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 130
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 140
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 150
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 160
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 170
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 180
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 200
+            }
+          ]
+        },
+        {
+          "funcId": 5495,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "威力アップ・対呪い",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 2884,
+              "name": "威力アップ〔呪い〕",
+              "originalName": "威力アップ〔呪い〕",
+              "detail": "〔呪い〕状態の敵に与えるダメージをアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+              "type": "upDamageIndividualityActiveonly",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3028,
+                  "name": "buffPowerModStrUp"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 3026,
+                  "name": "buffCurse"
+                }
+              ],
+              "ckSelfIndv": [],
+              "ckOpIndv": [
+                {
+                  "id": 3026,
+                  "name": "buffCurse"
+                }
+              ],
+              "maxRate": 10000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 210
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 230
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 240
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 250
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 260
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 270
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 280
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 300
+            }
+          ]
+        },
+        {
+          "funcId": 23513,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "攻撃ダメージ前追加効果",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_528.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 6099,
+              "name": "攻撃ダメージ前追加効果",
+              "originalName": "攻撃ダメージ前追加効果",
+              "detail": "攻撃時、ダメージ前に対象に呪い状態を付与",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_528.png",
+              "type": "attackBeforeFunction",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 5000,
+                  "name": "canBeInBattle"
+                }
+              ],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 970923,
+              "Value2": 1
+            }
+          ]
+        },
+        {
+          "funcId": 460,
+          "funcType": "gainNp",
+          "funcTargetType": "self",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Value": 2100
+            },
+            {
+              "Rate": 1000,
+              "Value": 2200
+            },
+            {
+              "Rate": 1000,
+              "Value": 2300
+            },
+            {
+              "Rate": 1000,
+              "Value": 2400
+            },
+            {
+              "Rate": 1000,
+              "Value": 2500
+            },
+            {
+              "Rate": 1000,
+              "Value": 2600
+            },
+            {
+              "Rate": 1000,
+              "Value": 2700
+            },
+            {
+              "Rate": 1000,
+              "Value": 2800
+            },
+            {
+              "Rate": 1000,
+              "Value": 3000
+            }
+          ]
+        },
+        {
+          "funcId": 470,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "self",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-08-06",
+      "event_name": "从者强化任务 第20弹～11th Anniversary～特别篇"
+    }
+  },
+  "nps": {}
+}

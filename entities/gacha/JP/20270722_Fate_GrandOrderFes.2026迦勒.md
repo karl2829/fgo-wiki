@@ -1,0 +1,29 @@
+# 「Fate/Grand Order Fes. 2026 迦勒底学园祭 ～11th Anniversary～」倒计时推荐召唤
+> **ID**: 20270722_Fate_GrandOrderFes.2026迦勒 | **类型**: 推荐召唤 | **状态**: 未来 ⚠预估 | **区服**: JP（未来视）
+
+## 时间
+
+| 项目 | 时间 |
+|------|------|
+| 开始 | 2027-07-22（预估） |
+| 结束 | 2027-08-02（预估） |
+
+> ⚠ 此卡池时间为 **Mooncell 未来视预测**（依据日服进度推算），仅供参考，实际以国服公告为准
+
+## 卡池图片
+
+![「Fate/Grand Order Fes. 2026 迦勒底学园祭 ～11th Anniversary～」倒计时推荐召唤](https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/gacha/20270722_Fate_GrandOrderFes.2026迦勒.png)
+
+## UP 从者
+
+| 从者 | 职阶 | 星级 |
+|---|---|---|
+| [[3|阿尔托莉雅·潘德拉贡〔Alter〕]] | saber | ★★★★ |
+| [[38|库·丘林]] | caster | ★★★ |
+| [[112|酒吞童子]] | assassin | ★★★★★ |
+| [[451|热内斯·克莱恩]] | alterEgo | ★★★★ |
+| [[452|ネモ／ノア]] | rider | ★★★★★ |
+
+
+---
+*数据来源: Mooncell* | *遵循 CC BY-NC-SA 4.0 协议*

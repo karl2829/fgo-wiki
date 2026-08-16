@@ -1,0 +1,35 @@
+# Fate/strange Fake × Fate/Grand Order联动活动推荐召唤2
+> **ID**: 20270427_Fate_strangeFake×Fate_Gra | **类型**: 推荐召唤 | **状态**: 未来 ⚠预估 | **区服**: JP（未来视）
+
+## 时间
+
+| 项目 | 时间 |
+|------|------|
+| 开始 | 2027-04-27（预估） |
+| 结束 | 2027-05-16（预估） |
+
+> ⚠ 此卡池时间为 **Mooncell 未来视预测**（依据日服进度推算），仅供参考，实际以国服公告为准
+
+## 卡池图片
+
+![Fate/strange Fake × Fate/Grand Order联动活动推荐召唤2](https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/gacha/20270427_Fate_strangeFake×Fate_Gra.png)
+
+## UP 从者
+
+| 从者 | 职阶 | 星级 |
+|---|---|---|
+| [[37|诸葛孔明〔埃尔梅罗Ⅱ世〕]] | caster | ★★★★★ |
+| [[171|彭忒西勒亚]] | berserker | ★★★★ |
+| [[432|理查一世]] | saber | ★★★★★ |
+
+## UP 礼装
+
+| 礼装 |
+|---|
+| #2599 |
+| #2600 |
+| #2601 |
+
+
+---
+*数据来源: Mooncell* | *遵循 CC BY-NC-SA 4.0 协议*

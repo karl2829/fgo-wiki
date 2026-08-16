@@ -1,0 +1,619 @@
+{
+  "sid": "304600",
+  "collectionNo": 300,
+  "servant_name": "ヴリトラ",
+  "updated_at": "2026-08-16",
+  "skills": {
+    "3": {
+      "id": 826900,
+      "num": 3,
+      "name": "永遠不滅の魔 EX",
+      "originalName": "永遠不滅の魔 EX",
+      "ruby": "えいえんふめつのま",
+      "detail": "自身にガッツ状態を付与(1回・5ターン)＆毎ターンNP獲得状態を付与(5ターン) ＋ 味方全体の宝具威力をアップ(3回▲・5ターン)＆〔天の力を持つ敵〕特攻状態を付与(3ターン)▲＆NPを増やす▲",
+      "unmodifiedDetail": "自身にガッツ状態を付与[{0}](1回・5ターン)＆毎ターンNP獲得状態を付与[{0}](5ターン) ＋ 味方全体の宝具威力をアップ[{0}](3回[g][o]▲[/o][/g]・5ターン)＆〔天の力を持つ敵〕特攻状態を付与[{0}](3ターン)[g][o]▲[/o][/g]＆NPを増やす[{0}][g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 304600,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94160603,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 3,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00404.png",
+      "coolDown": [
+        9,
+        9,
+        9,
+        9,
+        9,
+        8,
+        8,
+        8,
+        8,
+        7
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 304600,
+          "num": 3,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94160603,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 3,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 292,
+          "funcType": "addState",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "ガッツ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_304.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 180,
+              "name": "ガッツ",
+              "originalName": "ガッツ",
+              "detail": "HPが0になった時、HPを回復して耐える",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_304.png",
+              "type": "guts",
+              "buffGroup": 600,
+              "script": {
+                "checkIndvType": 2,
+                "INDIVIDUALITIE": {
+                  "id": 3086,
+                  "name": "gutsBlock",
+                  "negative": true
+                }
+              },
+              "originalScript": {
+                "checkIndvType": 2,
+                "INDIVIDUALITIE": -3086
+              },
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3024,
+                  "name": "buffGuts"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [
+                {
+                  "id": 3139,
+                  "name": "unknown",
+                  "negative": true
+                }
+              ],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 1200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 1400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 1600
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 1800
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 2200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 2400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 2600
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 1,
+              "Value": 3000
+            }
+          ]
+        },
+        {
+          "funcId": 325,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "player",
+          "funcPopupText": "毎ターンNP獲得",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_319.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 119,
+              "name": "毎ターンNP獲得",
+              "originalName": "毎ターンNP獲得",
+              "detail": "ターン終了時にNPが増える",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_319.png",
+              "type": "regainNp",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3080,
+                  "name": "buffNpPerTurn"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 550
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 600
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 650
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 700
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 750
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 800
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 850
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 900
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": -1,
+              "Value": 1000
+            }
+          ]
+        },
+        {
+          "funcId": 253,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "宝具威力アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_310.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 138,
+              "name": "宝具威力アップ",
+              "originalName": "宝具威力アップ",
+              "detail": "宝具で与えるダメージをアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_310.png",
+              "type": "upNpdamage",
+              "buffGroup": 0,
+              "script": {
+                "ProgressSelfTurn": 1
+              },
+              "originalScript": {
+                "ProgressSelfTurn": 1
+              },
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3030,
+                  "name": "buffNpDamageUp"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 110
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 120
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 130
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 140
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 150
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 160
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 170
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 180
+            },
+            {
+              "Rate": 1000,
+              "Turn": 5,
+              "Count": 3,
+              "Value": 200
+            }
+          ]
+        },
+        {
+          "funcId": 23520,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "威力アップ・対 天の力",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 2893,
+              "name": "威力アップ〔天の力〕",
+              "originalName": "威力アップ〔天の力〕",
+              "detail": "〔天の力〕に与えるダメージをアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+              "type": "upDamage",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3028,
+                  "name": "buffPowerModStrUp"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 200,
+                  "name": "attributeSky"
+                }
+              ],
+              "ckSelfIndv": [],
+              "ckOpIndv": [
+                {
+                  "id": 200,
+                  "name": "attributeSky"
+                }
+              ],
+              "maxRate": 10000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 210
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 230
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 240
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 250
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 260
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 270
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 280
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 300
+            }
+          ]
+        },
+        {
+          "funcId": 466,
+          "funcType": "gainNp",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1100
+            },
+            {
+              "Rate": 1000,
+              "Value": 1200
+            },
+            {
+              "Rate": 1000,
+              "Value": 1300
+            },
+            {
+              "Rate": 1000,
+              "Value": 1400
+            },
+            {
+              "Rate": 1000,
+              "Value": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 1600
+            },
+            {
+              "Rate": 1000,
+              "Value": 1700
+            },
+            {
+              "Rate": 1000,
+              "Value": 1800
+            },
+            {
+              "Rate": 1000,
+              "Value": 2000
+            }
+          ]
+        },
+        {
+          "funcId": 472,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-08-08",
+      "event_name": "从者强化任务 第20弹～11th Anniversary～特别篇"
+    }
+  },
+  "nps": {}
+}

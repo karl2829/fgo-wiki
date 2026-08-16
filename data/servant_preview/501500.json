@@ -1,0 +1,401 @@
+{
+  "sid": "501500",
+  "collectionNo": 36,
+  "servant_name": "ヴォルフガング・アマデウス・モーツァルト",
+  "updated_at": "2026-08-16",
+  "skills": {
+    "1": {
+      "id": 2691650,
+      "num": 1,
+      "name": "アマデウス EX",
+      "originalName": "アマデウス EX",
+      "ruby": "あまでうす",
+      "detail": "味方全体のArtsカード性能をアップ(3回・3ターン▲)＆NPを増やす▲＆弱体付与成功率をアップ(3ターン)▲",
+      "unmodifiedDetail": "味方全体のArtsカード性能をアップ[{0}](3回・3ターン[g][o]▲[/o][/g])＆NPを増やす[{0}][g][o]▲[/o][/g]＆弱体付与成功率をアップ[{0}](3ターン)[g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 501500,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94158910,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 0,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00305.png",
+      "coolDown": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        6,
+        6,
+        6,
+        6,
+        5
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 501500,
+          "num": 1,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94158910,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 0,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 116,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "アーツアップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_313.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 101,
+              "name": "Artsアップ",
+              "originalName": "Artsアップ",
+              "detail": "Artsカードの性能をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_313.png",
+              "type": "upCommandall",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3092,
+                  "name": "artsBuff"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 5000,
+                  "name": "canBeInBattle"
+                },
+                {
+                  "id": 4001,
+                  "name": "cardArts"
+                }
+              ],
+              "ckSelfIndv": [
+                {
+                  "id": 4001,
+                  "name": "cardArts"
+                }
+              ],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 242
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 264
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 286
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 308
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 330
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 352
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 374
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 396
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 440
+            }
+          ]
+        },
+        {
+          "funcId": 466,
+          "funcType": "gainNp",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1100
+            },
+            {
+              "Rate": 1000,
+              "Value": 1200
+            },
+            {
+              "Rate": 1000,
+              "Value": 1300
+            },
+            {
+              "Rate": 1000,
+              "Value": 1400
+            },
+            {
+              "Rate": 1000,
+              "Value": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 1600
+            },
+            {
+              "Rate": 1000,
+              "Value": 1700
+            },
+            {
+              "Rate": 1000,
+              "Value": 1800
+            },
+            {
+              "Rate": 1000,
+              "Value": 2000
+            }
+          ]
+        },
+        {
+          "funcId": 472,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "funcId": 378,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "弱体付与アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_307.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 158,
+              "name": "弱体付与アップ",
+              "originalName": "弱体付与アップ",
+              "detail": "弱体付与率をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_307.png",
+              "type": "upGrantstate",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 3005,
+                  "name": "buffNegativeEffect"
+                }
+              ],
+              "ckSelfIndv": [
+                {
+                  "id": 3005,
+                  "name": "buffNegativeEffect"
+                }
+              ],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 240
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 260
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 280
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 320
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 340
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 360
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 400
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-08-04",
+      "event_name": "从者强化任务 第20弹～11th Anniversary～特别篇"
+    }
+  },
+  "nps": {}
+}

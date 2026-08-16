@@ -1,0 +1,399 @@
+{
+  "sid": "501400",
+  "collectionNo": 35,
+  "servant_name": "メフィストフェレス",
+  "updated_at": "2026-08-16",
+  "skills": {
+    "1": {
+      "id": 2690451,
+      "num": 1,
+      "name": "貴方のための呪 B+",
+      "originalName": "貴方のための呪 B+",
+      "ruby": "あなたのためののろい",
+      "detail": "敵単体のチャージを高確率▲で減らす ＋ 自身のNPを増やす▲ ＋ 味方全体に〔呪い〕特攻状態を付与(3ターン)▲",
+      "unmodifiedDetail": "敵単体のチャージを高確率[g][o]▲[/o][/g][{0}]で減らす ＋ 自身のNPを増やす[{0}][g][o]▲[/o][/g] ＋ 味方全体に〔呪い〕特攻状態を付与[{0}](3ターン)[g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 501400,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94158904,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 0,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00513.png",
+      "coolDown": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        6,
+        6,
+        6,
+        6,
+        5
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 501400,
+          "num": 1,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94158904,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 0,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 473,
+          "funcType": "delayNpturn",
+          "funcTargetType": "enemy",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ減少",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 800,
+              "Value": 1
+            },
+            {
+              "Rate": 820,
+              "Value": 1
+            },
+            {
+              "Rate": 840,
+              "Value": 1
+            },
+            {
+              "Rate": 860,
+              "Value": 1
+            },
+            {
+              "Rate": 880,
+              "Value": 1
+            },
+            {
+              "Rate": 900,
+              "Value": 1
+            },
+            {
+              "Rate": 920,
+              "Value": 1
+            },
+            {
+              "Rate": 940,
+              "Value": 1
+            },
+            {
+              "Rate": 960,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "funcId": 468,
+          "funcType": "lossNp",
+          "funcTargetType": "enemy",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP減少",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 800,
+              "Value": 2000
+            },
+            {
+              "Rate": 820,
+              "Value": 2000
+            },
+            {
+              "Rate": 840,
+              "Value": 2000
+            },
+            {
+              "Rate": 860,
+              "Value": 2000
+            },
+            {
+              "Rate": 880,
+              "Value": 2000
+            },
+            {
+              "Rate": 900,
+              "Value": 2000
+            },
+            {
+              "Rate": 920,
+              "Value": 2000
+            },
+            {
+              "Rate": 940,
+              "Value": 2000
+            },
+            {
+              "Rate": 960,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Value": 2000
+            }
+          ]
+        },
+        {
+          "funcId": 460,
+          "funcType": "gainNp",
+          "funcTargetType": "self",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Value": 2100
+            },
+            {
+              "Rate": 1000,
+              "Value": 2200
+            },
+            {
+              "Rate": 1000,
+              "Value": 2300
+            },
+            {
+              "Rate": 1000,
+              "Value": 2400
+            },
+            {
+              "Rate": 1000,
+              "Value": 2500
+            },
+            {
+              "Rate": 1000,
+              "Value": 2600
+            },
+            {
+              "Rate": 1000,
+              "Value": 2700
+            },
+            {
+              "Rate": 1000,
+              "Value": 2800
+            },
+            {
+              "Rate": 1000,
+              "Value": 3000
+            }
+          ]
+        },
+        {
+          "funcId": 470,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "self",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "funcId": 23501,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "威力アップ・対呪い",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 2884,
+              "name": "威力アップ〔呪い〕",
+              "originalName": "威力アップ〔呪い〕",
+              "detail": "〔呪い〕状態の敵に与えるダメージをアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_302.png",
+              "type": "upDamageIndividualityActiveonly",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3028,
+                  "name": "buffPowerModStrUp"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 3026,
+                  "name": "buffCurse"
+                }
+              ],
+              "ckSelfIndv": [],
+              "ckOpIndv": [
+                {
+                  "id": 3026,
+                  "name": "buffCurse"
+                }
+              ],
+              "maxRate": 10000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 210
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 230
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 240
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 250
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 260
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 270
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 280
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 300
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-08-04",
+      "event_name": "从者强化任务 第20弹～11th Anniversary～特别篇"
+    }
+  },
+  "nps": {}
+}

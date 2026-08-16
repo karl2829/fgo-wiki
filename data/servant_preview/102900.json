@@ -1,0 +1,976 @@
+{
+  "sid": "102900",
+  "collectionNo": 160,
+  "servant_name": "アーサー・ペンドラゴン〔プロトタイプ〕",
+  "updated_at": "2026-08-16",
+  "skills": {},
+  "nps": {
+    "1": {
+      "id": 102902,
+      "num": 1,
+      "npNum": 2,
+      "card": "2",
+      "name": "約束された勝利の剣",
+      "originalName": "約束された勝利の剣",
+      "ruby": "エクスカリバー",
+      "icon": "https://static.atlasacademy.io/JP/Servants/Commands/102900/card_servant_np.png",
+      "rank": "EX",
+      "type": "？？？",
+      "effectFlags": [
+        "attackEnemyAll"
+      ],
+      "detail": "自身の宝具威力をアップ(1ターン)<オーバーチャージで効果アップ>＆敵全体に強力な〔ビースト〕特攻攻撃▲ ＋ 味方全体のNPを少し増やす▲＆Busterカード性能をアップ(3ターン)▲",
+      "unmodifiedDetail": "自身の宝具威力をアップ(1ターン)<オーバーチャージで効果アップ>＆敵全体に強力な〔ビースト〕特攻攻撃[{0}][g][o]▲[/o][/g] ＋ 味方全体のNPを少し増やす[g][o]▲[/o][/g]＆Busterカード性能をアップ(3ターン)[g][o]▲[/o][/g]",
+      "npGain": {
+        "buster": [
+          84,
+          84,
+          84,
+          84,
+          84
+        ],
+        "arts": [
+          84,
+          84,
+          84,
+          84,
+          84
+        ],
+        "quick": [
+          84,
+          84,
+          84,
+          84,
+          84
+        ],
+        "extra": [
+          84,
+          84,
+          84,
+          84,
+          84
+        ],
+        "defence": [
+          300,
+          300,
+          300,
+          300,
+          300
+        ],
+        "np": [
+          84,
+          84,
+          84,
+          84,
+          84
+        ]
+      },
+      "npDistribution": [
+        16,
+        33,
+        51
+      ],
+      "svtId": 102900,
+      "strengthStatus": 99,
+      "priority": 102,
+      "condQuestId": 94158400,
+      "condQuestPhase": 3,
+      "releaseConditions": [],
+      "individuality": [
+        {
+          "id": 3002,
+          "name": "attackMagical"
+        },
+        {
+          "id": 4002,
+          "name": "cardBuster"
+        },
+        {
+          "id": 4007,
+          "name": "cardNP"
+        },
+        {
+          "id": 4101,
+          "name": "aoeNP"
+        }
+      ],
+      "npSvts": [
+        {
+          "svtId": 102900,
+          "num": 1,
+          "npNum": 2,
+          "priority": 102,
+          "damage": [
+            16,
+            33,
+            51
+          ],
+          "strengthStatus": 99,
+          "flag": 0,
+          "imageIndex": 0,
+          "condQuestId": 94158400,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condFriendshipRank": 0,
+          "motion": 50,
+          "card": "2",
+          "releaseConditions": []
+        }
+      ],
+      "script": {},
+      "functions": [
+        {
+          "funcId": 249,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "宝具威力アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_310.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 138,
+              "name": "宝具威力アップ",
+              "originalName": "宝具威力アップ",
+              "detail": "宝具で与えるダメージをアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_310.png",
+              "type": "upNpdamage",
+              "buffGroup": 0,
+              "script": {
+                "ProgressSelfTurn": 1
+              },
+              "originalScript": {
+                "ProgressSelfTurn": 1
+              },
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3030,
+                  "name": "buffNpDamageUp"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 100
+            }
+          ],
+          "svals2": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 200
+            }
+          ],
+          "svals3": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 300
+            }
+          ],
+          "svals4": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 400
+            }
+          ],
+          "svals5": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            }
+          ]
+        },
+        {
+          "funcId": 17,
+          "funcType": "damageNpIndividual",
+          "funcTargetType": "enemyAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "なし",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 4000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5500,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5750,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 6000,
+              "Target": 135,
+              "Correction": 1500
+            }
+          ],
+          "svals2": [
+            {
+              "Rate": 1000,
+              "Value": 4000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5500,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5750,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 6000,
+              "Target": 135,
+              "Correction": 1500
+            }
+          ],
+          "svals3": [
+            {
+              "Rate": 1000,
+              "Value": 4000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5500,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5750,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 6000,
+              "Target": 135,
+              "Correction": 1500
+            }
+          ],
+          "svals4": [
+            {
+              "Rate": 1000,
+              "Value": 4000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5500,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5750,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 6000,
+              "Target": 135,
+              "Correction": 1500
+            }
+          ],
+          "svals5": [
+            {
+              "Rate": 1000,
+              "Value": 4000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5000,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5500,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 5750,
+              "Target": 135,
+              "Correction": 1500
+            },
+            {
+              "Rate": 1000,
+              "Value": 6000,
+              "Target": 135,
+              "Correction": 1500
+            }
+          ]
+        },
+        {
+          "funcId": 465,
+          "funcType": "gainNp",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            }
+          ],
+          "svals2": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            }
+          ],
+          "svals3": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            }
+          ],
+          "svals4": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            }
+          ],
+          "svals5": [
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            },
+            {
+              "Rate": 1000,
+              "Value": 1000
+            }
+          ]
+        },
+        {
+          "funcId": 472,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ],
+          "svals2": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ],
+          "svals3": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ],
+          "svals4": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ],
+          "svals5": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        },
+        {
+          "funcId": 125,
+          "funcType": "addStateShort",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "バスターアップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_314.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 102,
+              "name": "Busterアップ",
+              "originalName": "Busterアップ",
+              "detail": "Busterカードの性能をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_314.png",
+              "type": "upCommandall",
+              "buffGroup": 0,
+              "script": {
+                "ProgressSelfTurn": 1
+              },
+              "originalScript": {
+                "ProgressSelfTurn": 1
+              },
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3093,
+                  "name": "busterBuff"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 5000,
+                  "name": "canBeInBattle"
+                },
+                {
+                  "id": 4002,
+                  "name": "cardBuster"
+                }
+              ],
+              "ckSelfIndv": [
+                {
+                  "id": 4002,
+                  "name": "cardBuster"
+                }
+              ],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            }
+          ],
+          "svals2": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            }
+          ],
+          "svals3": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            }
+          ],
+          "svals4": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            }
+          ],
+          "svals5": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-07-07",
+      "event_name": "于春日的尾声等待你推荐召唤4"
+    }
+  }
+}
