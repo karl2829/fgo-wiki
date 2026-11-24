@@ -56,3 +56,13 @@ scripts/np_card_full.png
 scripts/np_card_full_template.png
 scripts/np_card_out.png
 scripts/*_card_out.png
+
+# card-render（从者卡渲染，附属子项目）
+card-render/.venv/
+card-render/out/
+card-render/__pycache__/
+card-render/data/*.json
+card-render/assets/art_*.png
+card-render/assets/bond_ce_*.png
+card-render/assets/face_*.png
+card-render/.git-old/

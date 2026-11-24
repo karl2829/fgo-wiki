@@ -1,0 +1,324 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<style>
+/* FGO 卡面 · 暗色主题 + 完整数据排版（技能 10 列 / 宝具 5 列）
+   引擎：pytakumi / Skia。禁写：::before 装饰块、clip-path、filter:blur、backdrop-filter、drop-shadow */
+:root{
+  --bg-top:#17243D; --bg-base:#131E33; --bg-bottom:#0C1524; --bg-deep:#0B1220;
+  --seam:#141F35;
+  --panel:#1B2A45; --panel-head:#22345A; --slot:#0F1729;
+  --text-1:#F2EDE3; --text-2:#A9B6CC; --text-3:#8B98AE; --num:#F0D48A;
+  --gold-hi:#F5E3AE; --gold:#E3C36B; --gold-mid:#C9A227; --gold-dark:#A8862F; --gold-deep:#8A6E1A;
+  --blue:#5B8FD6; --blue-dim:#7FA8E0;
+  --metal-ring:linear-gradient(128deg,#6E5620 0%,#C9A227 9%,#F8EDCB 19%,#E8C877 31%,
+               #A8862F 47%,#C9A227 63%,#F5E3AE 79%,#8A6E1A 93%,#C9A227 100%);
+  --metal-foil:linear-gradient(180deg,#F8EDCB 0%,#E8C877 22%,#C9A227 42%,#8A6E1A 52%,
+               #C9A227 64%,#F5E3AE 86%,#F8EDCB 100%);
+  --rule:linear-gradient(90deg,rgba(201,162,39,0) 0%,rgba(201,162,39,.55) 10%,
+         rgba(245,227,174,.78) 50%,rgba(201,162,39,.55) 90%,rgba(201,162,39,0) 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{padding:40px;font-family:"WenQuanYi Zen Hei","WenQuanYi Micro Hei",sans-serif;
+     -webkit-font-smoothing:antialiased;color:var(--text-1);background:#080d15}
+
+.card{width:1080px;min-height:1350px;padding:1.5px;border-radius:22px;background:var(--metal-ring);
+  box-shadow:0 0 0 1px rgba(227,195,107,.22), 0 0 18px rgba(227,195,107,.30),
+             0 0 56px rgba(227,195,107,.16), 0 26px 70px rgba(0,0,0,.66)}
+/* 稀有度：≥4 金 / 3 银 / ≤2 铜（底色不变，只换金属环与外发光） */
+.card.r3{background:linear-gradient(128deg,#5A6570 0%,#AEB8C2 9%,#F2F6FA 19%,#C7D0D9 31%,
+  #7C8792 47%,#AEB8C2 63%,#EAF0F5 79%,#606B76 93%,#AEB8C2 100%);
+  box-shadow:0 0 0 1px rgba(206,218,230,.18), 0 0 18px rgba(186,202,218,.24),
+             0 0 56px rgba(150,170,196,.13), 0 26px 70px rgba(0,0,0,.66)}
+.card.r2{background:linear-gradient(128deg,#4E3718 0%,#9C7440 9%,#F0D2A8 19%,#BE8F52 31%,
+  #8A6234 47%,#9C7440 63%,#E8C79A 79%,#5E4522 93%,#9C7440 100%);
+  box-shadow:0 0 0 1px rgba(206,170,120,.16), 0 0 18px rgba(188,144,88,.22),
+             0 0 56px rgba(160,120,70,.12), 0 26px 70px rgba(0,0,0,.66)}
+.inner{position:relative;width:100%;height:100%;border-radius:20.5px;overflow:hidden;
+  background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-base) 46%,var(--bg-bottom) 100%);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.08),
+             inset 0 -1px 0 rgba(0,0,0,.55);
+  display:flex;flex-direction:column}
+.top-gloss{position:absolute;left:0;right:0;top:0;height:1.5px;pointer-events:none;z-index:6;
+  border-radius:20px 20px 0 0;
+  background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.55) 20%,
+             rgba(255,255,255,.14) 48%,rgba(255,255,255,0) 74%)}
+.sheen{position:absolute;left:-10%;right:-10%;top:-14%;height:44%;pointer-events:none;
+  background:radial-gradient(112% 70% at 26% -8%,rgba(201,162,39,.15),rgba(201,162,39,0) 62%)}
+.corner{position:absolute;width:34px;height:34px;z-index:6;pointer-events:none;opacity:.85}
+.corner.tl{left:14px;top:14px;border-left:1.5px solid var(--gold);border-top:1.5px solid var(--gold);border-radius:4px 0 0 0}
+.corner.tr{right:14px;top:14px;border-right:1.5px solid var(--gold);border-top:1.5px solid var(--gold);border-radius:0 4px 0 0}
+.corner.bl{left:14px;bottom:14px;border-left:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);border-radius:0 0 0 4px}
+.corner.br{right:14px;bottom:14px;border-right:1.5px solid var(--gold);border-bottom:1.5px solid var(--gold);border-radius:0 0 4px 0}
+
+/* ---------- 立绘：贴左贴顶出血 ---------- */
+.hero{display:flex;align-items:flex-start;position:relative;z-index:1}
+.hero .art{flex:0 0 432px;height:540px;margin:-1.5px 0 0 -1.5px;border-radius:0 0 26px 0;
+  position:relative;overflow:hidden;background:var(--slot)}
+.hero .art img{width:100%;height:100%;object-fit:cover;object-position:50% 6%;display:block;
+  filter:brightness(.80) saturate(.90) contrast(.98)}
+.hero .art .tint{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(20,32,58,0) 30%,rgba(20,32,58,.30) 62%,rgba(20,32,58,.74) 84%,rgba(20,32,58,.96) 96%,#141F35 100%),
+    linear-gradient(180deg,rgba(23,36,61,.34) 0%,rgba(20,32,58,0) 32%,rgba(20,32,58,.42) 64%,#141F35 95%),
+    radial-gradient(122% 80% at 32% 38%,rgba(11,18,32,0) 46%,rgba(11,18,32,.52) 100%)}
+.art-edge{position:absolute;left:0;right:0;bottom:0;height:96px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,18,32,0) 0%,rgba(11,18,32,.55) 62%,rgba(11,18,32,.88) 100%);
+  border-bottom:1px solid rgba(201,162,39,.16)}
+.art-seam{position:absolute;right:0;top:0;bottom:0;width:1.5px;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(201,162,39,0) 0%,rgba(201,162,39,.30) 26%,
+             rgba(245,227,174,.42) 52%,rgba(201,162,39,.26) 78%,rgba(201,162,39,0) 100%)}
+.hr-top{display:flex;align-items:center;gap:10px}
+.cl-icon{width:34px;height:34px;display:block;flex:0 0 34px;opacity:.95}
+.hr-top .stars{width:114px;height:30px;display:block;margin-left:auto;opacity:.96}
+.hr-sub{display:flex;align-items:baseline;gap:14px;margin-top:8px}
+.no{font-size:17px;color:var(--gold-mid);letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.origin{display:flex;gap:18px;margin-top:12px;font-size:15px;color:var(--text-3)}
+.origin b{color:var(--text-2);font-weight:400}
+.bond{display:flex;align-items:center;gap:13px;padding-top:20px}
+.bond .th{width:72px;height:72px;border-radius:9px;overflow:hidden;flex:0 0 72px;
+  box-shadow:0 0 0 1px rgba(201,162,39,.55), 0 0 0 3px rgba(11,18,32,.7), 0 4px 14px rgba(0,0,0,.5)}
+.bond .th img{width:100%;height:100%;object-fit:cover;display:block}
+.bond .tx{display:flex;flex-direction:column;gap:3px}
+.bond .b1{font-size:16px;color:var(--gold)}
+.bond .b2{font-size:18px;color:var(--text-2)}
+.bond .b3{font-size:13.5px;color:#6C7A90;letter-spacing:.04em}
+
+.meta{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;padding:36px 46px 26px 34px}
+.eyebrow{font-size:16px;color:var(--text-3);letter-spacing:.18em}
+.eyebrow b{color:var(--gold-mid);font-weight:400}
+.name{font-size:46px;line-height:1.28;color:var(--text-1);margin-top:16px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.name-jp{font-size:20px;color:var(--text-2);margin-top:2px}
+.attrs{font-size:18px;color:var(--text-3);margin-top:7px}
+.rule{height:1px;background:var(--rule);margin:15px 0 13px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.stat{padding-left:18px;border-left:1px solid rgba(255,255,255,.10)}
+.stat:first-child{padding-left:0;border-left:0}
+.stat .lb{font-size:15px;color:var(--text-3);letter-spacing:.10em}
+.stat .v{font-size:32px;color:var(--num);line-height:1.3;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:13px;color:var(--text-3);margin-left:13px;font-weight:400}
+.cmd{display:flex;align-items:center;gap:9px;margin-top:14px}
+.cmd .lb{font-size:15px;color:var(--text-3);margin-right:7px}
+.cmd img{width:40px;height:40px;border-radius:9px;display:block;
+  box-shadow:0 0 0 1px rgba(255,255,255,.14), 0 3px 8px rgba(0,0,0,.45)}
+
+/* ---------- 头部补充：六维 / 职阶技能 / 画师声优 ---------- */
+.hex{display:flex;gap:0;margin-top:12px;border-radius:9px;overflow:hidden;
+  background:rgba(11,18,32,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.hex .hx{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0 8px;
+  border-left:1px solid rgba(255,255,255,.07)}
+.hex .hx:first-child{border-left:0}
+.hex .hx i{font-style:normal;font-size:12.5px;color:var(--text-3);letter-spacing:.06em}
+.hex .hx b{font-weight:400;font-size:19px;color:var(--gold-hi);letter-spacing:.02em}
+.cls{margin-top:13px;display:flex;flex-direction:column;gap:7px}
+.cls .cl{display:flex;align-items:baseline;gap:9px;font-size:15px}
+.cls .cl .kn{color:var(--gold);letter-spacing:.03em;flex:0 0 auto}
+.cls .cl .kd{color:var(--text-3)}
+.mini{display:flex;gap:26px;margin-top:11px;font-size:14px;color:var(--text-3);letter-spacing:.02em}
+.mini b{color:var(--text-2);font-weight:400}
+.credit{display:flex;gap:26px;margin-top:11px;font-size:15px;color:var(--text-3)}
+.credit b{color:var(--text-2);font-weight:400}
+.art-no{position:absolute;right:20px;bottom:18px;z-index:3;padding:6px 12px 7px;border-radius:8px;
+  font-size:15px;color:var(--gold);letter-spacing:.12em;font-variant-numeric:tabular-nums;
+  background:rgba(16,27,45,.84);border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.traits-inline{margin-top:15px;display:flex;flex-wrap:wrap;align-items:center;
+  font-size:15px;line-height:1.5;color:var(--text-2)}
+.traits-inline span{padding:3px 0}
+.traits-inline i{font-style:normal;color:rgba(201,162,39,.55);margin:0 7px;font-size:13px}
+.traits-inline .k{color:var(--gold-hi)}
+.traits-inline .r{color:var(--text-3)}
+
+/* ---------- 特性 ---------- */
+.traits{margin:20px 46px 0;display:flex;flex-direction:column;gap:10px}
+.traits .th{display:flex;align-items:center;gap:11px}
+.traits .th .lb{font-size:15px;color:var(--gold-mid);letter-spacing:.18em}
+.traits .th .ln{flex:1;height:1px;background:linear-gradient(90deg,rgba(201,162,39,.45),rgba(201,162,39,0))}
+.tgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.tg{height:38px;display:flex;align-items:center;justify-content:center;border-radius:8px;
+  font-size:15px;color:var(--text-2);background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.tg.key{color:var(--gold-hi);background:rgba(201,162,39,.12);border-color:rgba(201,162,39,.45)}
+
+/* ---------- 占位区（框架预览用） ---------- */
+.ph{margin:20px 46px 0;border-radius:16px;border:1.5px dashed rgba(201,162,39,.28);
+  background:rgba(11,18,32,.30);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.ph .pt{font-size:22px;color:rgba(201,162,39,.75);letter-spacing:.24em}
+.ph .pd{font-size:14px;color:#5F6D82;letter-spacing:.06em}
+
+/* ---------- 区块标题 ---------- */
+.sec-h{display:flex;align-items:center;gap:14px;margin:26px 46px 0}
+.sec-h .bar{width:5px;height:24px;border-radius:2px;background:linear-gradient(180deg,#F8EDCB,#C9A227 52%,#8A6E1A)}
+.sec-h .t{font-size:24px;color:var(--gold-hi);letter-spacing:.22em}
+.sec-h .line{flex:1;height:1px;background:linear-gradient(90deg,rgba(201,162,39,.55),rgba(201,162,39,0))}
+.sec-h .n{font-size:14px;color:var(--text-3);letter-spacing:.18em}
+
+/* ---------- 技能区：整宽三行 ---------- */
+.skills{position:relative;z-index:1;margin:13px 46px 0;display:flex;flex-direction:column;gap:12px}
+.sk{border-radius:16px;border:1px solid rgba(255,255,255,.08);padding:14px 20px 16px;
+  background:linear-gradient(180deg,#1E2F4D,#182742);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09), inset 0 -1px 0 rgba(0,0,0,.45), 0 2px 14px rgba(0,0,0,.35)}
+.sk-h{display:flex;align-items:center;gap:14px}
+.sk-h img{width:62px;height:62px;border-radius:50%;display:block;flex:0 0 62px;
+  box-shadow:0 0 0 2px rgba(11,18,32,.72), 0 0 0 3px rgba(255,255,255,.14), 0 4px 12px rgba(0,0,0,.5)}
+.sk-h .nm{font-size:23px;color:var(--text-1)}
+.sk-h .rk{font-size:17px;color:var(--gold);letter-spacing:.06em}
+.sk-h .sep{width:1px;height:18px;background:rgba(255,255,255,.14);margin:0 3px}
+.sk-h .cd{font-size:15.5px;color:var(--text-3);letter-spacing:.03em}
+.sk-h .cd b{color:var(--gold-mid);font-weight:400;font-size:17.5px}
+.sk-h .sp{flex:1}
+.sk-h .lg{font-size:13px;color:#7C8AA0;letter-spacing:.04em}
+.sk-h .lg b{color:var(--gold-mid);font-weight:400}
+.sk-e{margin-top:11px}
+.sk-d{display:flex;align-items:baseline;gap:9px;font-size:17px;color:var(--text-2)}
+.sk-d .tag{font-size:13px;color:var(--gold-mid);letter-spacing:.06em}
+.v10{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-top:7px}
+.v10 .vb{position:relative;height:44px;display:flex;align-items:center;justify-content:center;
+  padding:0 4px;border-radius:6px;background:rgba(11,18,32,.50);border:1px solid rgba(255,255,255,.10);
+  color:var(--num);font-size:16px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.v10 .vb.mid{background:rgba(201,162,39,.16);border-color:rgba(201,162,39,.60);color:var(--gold-hi);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 0 12px rgba(201,162,39,.12)}
+.v10 .vb .brk{position:absolute;left:22%;right:22%;bottom:0;height:2.5px;border-radius:2px;
+  background:var(--gold-mid);box-shadow:0 0 6px rgba(201,162,39,.5)}
+.v10 .vb.mid .brk{background:var(--gold-hi)}
+.v1x{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:14.5px;color:#6C7A90;letter-spacing:.04em}
+.v1x i{width:14px;height:1px;background:rgba(255,255,255,.16)}
+
+/* ---------- 宝具区 ---------- */
+.np{position:relative;z-index:1;display:flex;flex-direction:column;
+  margin:26px 46px 0;border-radius:16px;border:1px solid rgba(255,255,255,.08);padding:20px 22px 22px;
+  background:linear-gradient(180deg,#1E2F4D,#182742);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09), inset 0 -1px 0 rgba(0,0,0,.45), 0 2px 14px rgba(0,0,0,.35)}
+.np-head{height:64px;display:flex;align-items:center;gap:13px;padding:0 18px;border-radius:11px;
+  background:linear-gradient(180deg,#263B62,#1F3054);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.11), inset 0 -1px 0 rgba(0,0,0,.35)}
+.goldbar{width:5px;height:26px;border-radius:2px;background:linear-gradient(180deg,#F8EDCB,#C9A227 52%,#8A6E1A)}
+.np-head .t{font-size:29px;color:var(--gold-hi);letter-spacing:.26em}
+.dot{width:4px;height:4px;border-radius:50%;background:var(--gold-mid);opacity:.85}
+.stamp{font-size:13.5px;letter-spacing:.30em;background:var(--metal-foil);
+  background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  text-shadow:0 1px 0 rgba(0,0,0,.6), 0 0 8px rgba(227,195,107,.18)}
+.spacer{flex:1}
+.np-rule{width:110px;height:1px;background:linear-gradient(90deg,rgba(201,162,39,0),rgba(245,227,174,.8))}
+.np-mark{font-size:19px;color:rgba(201,162,39,.85);letter-spacing:.10em}
+
+.name-row{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-top:17px}
+.np-name{font-size:44px;color:var(--text-1);text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.np-sub{font-size:19px;color:var(--text-2);margin-top:3px}
+.rank{display:flex;flex-direction:column;align-items:flex-end;gap:1px;padding-bottom:4px;flex:0 0 auto}
+.rk-lb{font-size:11.5px;letter-spacing:.30em;color:var(--text-3)}
+.rk-v{font-size:40px;line-height:1.05;background:var(--metal-foil);
+  background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  text-shadow:0 1px 0 rgba(0,0,0,.55), 0 0 10px rgba(227,195,107,.20)}
+
+.chips{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}
+.chip{height:34px;display:inline-flex;align-items:center;padding:0 13px;border-radius:8px;font-size:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10)}
+.c-gold{color:var(--gold-hi);background:rgba(227,195,107,.14);border:1px solid rgba(227,195,107,.55)}
+.c-buster{color:#F2A695;background:rgba(216,84,63,.16);border:1px solid rgba(216,84,63,.55)}
+.c-blue{color:var(--blue-dim);background:rgba(91,143,214,.16);border:1px solid rgba(91,143,214,.5)}
+.c-ghost{color:var(--text-2);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14)}
+
+.div-weak{height:1px;background:rgba(255,255,255,.10);margin:16px 0 14px}
+
+/* ---------- 宝具效果块：描述 + 独立数值框 ---------- */
+.eb{margin-top:15px}
+.eb-d{display:flex;align-items:baseline;gap:10px}
+.eb-d .n{font-size:24px;color:var(--text-1)}
+.eb-d .h{font-size:15px;color:var(--gold-mid)}
+.eb-v{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:9px}
+.vb5{height:52px;display:flex;align-items:center;justify-content:center;border-radius:7px;
+  background:rgba(11,18,32,.50);border:1px solid rgba(255,255,255,.10);
+  color:var(--num);font-size:24px;font-variant-numeric:tabular-nums;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.vb5.on{background:rgba(201,162,39,.16);border-color:rgba(201,162,39,.60);color:var(--gold-hi);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 0 14px rgba(201,162,39,.12)}
+.vb5.none{color:#7C8AA0;font-size:18px;letter-spacing:.10em;border-style:dashed}
+
+.npbar{display:flex;align-items:center;gap:14px;padding:11px 14px;border-radius:10px;margin-top:16px;
+  background:var(--slot);border:1px solid rgba(255,255,255,.05);box-shadow:inset 0 2px 6px rgba(0,0,0,.55)}
+.npbar .lb{font-size:17px;color:var(--text-3);letter-spacing:.08em}
+.track{flex:1;height:20px;border-radius:10px;background:#090F1A;overflow:hidden;
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.8)}
+.fill{width:100%;height:100%;border-radius:10px;
+  background:linear-gradient(90deg,#2E5CA4,#5B8FD6 68%,#8FBCF0);
+  box-shadow:0 0 14px rgba(91,143,214,.5), inset 0 1px 0 rgba(255,255,255,.35)}
+.npbar .pct{font-size:20px;color:var(--num);font-variant-numeric:tabular-nums}
+
+.orn{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:16px 46px 12px}
+.orn i{flex:1;height:1px;background:linear-gradient(90deg,rgba(201,162,39,0),rgba(201,162,39,.55))}
+.orn i:last-child{background:linear-gradient(90deg,rgba(201,162,39,.55),rgba(201,162,39,0))}
+.orn b{width:7px;height:7px;transform:rotate(45deg);background:var(--gold);
+  box-shadow:0 0 0 3px #131E33, 0 0 0 4px rgba(201,162,39,.55), 0 0 12px rgba(227,195,107,.45)}
+
+.foot{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;
+  padding:16px 46px 28px}
+.foot .l{display:flex;flex-direction:column;gap:7px}
+.foot .l1{font-size:18px;color:var(--text-2);letter-spacing:.02em}
+.foot .l2{font-size:18px;color:var(--text-2);letter-spacing:.02em}
+.foot .r{text-align:right;display:flex;flex-direction:column;gap:6px}
+.foot .r1{font-size:15px;color:#6C7A90;letter-spacing:.14em}
+.foot .r2{font-size:15px;color:#6C7A90;letter-spacing:.10em}
+</style></head><body>
+<div class="card"><div class="inner">
+<div class="top-gloss"></div>
+<div class="corner tl"></div><div class="corner tr"></div>
+<div class="corner bl"></div><div class="corner br"></div>
+<div class="sheen"></div>
+
+<section class="hero">
+  <div class="art"><img src="../assets/art_current.png"><div class="tint"></div><div class="art-edge"></div><div class="art-seam"></div>
+    <div class="art-no">No.002</div>
+  </div>
+  <div class="meta">
+    <div class="hr-top">
+      <img class="cl-icon" src="../assets/saber_gold_raw.png">
+      <div class="eyebrow">S E R V A N T&nbsp;／&nbsp;<b>S A B E R</b></div>
+      <img class="stars" src="../assets/5star.png">
+    </div>
+    <div class="name">阿尔托莉雅·潘德拉贡</div>
+    <div class="name-jp">アルトリア・ペンドラゴン</div>
+    <div class="attrs">秩序·善　·　地　·　女性　·　剧情限定</div>
+    <div class="rule"></div>
+    <div class="stats">
+      <div class="stat"><div class="lb">ATK</div><div class="v">11,221<small>Lv.90</small></div></div>
+      <div class="stat"><div class="lb">HP</div><div class="v">15,150<small>Lv.90</small></div></div>
+    </div>
+    <div class="cmd">
+      <span class="lb">指令卡</span>
+      <img src="../assets/card_Q.png"><img src="../assets/card_A.png"><img src="../assets/card_A.png">
+      <img src="../assets/card_B.png"><img src="../assets/card_B.png">
+    </div>
+    <div class="traits-inline"><span class="k">龙</span><i>・</i><span class="k">亚瑟</span><i>・</i><span class="k">圆桌骑士</span><i>・</i><span class="k">王</span><i>・</i><span class="k">阿尔托莉雅脸</span><i>・</i><span class="k">骑乘</span><i>・</i><span>Saber职阶从者</span><i>・</i><span>女性</span><i>・</i><span>地</span><i>・</i><span>善</span><i>・</i><span>秩序</span><i>・</i><span class="r">人型</span><i>・</i><span class="r">人科从者</span><i>・</i><span class="r">FSN从者</span><i>・</i><span class="r">持有灵衣之人</span></div>
+    <div class="credit"><span>画师 <b>武内崇</b></span><span>声优 <b>川澄绫子</b></span></div>
+    <div class="bond">
+      <div class="th"><img src="../assets/bond_ce.png"></div>
+      <div class="tx">
+        <div class="b1">羁绊 Lv.10</div>
+        <div class="b2">星之王冠</div>
+        <div class="b3">从者牵绊礼装　·　★★★★　COST 9</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ph" style="height:660px">
+  <div class="pt">持 有 技 能</div>
+  <div class="pd">框架预览　·　技能块位置（图标 + 名 + 等级 + 充能 / 每效果 10 列 Lv.1–10）</div>
+</div>
+<div class="ph" style="height:460px">
+  <div class="pt">宝 具</div>
+  <div class="pd">框架预览　·　宝具块位置（等级 A++ 在框内 / 伤害 5 列 / OC 5 列）</div>
+</div>
+<div class="orn"><i></i><b></b><i></i></div>
+<footer class="foot">
+  <div class="l">
+    <div class="l1">数据来源　Atlas Academy API　·　Mooncell</div>
+    <div class="l2">版权所有　TYPE-MOON / FGO PROJECT</div>
+  </div>
+  <div class="r">
+    <div class="r1">DESIGN BY MILA</div>
+    <div class="r2">DARK-CHALDEA FRAME ／ v1</div>
+  </div>
+</footer>
+</div></div></body></html>

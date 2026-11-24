@@ -1,0 +1,13 @@
+# 环境
+.venv/
+__pycache__/
+*.pyc
+
+# 渲染产物
+out/
+
+# 中间数据（可由 build_data.py 重新生成）
+data/*.json
+
+# 临时探针
+*.log
