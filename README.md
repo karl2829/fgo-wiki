@@ -23,8 +23,10 @@ fgo-wiki/
 │   ├── wars/              # 关卡
 │   ├── mechanics/         # 机制文档（伤害公式、NP 获取、buff 系统等）
 │   ├── traits/            # 特性统计（按职阶分类的从者合集）
+│   ├── bond-ce/           # 羁绊加成礼装 → 从者归属（8 张限定礼装 + 从者反查）
 │   └── tokou/             # 特攻一览（从者/礼装/纹章）
 ├── raw/                   # 原始 API JSON（不入库，可重新拉取）
+├── assets/                # 出图素材（ui/ 原生提取，external/ 网上收集，索引见 assets/external/README.md）
 ├── scripts/               # 同步、生成、渲染脚本
 ├── references/            # 从者语音、资料、技能引用
 ├── rules/                 # 各实体类型的生成规则
@@ -60,6 +62,7 @@ fgo-wiki/
 | `scripts/fetch_servants.py` | 国服从者增量拉取 |
 | `scripts/fetch_jp_only.py` | 日服先行从者 |
 | `scripts/generate_ce.py` | 礼装 MD 生成 + 索引重建 |
+| `scripts/gen_bond_ce.py` | 羁绊加成礼装归属索引（纯本地，生成 `entities/bond-ce/`） |
 | `scripts/fetch_events.py` | 活动增量同步 |
 | `scripts/fetch_mooncell_gacha.py` | 卡池（从 Mooncell 爬取） |
 | `scripts/sync_command_codes.py` | 指令纹章 |

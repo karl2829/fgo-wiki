@@ -1,0 +1,187 @@
+{
+ "_comment": "FGO 特殊从者登记表（2026-10-24 按 condQuestId/priority 实测重建）。判据：同 num 且 priority>1 的副本若 condQuestId 非 0 → 强化解锁，不登记；condQuestId=0 且技能名不同 → 真形态切换。宝具 num 不同且各自唯一 → 真多宝具；同 num 两条 → 强化。",
+ "_schema": {
+  "collectionNo": "图鉴编号（沟通用）",
+  "internalId": "内部 ID（文件名）",
+  "features.skill_modules": "是否有多套技能模组（同 num 多 priority）",
+  "features.np_modules": "是否有多套宝具（多个不同 num）",
+  "features.form_variant_skills": "含【X再临形象时】双文本的技能数量（技能内部双形态）",
+  "status": "已支持 / 待修复 / 手动维护"
+ },
+ "_updated": "2026-10-24",
+ "servants": [
+  {
+   "collectionNo": 1,
+   "internalId": "800100",
+   "name": "玛修·基列莱特",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     8
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "按灵衣/战斗形象分组；通用渲染已剔除，MD 手工维护",
+   "status": "手动维护",
+   "entities_md": "entities/servants/CN/800100.md"
+  },
+  {
+   "collectionNo": 11,
+   "internalId": "200100",
+   "name": "卫宫",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     97,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "三套宝具（num=1/97/98），随再临形态切换；技能副本均为强化解锁",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/200100.md"
+  },
+  {
+   "collectionNo": 268,
+   "internalId": "1100900",
+   "name": "太空伊什塔尔",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     97,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "三套宝具（num=1/97/98）",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/1100900.md"
+  },
+  {
+   "collectionNo": 312,
+   "internalId": "304800",
+   "name": "梅柳齐娜",
+   "region": "CN",
+   "features": {
+    "skill_modules": true,
+    "np_modules": false,
+    "np_nums": [],
+    "form_variant_skills": 0
+   },
+   "note": "三技能同 num 两套完整效果，按【第1、第2阶段形象时】/【第3阶段形象时】切换；condQuestId 均为 0。宝具 num 唯一，仅强化记录",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/304800.md"
+  },
+  {
+   "collectionNo": 391,
+   "internalId": "204900",
+   "name": "ＵＤＫ－巴格斯特",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "两套宝具（num=1/98）",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/204900.md"
+  },
+  {
+   "collectionNo": 394,
+   "internalId": "205000",
+   "name": "托勒密",
+   "region": "CN",
+   "features": {
+    "skill_modules": true,
+    "np_modules": false,
+    "np_nums": [],
+    "form_variant_skills": 0
+   },
+   "note": "三技能同 num 两套完整效果，按阶段形象切换（含换装宝具）；condQuestId 均为 0。宝具 num 唯一，仅强化记录",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/205000.md"
+  },
+  {
+   "collectionNo": 417,
+   "internalId": "3300200",
+   "name": "埃列什基伽勒",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "两套宝具（num=1/98）",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/3300200.md"
+  },
+  {
+   "collectionNo": 421,
+   "internalId": "2300600",
+   "name": "ＢＢ迪拜",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "两套宝具（num=1/98）",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/2300600.md"
+  },
+  {
+   "collectionNo": 444,
+   "internalId": "4000100",
+   "name": "Ｕ－奥尔加玛丽",
+   "region": "CN",
+   "features": {
+    "skill_modules": true,
+    "np_modules": false,
+    "np_nums": [],
+    "form_variant_skills": 6
+   },
+   "note": "两套技能模组 + 每个技能再带【第一/第二再临】与【第三再临】两套效果文本；宝具共用一套。多形态渲染已修复",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/4000100.md"
+  },
+  {
+   "collectionNo": 448,
+   "internalId": "2301100",
+   "name": "玉兔",
+   "region": "CN",
+   "features": {
+    "skill_modules": false,
+    "np_modules": true,
+    "np_nums": [
+     1,
+     98
+    ],
+    "form_variant_skills": 0
+   },
+   "note": "两套宝具（num=1/98）",
+   "status": "已支持",
+   "entities_md": "entities/servants/CN/2301100.md"
+  }
+ ]
+}

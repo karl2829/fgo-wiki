@@ -108,6 +108,9 @@ for fp in sorted(glob.glob(os.path.join(RAW_DIR, "*.json"))):
     sid = os.path.basename(fp).replace(".json", "")
     with open(fp, encoding="utf-8") as f:
         data = json.load(f)
+    # 手工维护名单（玛修/800100 等）：不参与通用渲染
+    if data.get("id") in (800100,):
+        continue
     try:
         md = generate(data)
         name = data.get("name", str(sid)).replace("/", "·").replace("\\", "")

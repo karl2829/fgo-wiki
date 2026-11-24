@@ -1,0 +1,1359 @@
+{
+  "_comment": "灵衣登记表，来源 Mooncell 灵衣一览（fgo.wiki/w/灵衣一览）。costumeId 对应技能 releaseConditions 中 equipWithTargetCostume 的 condNum。",
+  "_source": "https://fgo.wiki/api.php?action=parse&page=灵衣一览&prop=wikitext&format=json",
+  "_updated": "2026-10-24",
+  "total": 150,
+  "costumes": [
+    {
+      "order": "1",
+      "costumeId": 11,
+      "servant": "玛修·基列莱特",
+      "name": "常夏的泳装",
+      "nameJp": "常夏の水着",
+      "combatForm": "基础",
+      "affectsGameplay": false
+    },
+    {
+      "order": "8",
+      "costumeId": 12,
+      "servant": "玛修·基列莱特",
+      "name": "奥特瑙斯",
+      "nameJp": "オルテナウス",
+      "combatForm": "奥特瑙斯",
+      "affectsGameplay": true
+    },
+    {
+      "order": "35",
+      "costumeId": 13,
+      "servant": "玛修·基列莱特",
+      "name": "奥特瑙斯（改建型）",
+      "nameJp": "オルテナウス（改修型）",
+      "combatForm": "奥特瑙斯",
+      "affectsGameplay": true
+    },
+    {
+      "order": "45",
+      "costumeId": 14,
+      "servant": "玛修·基列莱特",
+      "name": "常夏的泳装Ver.02",
+      "nameJp": "常夏の水着Ver.02",
+      "combatForm": "基础",
+      "affectsGameplay": false
+    },
+    {
+      "order": "63",
+      "costumeId": 15,
+      "servant": "玛修·基列莱特",
+      "name": "Bright Voyager",
+      "nameJp": "Bright Voyager",
+      "combatForm": "基础",
+      "affectsGameplay": false
+    },
+    {
+      "order": "123",
+      "costumeId": 17,
+      "servant": "玛修·基列莱特",
+      "name": "Paladin",
+      "nameJp": "パラディーン",
+      "combatForm": "Paladin",
+      "affectsGameplay": true
+    },
+    {
+      "order": "141",
+      "costumeId": 20,
+      "servant": "玛修·基列莱特",
+      "name": "常夏的泳装Ver.03",
+      "nameJp": "常夏の水着Ver.03",
+      "combatForm": "Paladin",
+      "affectsGameplay": true
+    },
+    {
+      "order": "",
+      "costumeId": 18,
+      "servant": "玛修·基列莱特",
+      "name": "奥特瑙斯",
+      "nameJp": "オルテナウス",
+      "combatForm": "奥特瑙斯",
+      "affectsGameplay": true
+    },
+    {
+      "order": "",
+      "costumeId": 19,
+      "servant": "玛修·基列莱特",
+      "name": "Paladin",
+      "nameJp": "パラディーン",
+      "combatForm": "Paladin",
+      "affectsGameplay": true
+    },
+    {
+      "order": "2",
+      "costumeId": 11,
+      "servant": "女王梅芙",
+      "name": "魅惑的监狱长服饰",
+      "nameJp": "魅惑の獄長ルック",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "57",
+      "costumeId": 12,
+      "servant": "女王梅芙",
+      "name": "我心爱的敌人",
+      "nameJp": "愛しき私の敵対者",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "3",
+      "costumeId": 11,
+      "servant": "尼禄·克劳狄乌斯",
+      "name": "奥林匹亚体操服",
+      "nameJp": "オリンピアの体操服",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "38",
+      "costumeId": 12,
+      "servant": "尼禄·克劳狄乌斯",
+      "name": "维纳斯的丝绸",
+      "nameJp": "ヴィナスのシルク",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "54",
+      "costumeId": 13,
+      "servant": "尼禄·克劳狄乌斯",
+      "name": "霸岚蛮娇狂想曲",
+      "nameJp": "覇嵐蛮嬢ラプソディア",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "4",
+      "costumeId": 11,
+      "servant": "帕尔瓦蒂",
+      "name": "少女搜寻之物",
+      "nameJp": "少女の捜し物",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "5",
+      "costumeId": 11,
+      "servant": "阿斯托尔福",
+      "name": "图利法斯的回忆",
+      "nameJp": "トゥリファスでの思い出",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "6",
+      "costumeId": 11,
+      "servant": "贞德〔Alter〕",
+      "name": "邪龙魔女ver新宿1999",
+      "nameJp": "邪竜の魔女ver新宿1999",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "7",
+      "costumeId": 11,
+      "servant": "亚瑟·潘德拉贡〔Prototype〕",
+      "name": "纯白蔷薇",
+      "nameJp": "ホワイトローズ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "9",
+      "costumeId": 11,
+      "servant": "岩窟王",
+      "name": "基督山特选",
+      "nameJp": "モンテ･クリストセレクション",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "10",
+      "costumeId": 11,
+      "servant": "吉尔伽美什(Caster)",
+      "name": "支配阶级",
+      "nameJp": "エスタブリッシュメント",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "11",
+      "costumeId": 11,
+      "servant": "罗宾汉",
+      "name": "夏日猎手",
+      "nameJp": "夏の狩人",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "12",
+      "costumeId": 11,
+      "servant": "BB(SSR)",
+      "name": "简易灵衣：小恶魔柔嫩肌肤<br>（第二再临）",
+      "nameJp": "簡易霊衣：小悪魔たまご肌<br>（第二再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "13",
+      "costumeId": 12,
+      "servant": "BB(SSR)",
+      "name": "简易灵衣：小恶魔柔嫩肌肤<br>（第三再临）",
+      "nameJp": "簡易霊衣：小悪魔たまご肌<br>（第三再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "14",
+      "costumeId": 11,
+      "servant": "魁札尔·科亚特尔〔桑巴／圣诞〕",
+      "name": "简易灵衣：正派假面",
+      "nameJp": "簡易霊衣：テクニカ・マスカラ<ref name=\"191011namechange\" />",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "15",
+      "costumeId": 12,
+      "servant": "魁札尔·科亚特尔〔桑巴／圣诞〕",
+      "name": "简易灵衣：反派假面",
+      "nameJp": "簡易霊衣：ルーダ・マスカラ<ref name=\"191011namechange\" />",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "16",
+      "costumeId": 11,
+      "servant": "伊莉雅丝菲尔·冯·爱因兹贝伦",
+      "name": "简易灵衣：圣约形态",
+      "nameJp": "簡易霊衣：テスタメント・フォーム<ref name=\"191011namechange\">日服于2019年10月11日的更新中，对这些灵衣的名称添加了“简易灵衣”前缀。</ref>",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "17",
+      "costumeId": 11,
+      "servant": "新宿的Archer",
+      "name": "老练灰领",
+      "nameJp": "グレイ･カラー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "18",
+      "costumeId": 11,
+      "servant": "李书文(Assassin)",
+      "name": "简易灵衣：摘下眼镜<br>（第一再临）",
+      "nameJp": "簡易霊衣：グラスレス<br>（第一再臨）<ref name=\"191011namechange\" />",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "19",
+      "costumeId": 12,
+      "servant": "李书文(Assassin)",
+      "name": "简易灵衣：摘下眼镜<br>（第二再临）",
+      "nameJp": "簡易霊衣：グラスレス<br>（第二再臨）<ref name=\"191011namechange\" />",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "20",
+      "costumeId": 11,
+      "servant": "迦尔纳",
+      "name": "燃烧的三神之衣",
+      "nameJp": "燃える三神の衣",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "78",
+      "costumeId": 12,
+      "servant": "迦尔纳",
+      "name": "眼镜灵衣：闪耀于终焉的彩虹",
+      "nameJp": "メガネ霊衣：終末に輝く彩虹",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "113",
+      "costumeId": 13,
+      "servant": "迦尔纳",
+      "name": "迦尔纳·夏日搭配",
+      "nameJp": "カルナ・夏コーデ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "21",
+      "costumeId": 11,
+      "servant": "长尾景虎",
+      "name": "简易灵衣：行人包",
+      "nameJp": "簡易霊衣：行人包<ref name=\"191011namechange\" />",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "22",
+      "costumeId": 11,
+      "servant": "齐格飞",
+      "name": "超级清凉商务装",
+      "nameJp": "スーパー・クールビズ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "23",
+      "costumeId": 11,
+      "servant": "风魔小太郎",
+      "name": "尽享夏日假期用忍者装束",
+      "nameJp": "夏休み満喫用忍び装束",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "24",
+      "costumeId": 11,
+      "servant": "梅林",
+      "name": "Camelot & Co",
+      "nameJp": "Camelot & Co",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "82",
+      "costumeId": 12,
+      "servant": "梅林",
+      "name": "眼镜灵衣：Camelot & Co模型框",
+      "nameJp": "メガネ霊衣：Camelot & Coモデルフレーム",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "25",
+      "costumeId": 11,
+      "servant": "两仪式",
+      "name": "简易灵衣：斩首兔女郎<br>（第一再临）",
+      "nameJp": "簡易霊衣：首切りバニー<br>（第一再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "26",
+      "costumeId": 12,
+      "servant": "两仪式",
+      "name": "简易灵衣：斩首兔女郎<br>（第二再临）",
+      "nameJp": "簡易霊衣：首切りバニー<br>（第二再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "27",
+      "costumeId": 13,
+      "servant": "两仪式",
+      "name": "简易灵衣：斩首兔女郎<br>（第三再临）",
+      "nameJp": "簡易霊衣：首切りバニー<br>（第三再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "28",
+      "costumeId": 11,
+      "servant": "宫本武藏(Berserker)",
+      "name": "简易灵衣：武藏亲的夏日模式",
+      "nameJp": "簡易霊衣：武蔵ちゃんの夏モード",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "29",
+      "costumeId": 11,
+      "servant": "谜之Alterego·Λ",
+      "name": "简易灵衣：冰霜名流",
+      "nameJp": "簡易霊衣：アイス・セレブリティ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "30",
+      "costumeId": 11,
+      "servant": "谜之女主角X",
+      "name": "简易灵衣：谜之女主角Z",
+      "nameJp": "簡易霊衣：謎のヒロインZ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "31",
+      "costumeId": 11,
+      "servant": "太空伊什塔尔",
+      "name": "简易灵衣：阿斯塔蒂·起源",
+      "nameJp": "簡易霊衣：アシュタレト・オリジン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "32",
+      "costumeId": 11,
+      "servant": "黄金国的Berserker",
+      "name": "简易灵衣：Amazones CEO套装",
+      "nameJp": "簡易霊衣：アマゾネスCEOセット",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "33",
+      "costumeId": 11,
+      "servant": "阿尔托莉雅·潘德拉贡〔Alter〕",
+      "name": "漆黑的骑士王ver新宿1999",
+      "nameJp": "漆黒の騎士王ver新宿1999",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "34",
+      "costumeId": 11,
+      "servant": "莫德雷德",
+      "name": "图利法斯的记忆",
+      "nameJp": "トゥリファスの記憶",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "75",
+      "costumeId": 12,
+      "servant": "莫德雷德",
+      "name": "眼镜灵衣：红色Saber",
+      "nameJp": "メガネ霊衣：レッドセイバー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "36",
+      "costumeId": 11,
+      "servant": "阿周那",
+      "name": "天授的旅装",
+      "nameJp": "授かりし旅装",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "37",
+      "costumeId": 11,
+      "servant": "莱昂纳多·达·芬奇(Rider)",
+      "name": "活泼水手服",
+      "nameJp": "アクティブ・セーラー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "39",
+      "costumeId": 11,
+      "servant": "冈田以藏",
+      "name": "着实帅气的羽织袴",
+      "nameJp": "まっこと格好えい羽織袴",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "72",
+      "costumeId": 12,
+      "servant": "冈田以藏",
+      "name": "相当时尚的西装",
+      "nameJp": "えろうイケちょるスーツ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "40",
+      "costumeId": 11,
+      "servant": "保罗·班扬",
+      "name": "疯狂的兔子",
+      "nameJp": "マッド・バニー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "41",
+      "costumeId": 11,
+      "servant": "阿尔托莉雅·潘德拉贡",
+      "name": "简易灵衣：风王结界",
+      "nameJp": "簡易霊衣：風王結界",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "42",
+      "costumeId": 11,
+      "servant": "齐格鲁德",
+      "name": "与吾爱的回忆",
+      "nameJp": "我が愛との思い出",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "43",
+      "costumeId": 11,
+      "servant": "兰陵王",
+      "name": "辩天衣",
+      "nameJp": "辨天衣",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "44",
+      "costumeId": 11,
+      "servant": "卫宫",
+      "name": "休闲夏日",
+      "nameJp": "サマー･カジュアル",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "46",
+      "costumeId": 11,
+      "servant": "斯卡哈",
+      "name": "穿刺兔女郎",
+      "nameJp": "刺し穿つバニー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "47",
+      "costumeId": 11,
+      "servant": "冲田总司",
+      "name": "简易灵衣：浅葱羽织袴",
+      "nameJp": "簡易霊衣：浅葱の羽織袴",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "48",
+      "costumeId": 11,
+      "servant": "贝德维尔",
+      "name": "银之管家",
+      "nameJp": "シルバー・バトラー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "139",
+      "costumeId": 12,
+      "servant": "贝德维尔",
+      "name": "夏之银骑士",
+      "nameJp": "夏の銀騎士",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "49",
+      "costumeId": 11,
+      "servant": "坂田金时",
+      "name": "平安武者装束",
+      "nameJp": "平安武者装束",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "50",
+      "costumeId": 11,
+      "servant": "伊吹童子",
+      "name": "简易灵衣：大蛇神的分御灵",
+      "nameJp": "簡易霊衣：大蛇神の分け御霊",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "51",
+      "costumeId": 11,
+      "servant": "阿摩耳〔卡莲〕",
+      "name": "简易灵衣：恶魔卡莲",
+      "nameJp": "簡易霊衣：デビルカレン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "52",
+      "costumeId": 11,
+      "servant": "天草四郎",
+      "name": "怪盗天草四郎",
+      "nameJp": "怪盗天草四郎",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "53",
+      "costumeId": 11,
+      "servant": "阿蒂拉",
+      "name": "掌之星尘",
+      "nameJp": "掌の星屑",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "55",
+      "costumeId": 11,
+      "servant": "尤瑞艾莉",
+      "name": "mirage",
+      "nameJp": "mirage",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "56",
+      "costumeId": 11,
+      "servant": "牛若丸",
+      "name": "迷幻流离谭",
+      "nameJp": "サイケデリック流離譚",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "58",
+      "costumeId": 11,
+      "servant": "海伦娜·布拉瓦茨基",
+      "name": "那真是非常伟大灵魂呢☆",
+      "nameJp": "それってとってもマハトマね☆",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "59",
+      "costumeId": 11,
+      "servant": "尼托克丽丝",
+      "name": "Beyond the Mirror",
+      "nameJp": "Beyond the Mirror",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "60",
+      "costumeId": 11,
+      "servant": "酒吞童子",
+      "name": "樱歌烂漫",
+      "nameJp": "桜歌爛漫",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "61",
+      "costumeId": 11,
+      "servant": "静谧哈桑",
+      "name": "夜晚绽放的毒之花",
+      "nameJp": "夜に咲く毒の華",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "62",
+      "costumeId": 11,
+      "servant": "玉藻猫",
+      "name": "笑容 glory day",
+      "nameJp": "笑顔 glory day",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "64",
+      "costumeId": 11,
+      "servant": "贞德",
+      "name": "Prove",
+      "nameJp": "Prove",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "65",
+      "costumeId": 11,
+      "servant": "妖精骑士兰斯洛特",
+      "name": "简易灵衣：妖精骑士兰斯洛特（第一再临）",
+      "nameJp": "簡易霊衣：妖精騎士ランスロット（第一再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "66",
+      "costumeId": 12,
+      "servant": "妖精骑士兰斯洛特",
+      "name": "简易灵衣：妖精骑士兰斯洛特（第二再临）",
+      "nameJp": "簡易霊衣：妖精騎士ランスロット（第二再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "67",
+      "costumeId": 13,
+      "servant": "妖精骑士兰斯洛特",
+      "name": "简易灵衣：赤热偏位",
+      "nameJp": "簡易霊衣：赤熱偏位",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "68",
+      "costumeId": 11,
+      "servant": "摩根",
+      "name": "简易灵衣：冬之女王",
+      "nameJp": "簡易霊衣：冬の女王",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "69",
+      "costumeId": 11,
+      "servant": "爱德华·蒂奇",
+      "name": "盛夏的绅士",
+      "nameJp": "盛夏の紳士",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "70",
+      "costumeId": 11,
+      "servant": "阿喀琉斯",
+      "name": "无畏潜水员",
+      "nameJp": "フィアレス・ダイバー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "71",
+      "costumeId": 11,
+      "servant": "曼迪卡尔多",
+      "name": "夏日运动服",
+      "nameJp": "サマー・スポーツウェア",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "73",
+      "costumeId": 11,
+      "servant": "高文",
+      "name": "眼镜灵衣：优雅方框<!--elegant square-->",
+      "nameJp": "メガネ霊衣：エレガントスクエア",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "103",
+      "costumeId": 12,
+      "servant": "高文",
+      "name": "夏日公子哥",
+      "nameJp": "夏の御曹司",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "74",
+      "costumeId": 11,
+      "servant": "斋藤一",
+      "name": "眼镜灵衣：{{修正|阿一|原文=小一|原因=3|name=小一}}眼镜",
+      "nameJp": "メガネ霊衣：はじめちゃんグラス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "127",
+      "costumeId": 12,
+      "servant": "斋藤一",
+      "name": "海滨的吊儿郎当男",
+      "nameJp": "渚のヘラヘラ男",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "76",
+      "costumeId": 11,
+      "servant": "织田信胜",
+      "name": "眼镜灵衣：织田金边圆眼镜",
+      "nameJp": "メガネ霊衣：織田金縁丸眼鏡",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "77",
+      "costumeId": 11,
+      "servant": "恩奇都",
+      "name": "眼镜灵衣：时尚半框<!--stylish top rim-->",
+      "nameJp": "メガネ霊衣：スタイリッシュトップリム",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "79",
+      "costumeId": 11,
+      "servant": "尼莫",
+      "name": "眼镜灵衣：眉毛框眼镜<!--blow frame-->",
+      "nameJp": "メガネ霊衣：ブローフレーム",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "80",
+      "costumeId": 11,
+      "servant": "美杜莎",
+      "name": "眼镜灵衣：老花镜<!--reading glasses-->",
+      "nameJp": "メガネ霊衣：リーディンググラス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "81",
+      "costumeId": 11,
+      "servant": "冯·霍恩海姆·帕拉塞尔苏斯",
+      "name": "眼镜灵衣：放大镜<!--magnifiers-->",
+      "nameJp": "メガネ霊衣：マグニファイアーズ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "83",
+      "costumeId": 11,
+      "servant": "夏尔·亨利·桑松",
+      "name": "眼镜灵衣：无框圆镜<!--rimless round-->",
+      "nameJp": "メガネ霊衣：リムレスラウンド",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "84",
+      "costumeId": 11,
+      "servant": "阿周那〔Alter〕",
+      "name": "学生会长阿周那",
+      "nameJp": "生徒会長たるアルジュナ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "85",
+      "costumeId": 12,
+      "servant": "阿周那〔Alter〕",
+      "name": "眼镜灵衣：学生会长阿周那（眼镜）",
+      "nameJp": "メガネ霊衣：生徒会長たるアルジュナ（メガネ）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "86",
+      "costumeId": 11,
+      "servant": "库·丘林〔Alter〕",
+      "name": "眼镜灵衣：椭圆镜",
+      "nameJp": "メガネ霊衣：オーバルグラス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "87",
+      "costumeId": 11,
+      "servant": "奥德修斯",
+      "name": "简易灵衣：埃癸斯（第二再临）",
+      "nameJp": "簡易霊衣：アイギス（第二再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "88",
+      "costumeId": 12,
+      "servant": "奥德修斯",
+      "name": "简易灵衣：埃癸斯（第三再临）",
+      "nameJp": "簡易霊衣：アイギス（第三再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "125",
+      "costumeId": 13,
+      "servant": "奥德修斯",
+      "name": "简易灵衣：萨巴最俄斯",
+      "nameJp": "簡易霊衣：サバージオス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "89",
+      "costumeId": 11,
+      "servant": "阿斯克勒庇俄斯",
+      "name": "夏日救援",
+      "nameJp": "サマーレスキュー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "90",
+      "costumeId": 11,
+      "servant": "新宿的Assassin",
+      "name": "修炼服（现代Ver.）",
+      "nameJp": "修練着（現代Ver.）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "91",
+      "costumeId": 11,
+      "servant": "芦屋道满",
+      "name": "牵牛花纹浴衣（咒）",
+      "nameJp": "朝顔柄の浴衣（呪）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "92",
+      "costumeId": 11,
+      "servant": "斯露德",
+      "name": "女武神琳德<!--Rindr-->",
+      "nameJp": "戦乙女リンド",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "93",
+      "costumeId": 11,
+      "servant": "希露德",
+      "name": "女武神奥尔露恩<!--Ǫlrún-->",
+      "nameJp": "戦乙女エルルーン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "94",
+      "costumeId": 11,
+      "servant": "奥特琳德",
+      "name": "女武神洁尔诗科古尔<!--Geirskǫgul-->",
+      "nameJp": "戦乙女ゲイルスケグル",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "95",
+      "costumeId": 11,
+      "servant": "伊吹童子(Berserker)",
+      "name": "简易灵衣：凶暴盛夏之女神",
+      "nameJp": "簡易霊衣：荒ぶる真夏の女神",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "96",
+      "costumeId": 11,
+      "servant": "冲田总司〔Alter〕",
+      "name": "简易灵衣：炼狱Alter",
+      "nameJp": "簡易霊衣：煉獄オルタ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "97",
+      "costumeId": 11,
+      "servant": "壹与",
+      "name": "简易灵衣：回忆中的假期风格",
+      "nameJp": "簡易霊衣：思い出の休日スタイル",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "98",
+      "costumeId": 11,
+      "servant": "光之高扬斯卡娅",
+      "name": "简易灵衣：NFF兔女郎",
+      "nameJp": "簡易霊衣：ＮＦＦバニー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "99",
+      "costumeId": 11,
+      "servant": "埃列什基伽勒",
+      "name": "宁基伽勒<ref>埃列什基伽勒在苏美尔神话中亦有别名为Ninkigal，意为大地的女神（Lady of the Great Earth）</ref>",
+      "nameJp": "ニンキガル",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "100",
+      "costumeId": 11,
+      "servant": "Kingprotea",
+      "name": "特拉特拉乌基的守卫",
+      "nameJp": "トラトラウキの番人",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "101",
+      "costumeId": 12,
+      "servant": "Kingprotea",
+      "name": "黑暗Protea",
+      "nameJp": "ダーク・プロテア",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "102",
+      "costumeId": 11,
+      "servant": "特斯卡特利波卡",
+      "name": "简易灵衣：豹人",
+      "nameJp": "簡易霊衣：ジャガーマン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "129",
+      "costumeId": 12,
+      "servant": "特斯卡特利波卡",
+      "name": "野性枪手",
+      "nameJp": "ワイルド・ガンマン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "104",
+      "costumeId": 11,
+      "servant": "兰斯洛特(Saber)",
+      "name": "夏日最强骑士",
+      "nameJp": "夏の最強騎士",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "105",
+      "costumeId": 11,
+      "servant": "崔斯坦",
+      "name": "鲁鲁夏威的鸡",
+      "nameJp": "ルルハワの鶏",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "106",
+      "costumeId": 11,
+      "servant": "奥伯龙",
+      "name": "清爽的夏日王子",
+      "nameJp": "爽やかサマー・プリンス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "109",
+      "costumeId": 12,
+      "servant": "奥伯龙",
+      "name": "不悦的夏日奥伯龙",
+      "nameJp": "不機嫌サマー・オベロン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "107",
+      "costumeId": 11,
+      "servant": "克洛伊·冯·爱因兹贝伦(Avenger)",
+      "name": "简易灵衣：认真模式",
+      "nameJp": "簡易霊衣：本気モード",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "108",
+      "costumeId": 11,
+      "servant": "斯卡哈·斯卡蒂(Ruler)",
+      "name": "简易灵衣：青翠的夏日女神",
+      "nameJp": "簡易霊衣：青翠の夏女神",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "110",
+      "costumeId": 11,
+      "servant": "旺吉娜",
+      "name": "简易灵衣：旺吉娜之眼",
+      "nameJp": "簡易霊衣：ワンジナ・アイ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "111",
+      "costumeId": 11,
+      "servant": "查理曼",
+      "name": "变装戏服",
+      "nameJp": "ディスガイズ・コスチューム",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "112",
+      "costumeId": 11,
+      "servant": "清姬",
+      "name": "乙姬清姬",
+      "nameJp": "乙姫清姫",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "114",
+      "costumeId": 11,
+      "servant": "珀西瓦尔",
+      "name": "夏日骑士装束",
+      "nameJp": "夏の騎士の装い",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "115",
+      "costumeId": 11,
+      "servant": "巴沙洛缪·罗伯茨",
+      "name": "微笑夏装",
+      "nameJp": "スマイリー・サマーウェア",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "116",
+      "costumeId": 11,
+      "servant": "谜之代行者C.I.E.L",
+      "name": "简易灵衣：开放夏日",
+      "nameJp": "簡易霊衣：オープン・サマー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "117",
+      "costumeId": 12,
+      "servant": "谜之代行者C.I.E.L",
+      "name": "简易灵衣：无眼镜模式",
+      "nameJp": "簡易霊衣：メガネオフモード",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "118",
+      "costumeId": 11,
+      "servant": "Passionlip",
+      "name": "简易灵衣：纯真之花",
+      "nameJp": "簡易霊衣：イノセントフラワー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "119",
+      "costumeId": 11,
+      "servant": "Kazuradrop",
+      "name": "简易灵衣：缪瑞恩",
+      "nameJp": "簡易霊衣：ムリアン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "120",
+      "costumeId": 11,
+      "servant": "梵高〔矿工〕",
+      "name": "简易灵衣：诀别的气球灯",
+      "nameJp": "簡易霊衣：決別のバルーンライト",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "121",
+      "costumeId": 11,
+      "servant": "刑部姬",
+      "name": "简易灵衣：戴上眼镜（第二再临）",
+      "nameJp": "簡易霊衣：メガネあり（第二再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "122",
+      "costumeId": 12,
+      "servant": "刑部姬",
+      "name": "简易灵衣：戴上眼镜（第三再临）",
+      "nameJp": "簡易霊衣：メガネあり（第三再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "124",
+      "costumeId": 11,
+      "servant": "堤丰·厄斐墨洛斯",
+      "name": "简易灵衣：伊普西龙",
+      "nameJp": "簡易霊衣：イプシロン",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "126",
+      "costumeId": 11,
+      "servant": "弗栗多",
+      "name": "简易灵衣：弗栗多·三首",
+      "nameJp": "簡易霊衣：ヴリトラ・トリシラス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "128",
+      "costumeId": 11,
+      "servant": "库·丘林(Caster)",
+      "name": "热带卢恩之夏",
+      "nameJp": "トロピカル・ルーンサマー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "130",
+      "costumeId": 11,
+      "servant": "玉兔",
+      "name": "简易灵衣：隐藏身份的太阳镜",
+      "nameJp": "簡易霊衣：お忍びサングラス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "131",
+      "costumeId": 11,
+      "servant": "原田左之助",
+      "name": "简易灵衣：浅葱羽织袴",
+      "nameJp": "簡易霊衣：浅葱の羽織袴",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "132",
+      "costumeId": 11,
+      "servant": "河上彦斋",
+      "name": "简易灵衣：无笠的彦斋",
+      "nameJp": "簡易霊衣：笠無し彦斎",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "133",
+      "costumeId": 11,
+      "servant": "土方岁三",
+      "name": "浅葱羽织袴",
+      "nameJp": "浅葱の羽織袴",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "134",
+      "costumeId": 11,
+      "servant": "近藤勇",
+      "name": "简易灵衣：白之虎彻",
+      "nameJp": "簡易霊衣：白の虎徹",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "135",
+      "costumeId": 11,
+      "servant": "詹姆斯·莫里亚蒂(Ruler)",
+      "name": "简易灵衣：无化妆（第一再临）",
+      "nameJp": "簡易霊衣：メイク無し（第一再臨）",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "136",
+      "costumeId": 11,
+      "servant": "U－奥尔加玛丽",
+      "name": "简易灵衣：地球总统",
+      "nameJp": "簡易霊衣：地球大統領",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "137",
+      "costumeId": 11,
+      "servant": "普勒拉蒂",
+      "name": "简易灵衣：奇异裙装",
+      "nameJp": "簡易霊衣：ストレンジドレス",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "138",
+      "costumeId": 11,
+      "servant": "得墨忒耳",
+      "name": "亚特兰蒂斯风尚",
+      "nameJp": "アトランティス・スタイル",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "140",
+      "costumeId": 11,
+      "servant": "耀星哈桑",
+      "name": "跃动之夏",
+      "nameJp": "ビビッド・サマー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "142",
+      "costumeId": 11,
+      "servant": "但丁·阿利吉耶里",
+      "name": "惬意但丁",
+      "nameJp": "リラクシング・ダンテ",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "143",
+      "costumeId": 11,
+      "servant": "哈贝特洛特(Pretender)",
+      "name": "狮爷连帽布偶装",
+      "nameJp": "シーサー着ぐるみパーカー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "144",
+      "costumeId": 11,
+      "servant": "渡边纲",
+      "name": "吸血武者",
+      "nameJp": "ヴァンプ武者",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "145",
+      "costumeId": 11,
+      "servant": "图坦卡蒙",
+      "name": "西之王，突然醒来！",
+      "nameJp": "西の王、突如の目覚め！",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "146",
+      "costumeId": 11,
+      "servant": "妖精骑士崔斯坦",
+      "name": "嗜血兔女郎",
+      "nameJp": "ブラッディ・バニー",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "147",
+      "costumeId": 11,
+      "servant": "开膛手杰克",
+      "name": "开膛手护士丧尸",
+      "nameJp": "切り裂きゾンビナース",
+      "combatForm": null,
+      "affectsGameplay": null
+    },
+    {
+      "order": "148",
+      "costumeId": 11,
+      "servant": "库库尔坎",
+      "name": "迪诺斯女巫",
+      "nameJp": "ディノス・ウィッチ",
+      "combatForm": null,
+      "affectsGameplay": null
+    }
+  ],
+  "_schema_note": "combatForm: 该灵衣所属战斗形象组（改变技能/宝具）；affectsGameplay: 是否改变技能与宝具；null 表示尚未扫描"
+}

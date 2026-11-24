@@ -15,8 +15,12 @@ FGO_WIKI = os.path.expanduser('~/fgo-wiki')
 OUT_DIR = os.path.join(FGO_WIKI, 'entities', 'tokou')
 
 # ---------- trait id -> 中文 ----------
-with open('/tmp/cn_trait_dict.json') as f:
-    trait_dict = json.load(f)  # id(str) -> en
+# 历史遗留：该临时文件由外部流程生成，缺失时降级为空映射（tid_to_cn 当前无调用点，不影响输出）
+try:
+    with open('/tmp/cn_trait_dict.json') as f:
+        trait_dict = json.load(f)  # id(str) -> en
+except FileNotFoundError:
+    trait_dict = {}
 with open(os.path.join(FGO_WIKI, 'data/trait_translations.json')) as f:
     tt = json.load(f)
 

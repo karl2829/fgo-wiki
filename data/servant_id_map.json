@@ -364,6 +364,11 @@
     "collectionNo": 445,
     "className": "saber"
   },
+  "106400": {
+    "name": "近藤勇",
+    "collectionNo": 456,
+    "className": "saber"
+  },
   "1100100": {
     "name": "安哥拉曼纽",
     "collectionNo": 107,
@@ -452,6 +457,16 @@
   "1101900": {
     "name": "方巿",
     "collectionNo": 420,
+    "className": "avenger"
+  },
+  "1102100": {
+    "name": "藤堂平助",
+    "collectionNo": 454,
+    "className": "avenger"
+  },
+  "1102200": {
+    "name": "终结的伊丽莎白",
+    "collectionNo": 458,
     "className": "avenger"
   },
   "1700100": {
@@ -1154,6 +1169,16 @@
     "collectionNo": 449,
     "className": "lancer"
   },
+  "306100": {
+    "name": "原田左之助",
+    "collectionNo": 455,
+    "className": "lancer"
+  },
+  "306200": {
+    "name": "伊丽莎白·巴托里",
+    "collectionNo": 457,
+    "className": "lancer"
+  },
   "3300100": {
     "name": "所多玛之兽／德拉科",
     "collectionNo": 377,
@@ -1397,6 +1422,11 @@
   "405500": {
     "name": "安德洛墨达",
     "collectionNo": 406,
+    "className": "rider"
+  },
+  "405700": {
+    "name": "尼莫／诺亚",
+    "collectionNo": 452,
     "className": "rider"
   },
   "405800": {
@@ -1877,6 +1907,11 @@
   "605000": {
     "name": "耀星哈桑",
     "collectionNo": 408,
+    "className": "assassin"
+  },
+  "605100": {
+    "name": "河上彦斋",
+    "collectionNo": 453,
     "className": "assassin"
   },
   "700100": {

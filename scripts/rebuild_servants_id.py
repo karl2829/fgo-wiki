@@ -16,6 +16,10 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 FULL = "--full" in sys.argv
 
+# 手工维护名单（internalId）：这些从者不参与通用渲染，MD 全靠人工维护。
+# 玛修(No.1/800100)：技能组与宝具按战斗形象(灵衣)整套切换，Atlas 数据结构无法可靠推导。
+MANUAL_SERVANTS = {800100}
+
 # Load generate module
 sys.path.insert(0, WIKI)
 spec = importlib.util.spec_from_file_location("generate", os.path.join(WIKI, "generate.py"))
@@ -46,6 +50,10 @@ for fp in raw_files:
 
     # Generate MD with ID-based filename（默认增量，只补缺失）
     out_path = os.path.join(ENTITY_DIR, f"{sid_int}.md")
+    # 手工维护名单：这些从者不参与通用渲染（MD 全靠人工维护）
+    if sid_int in MANUAL_SERVANTS:
+        skipped += 1
+        continue
     if not FULL and os.path.exists(out_path):
         skipped += 1
         continue

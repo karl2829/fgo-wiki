@@ -1,0 +1,540 @@
+{
+  "sid": "500300",
+  "collectionNo": 62,
+  "servant_name": "玉藻の前",
+  "updated_at": "2026-10-23",
+  "skills": {
+    "2": {
+      "id": 2710650,
+      "num": 2,
+      "name": "那須野に謡う EX",
+      "originalName": "那須野に謡う EX",
+      "ruby": "なすのにうたう",
+      "detail": "自身の防御力を大アップ▲(1ターン)＆防御力をアップ(3ターン) ＋ 味方全体の強化解除耐性をアップ(1回・3ターン)▲＆NPを増やす▲",
+      "unmodifiedDetail": "自身の防御力を大アップ[g][o]▲[/o][/g][{0}](1ターン)＆防御力をアップ[{0}](3ターン) ＋ 味方全体の強化解除耐性をアップ[{0}](1回・3ターン)[g][o]▲[/o][/g]＆NPを増やす[{0}][g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 500300,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94163801,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 1,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00400.png",
+      "coolDown": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        6,
+        6,
+        6,
+        6,
+        5
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 500300,
+          "num": 2,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94163801,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 1,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 177,
+          "funcType": "addState",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "防御力アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_301.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 146,
+              "name": "防御力アップ",
+              "originalName": "防御力アップ",
+              "detail": "防御力をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_301.png",
+              "type": "upDefence",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3007,
+                  "name": "buffIncreaseDefence"
+                },
+                {
+                  "id": 3040,
+                  "name": "buffDefenceUp"
+                },
+                {
+                  "id": 3058,
+                  "name": "buffDefUp"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 550
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 600
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 650
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 700
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 750
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 800
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 850
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 900
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1,
+              "Value": 1000
+            }
+          ]
+        },
+        {
+          "funcId": 176,
+          "funcType": "addState",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "防御力アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_301.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 146,
+              "name": "防御力アップ",
+              "originalName": "防御力アップ",
+              "detail": "防御力をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_301.png",
+              "type": "upDefence",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3007,
+                  "name": "buffIncreaseDefence"
+                },
+                {
+                  "id": 3040,
+                  "name": "buffDefenceUp"
+                },
+                {
+                  "id": 3058,
+                  "name": "buffDefUp"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 100
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 120
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 140
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 160
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 180
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 200
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 220
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 240
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 260
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": -1,
+              "Value": 300
+            }
+          ]
+        },
+        {
+          "funcId": 3247,
+          "funcType": "addState",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "強化解除耐性アップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_348.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 887,
+              "name": "強化解除耐性アップ",
+              "originalName": "強化解除耐性アップ",
+              "detail": "強化解除耐性をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_348.png",
+              "type": "upToleranceSubstate",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3007,
+                  "name": "buffIncreaseDefence"
+                },
+                {
+                  "id": 3027,
+                  "name": "buffAtkUp"
+                },
+                {
+                  "id": 3058,
+                  "name": "buffDefUp"
+                },
+                {
+                  "id": 3031,
+                  "name": "buffCritDamageUp"
+                },
+                {
+                  "id": 3021,
+                  "name": "buffEvade"
+                },
+                {
+                  "id": 3018,
+                  "name": "buffEvadeAndInvincible"
+                },
+                {
+                  "id": 3024,
+                  "name": "buffGuts"
+                },
+                {
+                  "id": 3030,
+                  "name": "buffNpDamageUp"
+                },
+                {
+                  "id": 3032,
+                  "name": "buffCritRateUp"
+                },
+                {
+                  "id": 3019,
+                  "name": "buffSureHit"
+                }
+              ],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 500
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 550
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 600
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 650
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 700
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 750
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 800
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 850
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 900
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 1000
+            }
+          ]
+        },
+        {
+          "funcId": 466,
+          "funcType": "gainNp",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Value": 2100
+            },
+            {
+              "Rate": 1000,
+              "Value": 2200
+            },
+            {
+              "Rate": 1000,
+              "Value": 2300
+            },
+            {
+              "Rate": 1000,
+              "Value": 2400
+            },
+            {
+              "Rate": 1000,
+              "Value": 2500
+            },
+            {
+              "Rate": 1000,
+              "Value": 2600
+            },
+            {
+              "Rate": 1000,
+              "Value": 2700
+            },
+            {
+              "Rate": 1000,
+              "Value": 2800
+            },
+            {
+              "Rate": 1000,
+              "Value": 3000
+            }
+          ]
+        },
+        {
+          "funcId": 472,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "ptAll",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-10-23",
+      "event_name": "复刻版：盈月剑风帖"
+    }
+  },
+  "nps": {}
+}

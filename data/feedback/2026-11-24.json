@@ -1,0 +1,42 @@
+[
+ {
+  "time": "2026-11-24T23:57:00",
+  "group": "FGO信息交流群",
+  "user": "幸运因幡(1280044539)",
+  "original_question": "术冠卡池四星术阶推荐",
+  "my_answer": "把尼托克丽丝宝具说成全体Buster即死宝具",
+  "feedback": "尼托克丽丝的宝具冥镜宝典是蓝卡(Arts)宝具，不是Buster",
+  "status": "已确认并修复",
+  "resolution": "核实 raw/servants/CN/501200.json：宝具 card 代码=1，同卡池已知从者对照(齐格1=Arts、大黑天3=Quick)确认映射 1=Arts/2=Buster/3=Quick，尼托宝具确为Arts。知识库raw数据无误，错误出在回答时把card代码映射搞反，已在后续回答中修正，无需改数据。"
+ },
+ {
+  "time": "2026-11-25T00:00:37",
+  "group": "FGO信息交流群",
+  "user": "Can can need KUN 吧(3432845968)",
+  "original_question": "术冠卡池四星术阶推荐",
+  "my_answer": "说喀耳刻宝具即死（且旧回答把尼托宝具写成Buster）",
+  "feedback": "喀耳刻宝具没有即死；尼托克丽丝也不是Buster宝具",
+  "status": "已确认并修复",
+  "resolution": "核实 raw/servants/CN/503300.json：禁忌狂宴函数为 damageNp+猪化(donotAct)+暴击率下降+暴击星掉落下降，无 instantDeath，即死说法有误。尼托部分同日另一条反馈（幸运因幡）已核实为Arts。错误源于回答时凭印象把尼托的即死安到喀耳刻头上、卡色映射又搞反；数据本身无误，无需改库。"
+ },
+ {
+  "time": "2026-11-25T00:02:16",
+  "group": "FGO信息交流群",
+  "user": "九周年最大赢家（攒石200）(731612370)",
+  "original_question": "水摩根/梅林/1001推荐戴冠谁",
+  "my_answer": "称水妃摩根技能3给全队30%充能",
+  "feedback": "技能3是全体50%充能（满级）",
+  "status": "已确认并修复",
+  "resolution": "核实 raw/servants/CN/505300.json：最后的度假胜地A gainNp ptAll svals=[3000..5000]，即 Lv1=30%、Lv10=50%，数据无误，错误是回答引用了 Lv1 数值未给满级口径。已定规范：群聊引用技能数值默认按满级(Lv10)口径。"
+ },
+ {
+  "time": "2026-11-25T00:15:41",
+  "group": "FGO信息交流群",
+  "user": "Can can need KUN 吧(3432845968)",
+  "original_question": "群体减CD从者列举",
+  "my_answer": "把特诺奇蒂特兰「月之兔EX」说成全体CD-1",
+  "feedback": "月之兔EX的-1CD只对己方〔兔子系从者〕生效，不是全队",
+  "status": "已确认并修复",
+  "resolution": "核实 raw/servants/CN/2301000.json：shortenSkill functvals=[2919 bunnyServant]，暴击威力up同样限定兔系；基础traits+traitAdd聚合后兔耳从者共16名（含1名仅日服），与 entities/traits/特性：兔耳从者.md 一致。教训：判群体效果必须查 functvals/ckOpIndv 特性限定，kb 已有 per-trait 文件可直接引用。"
+ }
+]

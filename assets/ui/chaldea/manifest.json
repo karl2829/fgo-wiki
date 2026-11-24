@@ -1,0 +1,231 @@
+{
+ "source": "github.com/chaldea-center/chaldea (res/assets, res/img), commit HEAD",
+ "fetched_at": "2026-11-14 21:17",
+ "note": "FGO 官方 UI 切图（Chaldea 项目自带），仅自用出图",
+ "files": [
+  {
+   "path": "assets/card_bg_arts.png",
+   "w": 133,
+   "h": 170,
+   "kb": 7.9,
+   "sha1": "385ffa6c7d02"
+  },
+  {
+   "path": "assets/card_bg_buster.png",
+   "w": 133,
+   "h": 170,
+   "kb": 7.4,
+   "sha1": "a456376ba8d9"
+  },
+  {
+   "path": "assets/card_bg_quick.png",
+   "w": 133,
+   "h": 170,
+   "kb": 7.3,
+   "sha1": "60f86f186c42"
+  },
+  {
+   "path": "assets/card_icon_arts.png",
+   "w": 185,
+   "h": 133,
+   "kb": 11.6,
+   "sha1": "438555148aa2"
+  },
+  {
+   "path": "assets/card_icon_buster.png",
+   "w": 185,
+   "h": 133,
+   "kb": 14.9,
+   "sha1": "c0ba7488523f"
+  },
+  {
+   "path": "assets/card_icon_quick.png",
+   "w": 185,
+   "h": 133,
+   "kb": 11.9,
+   "sha1": "8dbd158106af"
+  },
+  {
+   "path": "assets/card_txt_arts.png",
+   "w": 150,
+   "h": 73,
+   "kb": 5.7,
+   "sha1": "942a4ef11e4a"
+  },
+  {
+   "path": "assets/card_txt_buster.png",
+   "w": 150,
+   "h": 73,
+   "kb": 6.1,
+   "sha1": "366516b0f3f9"
+  },
+  {
+   "path": "assets/card_txt_extra.png",
+   "w": 200,
+   "h": 100,
+   "kb": 13.5,
+   "sha1": "8c79d16fe37f"
+  },
+  {
+   "path": "assets/card_txt_quick.png",
+   "w": 150,
+   "h": 73,
+   "kb": 7.1,
+   "sha1": "0554f6f4fd1e"
+  },
+  {
+   "path": "assets/img_bond_category.png",
+   "w": 80,
+   "h": 80,
+   "kb": 7.3,
+   "sha1": "3c25932e3924"
+  },
+  {
+   "path": "assets/list/listframes0_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 16.6,
+   "sha1": "f215ade99526"
+  },
+  {
+   "path": "assets/list/listframes0_txt_item.png",
+   "w": 126,
+   "h": 12,
+   "kb": 0.7,
+   "sha1": "ae5248d82916"
+  },
+  {
+   "path": "assets/list/listframes1_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 18.3,
+   "sha1": "4e88d113b9e0"
+  },
+  {
+   "path": "assets/list/listframes1_txt_item.png",
+   "w": 126,
+   "h": 12,
+   "kb": 0.8,
+   "sha1": "39accc76247c"
+  },
+  {
+   "path": "assets/list/listframes2_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 16.1,
+   "sha1": "2b3b8846b7a7"
+  },
+  {
+   "path": "assets/list/listframes2_txt_item.png",
+   "w": 126,
+   "h": 12,
+   "kb": 0.6,
+   "sha1": "7f42849b55d1"
+  },
+  {
+   "path": "assets/list/listframes3_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 11.2,
+   "sha1": "96e6c6cd0e5f"
+  },
+  {
+   "path": "assets/list/listframes3_txt_item.png",
+   "w": 126,
+   "h": 12,
+   "kb": 0.6,
+   "sha1": "a24f53fb1fc3"
+  },
+  {
+   "path": "assets/list/listframes4_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 17.0,
+   "sha1": "c36ce2263c44"
+  },
+  {
+   "path": "assets/list/listframes5_bg.png",
+   "w": 142,
+   "h": 155,
+   "kb": 12.7,
+   "sha1": "a1cde1c28ae0"
+  },
+  {
+   "path": "img/chaldea.png",
+   "w": 310,
+   "h": 310,
+   "kb": 53.6,
+   "sha1": "1ccdad21992f"
+  },
+  {
+   "path": "img/error.png",
+   "w": 128,
+   "h": 128,
+   "kb": 4.2,
+   "sha1": "fa6ad8f4a740"
+  },
+  {
+   "path": "img/gudako.png",
+   "w": 256,
+   "h": 256,
+   "kb": 32.0,
+   "sha1": "6b701d8f832f"
+  },
+  {
+   "path": "img/launcher_icon/app_icon.png",
+   "w": 512,
+   "h": 512,
+   "kb": 38.8,
+   "sha1": "113ffd0d9397"
+  },
+  {
+   "path": "img/launcher_icon/app_icon_circle.png",
+   "w": 1024,
+   "h": 1024,
+   "kb": 63.4,
+   "sha1": "003427945d03"
+  },
+  {
+   "path": "img/launcher_icon/app_icon_logo.png",
+   "w": 512,
+   "h": 512,
+   "kb": 49.6,
+   "sha1": "585e2332f5c2"
+  },
+  {
+   "path": "img/launcher_icon/app_icon_rounded.png",
+   "w": 1024,
+   "h": 1024,
+   "kb": 55.1,
+   "sha1": "19c4038de0e5"
+  },
+  {
+   "path": "img/load_icon_A01.png",
+   "w": 128,
+   "h": 128,
+   "kb": 7.4,
+   "sha1": "d93aafdc4313"
+  },
+  {
+   "path": "img/load_icon_A02.png",
+   "w": 128,
+   "h": 128,
+   "kb": 7.6,
+   "sha1": "294f552674cb"
+  },
+  {
+   "path": "img/load_icon_A03.png",
+   "w": 128,
+   "h": 128,
+   "kb": 7.1,
+   "sha1": "7838d7a062f7"
+  },
+  {
+   "path": "img/load_icon_A04.png",
+   "w": 128,
+   "h": 128,
+   "kb": 5.1,
+   "sha1": "5a12a0756471"
+  }
+ ]
+}

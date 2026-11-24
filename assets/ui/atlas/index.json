@@ -1,0 +1,68 @@
+{
+ "region": "CN",
+ "rule": "https://static.atlasacademy.io/{region}/<bundle路径>/<精灵名>.png",
+ "checked_at": "2026-11-14 21:38",
+ "total_ok": 12,
+ "files": [
+  {
+   "path": "Back/back10000.png",
+   "url": "https://static.atlasacademy.io/CN/Back/back10000.png",
+   "bytes": 4001
+  },
+  {
+   "path": "BuffIcons/bufficon_1014.png",
+   "url": "https://static.atlasacademy.io/CN/BuffIcons/bufficon_1014.png",
+   "bytes": 2400
+  },
+  {
+   "path": "ClassIcons/img_classchart.png",
+   "url": "https://static.atlasacademy.io/CN/ClassIcons/img_classchart.png",
+   "bytes": 130249
+  },
+  {
+   "path": "Image/back10000/back10000.png",
+   "url": "https://static.atlasacademy.io/CN/Image/back10000/back10000.png",
+   "bytes": 6488
+  },
+  {
+   "path": "Items/1.png",
+   "url": "https://static.atlasacademy.io/CN/Items/1.png",
+   "bytes": 17760
+  },
+  {
+   "path": "Items/12.png",
+   "url": "https://static.atlasacademy.io/CN/Items/12.png",
+   "bytes": 13593
+  },
+  {
+   "path": "Items/2000.png",
+   "url": "https://static.atlasacademy.io/CN/Items/2000.png",
+   "bytes": 25674
+  },
+  {
+   "path": "SkillIcons/skill_999999.png",
+   "url": "https://static.atlasacademy.io/CN/SkillIcons/skill_999999.png",
+   "bytes": 4950
+  },
+  {
+   "path": "Terminal/Info/CommonUIAtlas/frame.png",
+   "url": "https://static.atlasacademy.io/CN/Terminal/Info/CommonUIAtlas/frame.png",
+   "bytes": 130
+  },
+  {
+   "path": "Terminal/Info/CommonUIAtlas/icon_lock.png",
+   "url": "https://static.atlasacademy.io/CN/Terminal/Info/CommonUIAtlas/icon_lock.png",
+   "bytes": 1485
+  },
+  {
+   "path": "Terminal/Info/CommonUIAtlas/icon_nplv.png",
+   "url": "https://static.atlasacademy.io/CN/Terminal/Info/CommonUIAtlas/icon_nplv.png",
+   "bytes": 722
+  },
+  {
+   "path": "Terminal/Info/CommonUIAtlas/line.png",
+   "url": "https://static.atlasacademy.io/CN/Terminal/Info/CommonUIAtlas/line.png",
+   "bytes": 2989
+  }
+ ]
+}

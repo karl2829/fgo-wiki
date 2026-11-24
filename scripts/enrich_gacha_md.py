@@ -11,7 +11,7 @@ from urllib.parse import unquote
 
 WIKI = os.path.expanduser("~/fgo-wiki")
 RAW_GACHA = os.path.join(WIKI, "raw/gacha/gacha_raw.json")
-CACHE = "/home/karl/.hermes/cache/web/fgo.wiki-8375a12bfb.md"
+CACHE = "/home/mila/.hermes/cache/web/fgo.wiki-8375a12bfb.md"
 
 raw_gacha = json.load(open(RAW_GACHA))
 if not os.path.exists(CACHE):

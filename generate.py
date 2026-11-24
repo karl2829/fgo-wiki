@@ -42,6 +42,26 @@ if os.path.exists(BUFF_CALC_PATH):
         pass
 
 CARD_MAP = {"1": "Arts", "2": "Buster", "3": "Quick", "4": "Extra", "10": "Beast"}
+
+# ── 特殊从者登记表 ──
+# 技能多模组/宝具多模组/技能内双再临形态等特殊结构，生成时按登记特征走特殊分支。
+SPECIAL_SERVANTS = {}
+SPECIAL_PATH = os.path.join(WIKI, "data/special_servants.json")
+if os.path.exists(SPECIAL_PATH):
+    try:
+        with open(SPECIAL_PATH, encoding="utf-8") as f:
+            _sp = json.load(f)
+        for _s in _sp.get("servants", []):
+            SPECIAL_SERVANTS[str(_s["internalId"])] = _s
+    except Exception as _e:
+        print(f"[warn] special_servants.json 加载失败: {_e}", file=sys.stderr)
+
+
+def is_special_servant(data):
+    """返回该从者的特殊登记项，无则 None。"""
+    return SPECIAL_SERVANTS.get(str(data.get("id")))
+
+
 CARD_ICONS = {
     "Arts": "https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/icons/cards/Arts.png",
     "Buster": "https://cdn.jsdelivr.net/gh/karl2829/fgo-images@main/fgo/icons/cards/Buster.png",
@@ -287,6 +307,13 @@ def get_func_values(fn, next_fn=None):
     Returns (values_list, is_fixed, formatter)."""
     field, divisor, unit = get_buff_rule(fn)
     svals = fn.get("svals", [])
+    _raw_all = [int(sv.get("Value", 0) or 0) for sv in svals]
+    # 按约定「值 >= 100000 是内部 id（特性/状态引用），不是展示数值」。
+    # 注意：这里只按绝对值判定，不能按换算后大小判（场地/状态 id 常见 2038 量级，
+    # 会被误判成 203.8%；真正该拦的是文本侧 —「…特性的状态」这类段落不出数值）。
+    if any(v >= 100000 for v in _raw_all):
+        return [], True, lambda v: ""
+    _raw_all = None
     
     # Check for fixed_display override in buff_calc
     buffs = fn.get("buffs", [])
@@ -361,22 +388,34 @@ def get_func_values(fn, next_fn=None):
         fmt = lambda v: f"{v:.0f}%" if v == int(v) else f"{v:.1f}%"
         return vs, is_fixed, fmt
     
-    # Skip very large values (>50000, state references) 
-    if all(v > 50000 for v in vs):
+    # 按约定「值 >= 100000 是内部 id（特性/状态引用），不是数值」；
+    # 单个值荒谬（>1000% 换算）同样视为非展示数值 —— 970566（状态 id）、
+    # 203.8%（内部概率常数）都属这一类。旧逻辑因「不是全部超阈值」而漏渲染。
+    if any(v >= 100000 or (divisor and v / divisor > 1000) for v in vs):
         return [], True, lambda v: ""
-    # Values of 0 or 1 for evasion/dodge/guts are flags, not percentages (only for Value field, not Value2)
-    if all(v < 5 for v in vs) and fn.get("funcType","") not in (NiceFuncType.delayNpturn,):
-        # Check if this is a Value2-based buff (like attack-trigger NP gain)
-        buffs = fn.get("buffs", [])
-        is_value2 = False
-        if buffs:
-            bid = str(buffs[0].get("id", ""))
-            if bid in BUFF_CALC and BUFF_CALC[bid].get("field") == "Value2":
-                is_value2 = True
-        if not is_value2:
-            return [], True, lambda v: ""
+    pass  # 继续按字段规则换算
+    # 「全为 0」= 纯状态标记（回避、即死无效、无敌等），不展示数值；
+    # 但 1 可能是真实的「1 次/1 回合」计数，不能一刀切。HP 变动是点数，不受此限。
+    if all(v == 0 for v in vs) and fn.get("funcType", "") not in (
+            NiceFuncType.delayNpturn, NiceFuncType.hastenNpturn, "lossHp", "lossHpSafe"):
+        return [], True, lambda v: ""
+
+    # 自伤/消耗 HP：走 Value 桶是「每级固定点数」，不是百分比，必须原值返回。
+    # （千年的报恩/一夜羽织：Value=1000/2000 表示扣 1000/2000 HP）
+    if fn.get("funcType", "") in ("lossHp", "lossHpSafe"):
+        raw = [int(sv.get("Value", 0) or 0) for sv in svals]
+        if raw and any(raw):
+            while len(raw) < 10:
+                raw.append(raw[-1])
+            raw = raw[:10]
+            return raw, len(set(raw)) <= 1, lambda v: str(int(v))
+
     if divisor == 0:
         return vs, len(set(vs)) <= 1, lambda v: str(v)
+    # 数值合理性：内部 id 被当成百分比时会出现 1000.9% 这类荒谬值。
+    # 真实效果极少超过 1000%，超过即视为「非展示数值」，只保留文本。
+    if any(v >= 100000 for v in vs):
+        return [], True, lambda v: ""
     return [v/divisor for v in vs], len(set(vs)) <= 1, lambda v: f"{v:.0f}%" if v == int(v) else f"{v:.1f}%"
 
 
@@ -459,8 +498,15 @@ def get_current_skills(skills):
     result = [best[n] for n in sorted(best)]
     for sk in result:
         num = sk.get("num", 0)
+        # 只有「存在更高 priority 且带 condQuestId 的强化后版本」时，低版本才算强化前。
+        # condQuestId 记在强化后那份上；condQuestId 全为 0 的副本是形态切换
+        # （托勒密/梅柳齐娜），不能当强化前输出。
+        me = sk.get("priority", 0)
+        # best 取的是最高 priority，不存在「更高版本」，所以判据是「本版本或更高版本带 condQuestId」
+        same_or_later = [s for s in all_by_num[num] if s.get("priority", 0) >= me]
         sk["_old_versions"] = [s for s in all_by_num[num]
-                               if s.get("priority", 0) < sk.get("priority", 0)]
+                               if s.get("priority", 0) < me] if any(
+            s.get("condQuestId") for s in same_or_later) else []
     return result
 
 
@@ -473,6 +519,8 @@ def get_skill_modules(skills):
       - is_multi=True: modules 为 [{priority, skills:[num1..numN]}, ...] 按 priority 升序
       - is_multi=False: modules 为空，调用方走原 get_current_skills 逻辑。
     注意: 强化前后(某单一 num 有旧版本)不属于多模组——只有全部 num 版本数一致才算。
+    另外第 2 套及以后的副本若带 condQuestId（强化关卡解锁）→ 一定是强化，
+    不是形态切换，直接判为单模组，由 get_current_skills 取最新版本。
     """
     by_num = defaultdict(list)
     for sk in skills:
@@ -483,6 +531,12 @@ def get_skill_modules(skills):
     counts = {len(by_num[n]) for n in nums}
     # 所有 num 都有 ≥2 个版本且数量完全一致 → 多模组
     if len(counts) == 1 and next(iter(counts)) >= 2:
+        # 强化闸门：任何一套「非首版」副本带 condQuestId，说明是强化解锁而非形态切换
+        for n in nums:
+            vers = sorted(by_num[n], key=lambda s: s.get("priority", 0))
+            for sk in vers[1:]:
+                if sk.get("condQuestId"):
+                    return False, []
         nver = next(iter(counts))
         modules = []
         for v in range(nver):
@@ -556,16 +610,84 @@ def get_scale_div(func_type):
     return 100 if func_type in (NiceFuncType.gainNp, NiceFuncType.lossNp) else (0 if func_type == NiceFuncType.gainStar else 10)
 
 
+def _func_usable(fn):
+    """该函数是否可能承载「detail 里写明的那条效果」。
+
+    排除两类：数值是内部状态 id 的壳函数、只有 buff 引用没有可读数值的态函数。
+    但「付与〔特性〕」这类函数虽然有 buff，数值确实是内部特性 id，
+    文本明确写了「付与〔…〕特性」时应由它承载，不能整体排除。
+    """
+    vals = [v.get("Value") for v in fn.get("svals", [])]
+    if vals and all(isinstance(v, (int, float)) and v >= 100000 for v in vals):
+        popup = fn.get("funcPopupText") or ""
+        names = " ".join(b.get("name") or "" for b in fn.get("buffs", []))
+        if "特性" in popup or "特性" in names:
+            return True
+        return False
+    return True
+
+
+def _norm_txt(s):
+    return (s or "").replace(" ", "").replace(":", "").replace("：", "")
+
+
+def _fn_named_in(fn, part):
+    """该函数是否被这段文本「点名」（弹窗文本 / buff 名 / buff 说明出现在段里）。"""
+    p = _norm_txt(part)
+    if not p:
+        return False
+    cands = [fn.get("funcPopupText") or ""]
+    for b in fn.get("buffs", []) or []:
+        cands.append(b.get("name") or "")
+        cands.append(b.get("detail") or "")
+    for c in cands:
+        c = _norm_txt(c)
+        if len(c) >= 2 and c in p:
+            return True
+        if len(c) >= 5:
+            # 长片段命中（≥4 字）也算点名：内部名常被缩写
+            for k in range(len(c) - 3):
+                if c[k:k + 4] in p:
+                    return True
+    return False
+
+
+_STRAY_QUOTE_RE = re.compile(r"[」』][^，。]{0,3}(?=[(（<【]|\)|$)")
+# 「付与「<效果>」的状态」这类段：引号里是触发时机/内部机制，数据侧只有一条壳函数，
+# 渲染时只保留文本（例：卫宫〔Assassin〕射杀封杀、奥伯龙梦之终结、Passionlip 公主的指令）。
+_WRAPPER_RE = re.compile(r"付与[^「]{0,10}「.+」[^」]{0,8}?的状态|付与[^「]{0,10}「.+」$")
+
+
+def _is_wrapper_effect(seg):
+    s = _clean_detail_text(seg).strip()
+    return bool(_WRAPPER_RE.search(s.replace("\n", "")))
+
+
+def _clean_detail_text(s):
+    # Atlas 的 detail 里残留了成对引号的一半（解除弱化状态」(3回合)），
+    # 它是数据噪音，会让文本匹配失败并丢掉整段数值。
+    return _STRAY_QUOTE_RE.sub("", s)
+
+
 def match_func_to_segment(segment, funcs, used_indices):
     """Match a detail segment to the best corresponding function by text similarity.
-    Uses substring match as priority, then bigram overlap as fallback."""
+    Uses substring match as priority, then bigram overlap as fallback.
+    「效果由另一种状态触发」的段（`付与「X(1次)」的状态`）在数据里只是一条壳函数，
+    它的全部代价就是那行文本，不该再配数值——否则会把后面函数的数值张冠李戴。"""
+    if _is_wrapper_effect(segment):
+        return None
+    segment = _clean_detail_text(segment)
     best_idx = None
     best_score = 0
     for fi, fn in enumerate(funcs):
         if fi in used_indices:
             continue
         ft = fn.get("funcType", "")
-        if ft in (NiceFuncType.subState,):
+        if not _func_usable(fn) and not fn.get("funcPopupText"):
+            continue
+        # 必须让它参与匹配，否则该段会被判定为未匹配而丢掉数值。
+        # 仅排除真正的内部子状态函数（funcTargetType=ptOne 的内部态）
+        if ft in (NiceFuncType.subState,) and not fn.get("funcPopupText"):
             continue
         # Collect all searchable text from this function
         texts = set()
@@ -574,7 +696,16 @@ def match_func_to_segment(segment, funcs, used_indices):
             if b.get("name"): texts.add(b["name"])
         texts.add(fn.get("funcPopupText", ""))
         texts.discard("")
-        
+        # 无 buff 的特殊函数类型：用中英文名做匹配关键字
+        if not texts and ft in FUNCTYPE_KEYWORDS:
+            texts.add(FUNCTYPE_KEYWORDS[ft])
+        # 没有 buf 但仍有可读数值的函数（充能增减等），补上关键字
+        if not texts and ft in ("hastenNpturn", "delayNpturn"):
+            texts.add(FUNCTYPE_KEYWORDS[ft])
+        # subState（解除类）自带文本，但 funcPopupText 有时为空，补上
+        if ft == "subState" and fn.get("funcPopupText"):
+            texts.add(fn["funcPopupText"])
+
         for txt in texts:
             score = 0
             # Strong priority: substring match
@@ -589,11 +720,313 @@ def match_func_to_segment(segment, funcs, used_indices):
                 noise = {"状态", "效果", "自身", "敌方", "单体", "全体", "付与", "回合"}
                 overlap -= len(seg_bigrams & noise & txt_bigrams)
                 score = max(0, overlap)
-            
+            # 4 字以上的精确文本片段命中，优先于零散 bigram 重叠。
+            # （避免「技指令卡的暴击星集中度提升」被「暴击率提升:技」抢走）
+            for k in range(len(txt) - 3):
+                sub = txt[k:k+4]
+                if sub in segment:
+                    score = max(score, 50 + len(sub))
+            # 状态效果按「名称整体出现在文本里」加权重：全称命中才算真匹配。
+            # （避免「付与自身回避状态」里含子串「必中状态」而被 必中 抢走）
+            if txt and txt in segment and len(txt) >= 6:
+                score = max(score, 80 + len(txt))
+            if txt and txt in segment and len(txt) < 6:
+                score = max(score, 20 + len(txt))
+            # 弹窗名 / buff 名整体出现在段里，是很强的点名证据，但不能压过
+            # 「长文本整体包含」：多卡副本里的短名（暴击率提升:技）会趁机抢走
+            # 本该属于（宝具值增加）的段。这里只与常规分数同量级。
+
             if score > best_score:
                 best_score = score
                 best_idx = fi
+
+    # 名称命中判定：只看「紧邻「状态」二字的那个效果名」是否出现在文本里。
+    # 例如「付与自身回避状态」里虽然有子串「必中状态」，但紧邻「状态」的是「回避」，
+    # 因此「必中」不算命中——避免状态类文本互相抢匹配。
+    # 只有当文本里出现「X状态」结构时才启用这个校验；其余情况沿用相似度结果。
+    def _named_in(fn, seg):
+        cands = [b.get("name") or "" for b in fn.get("buffs", [])]
+        cands += [fn.get("funcPopupText") or ""]
+        for c in cands:
+            c = c.strip()
+            if not c:
+                continue
+            if f"{c}状态" in seg:
+                return True
+            if c in seg and not re.search(r"[^\s]{2,}状态", seg):
+                return True
+        return False
+
+    if best_idx is not None and re.search(r"[^\s]{1,}状态", segment):
+        if not _named_in(funcs[best_idx], segment):
+            for cand in range(len(funcs)):
+                if cand in used_indices:
+                    continue
+                if _named_in(funcs[cand], segment):
+                    best_idx = cand
+                    break
+
+    # 兜底：状态类文本（晕眩/即死/延迟等）若没匹配上，挑一个还没有文本对应的
+    # 状态函数补上数值，至少不让数据完全丢失。
+    if best_idx is None and re.search(r"(晕眩|眩晕|即死|延迟|发动|特性)", segment):
+        for fi in range(len(funcs)):
+            if fi in used_indices:
+                continue
+            fn = funcs[fi]
+            if fn.get("funcType") in ("addState", "subState"):
+                return fi
+    # 兜底：整段是「随机付与…各种效果」这种笼统描述时，原文没有分项，
+    # 按顺序把该技能剩下的函数各渲染一次，避免数值全部丢失。
+    if best_idx is None and "随机" in segment and "各种效果" in segment:
+        for fi in range(len(funcs)):
+            if fi not in used_indices:
+                return fi
+
+    if best_idx is None:
+        best_idx = _fallback_match(segment, funcs, used_indices)
     return best_idx
+
+
+# 无 buff 的函数类型 → 匹配关键字（用于没有 funcPopupText 的回血/解异常等）
+FUNCTYPE_KEYWORDS = {
+    "gainHp": "生命值回复",
+    "gainHpFromTargets": "吸收",
+    "lossHp": "生命值减少",
+    "lossHpSafe": "生命值减少",
+    "gainStar": "获得暴击星",
+    "gainNp": "宝具值增加",
+    "lossNp": "宝具值减少",
+    "hastenNpturn": "充能增加",
+    "delayNpturn": "充能减少",
+    "subState": "解除",
+}
+
+# 语义类函数：没有具体数值可展示，渲染时只保留文本、不输出孤立的「100%」
+# 这些函数常与「额外伤害/即死/目标集中」等文本同段，数值本身不是可读效果。
+TEXT_ONLY_FUNCTYPES = {"subState"}
+
+# 同一 buff 在文本段之外多出来的函数（detail 不会逐条写出来），
+# 渲染时静默吸收，不重复占一段文本，也不会把数值错配到下一条效果上。
+# 144 = 暴击发生率提升（常作为副作用附加）
+# hastenNpturn = 充能增加（NP 增加类技能的固定伴随项，不单独占文本段）
+SECONDARY_BUFF_IDS = {"144"}
+SILENT_FUNCTYPES = {"hastenNpturn"}
+
+
+def _fallback_match(segment, funcs, used_indices):
+    """文本段没匹配上时：按语义补配对或吸收副效果函数。
+
+    1) 文本含「回复」→ 找未用的 gainHp
+    2) 文本含「解除」「弱化」→ 找未用的 subState
+    3) 否则吸收一个未用的副效果函数（暴击率提升等），避免数值错位
+    """
+    free = [i for i in range(len(funcs)) if i not in used_indices]
+    if not free:
+        return None
+
+    def find_by_type(pred):
+        for i in free:
+            if pred(funcs[i]):
+                return i
+        return None
+
+    if "回复" in segment:
+        i = find_by_type(lambda f: f.get("funcType") == "gainHp")
+        if i is not None:
+            return i
+    if "暴击星" in segment:
+        i = find_by_type(lambda f: f.get("funcType") == "gainStar")
+        if i is not None:
+            return i
+    if "宝具值" in segment:
+        i = find_by_type(lambda f: f.get("funcType") == "gainNp")
+        if i is not None:
+            return i
+    if "生命值" in segment:
+        i = find_by_type(lambda f: f.get("funcType") in ("gainHp", "lossHp", "lossHpSafe"))
+        if i is not None:
+            return i
+    if "解除" in segment:
+        # 先在「没被别段占用的状态函数」里找名字点名的，找不到再退回通用的 subState。
+        # （不屈之弓射：「毅力时发动(宝具威力提升＆弱化解除)」先占了 addState，
+        #   紧接着的「解除弱化」若也去抓状态函数，整段就会丢。）
+        i = find_by_type(lambda f: f.get("funcType") in ("subState", "addState", "addStateShort")
+                         and any(c and c.replace(" ", "") in segment.replace(" ", "")
+                                 for c in ([(f.get("funcPopupText") or "")] +
+                                           [b.get("name") or "" for b in f.get("buffs", [])])))
+        if i is not None:
+            return i
+        i = find_by_type(lambda f: f.get("funcType") == "subState")
+        if i is not None:
+            return i
+    # 吸收类文本（「吸收…生命值」= drain）：找 damageNp/gainHp 组合里的吸血函数，
+    # 通常表现为 subState(减益) + gainHp 成对；优先拿无 buff 的 gainHp
+    if "吸收" in segment:
+        i = find_by_type(lambda f: f.get("funcType") == "gainHp")
+        if i is not None:
+            return i
+        i = find_by_type(lambda f: str(f.get("funcType", "")).startswith("damage"))
+        if i is not None:
+            return i
+    # 「眩晕」「晕眩」→ addState 系列
+    if "眩晕" in segment or "晕眩" in segment:
+        i = find_by_type(lambda f: "addState" in str(f.get("funcType", ""))
+                         and any("晕" in (b.get("name") or "") for b in f.get("buffs", [])))
+        if i is not None:
+            return i
+    # 文本里额外写了「付与〔某特性〕」但数据是独立函数（无对应文本）→ 找未用的 addState 特性函数
+    if "特性" in segment:
+        # 先认「本段点名的那个特性函数」——弹窗文本/buff 名/buff 说明里含〔〕内容的
+        # （近藤勇·至诚 EX：文本「付与〔新选组〕特性」，函数 buff.detail 正是「付与〔新选组〕特性」）
+        _brk = re.findall(r"〔([^〕]+)〕", segment)   # 文本里〔…〕的特征名
+        _seg = segment.replace(" ", "")
+
+        def _feat_named(f):
+            if "addState" not in str(f.get("funcType", "")):
+                return False
+            for b in f.get("buffs", []):
+                nm, dt = b.get("name") or "", b.get("detail") or ""
+                if "特性" not in nm and "特性" not in dt:
+                    continue
+                if nm and nm in _seg:
+                    return True
+                if any(k and k in _seg for k in _brk):
+                    return True
+            return False
+
+        i = find_by_type(_feat_named)
+        if i is not None:
+            return i
+        i = find_by_type(lambda f: "addState" in str(f.get("funcType", ""))
+                         and any("特性" in (b.get("name") or "") for b in f.get("buffs", [])))
+        if i is not None:
+            return i
+    # 「解除」类文本在累加器的逐个「解除X状态」段里也常见，但对应函数常被前段占掉，
+    # 这时整段没有可渲染的函数——它本来就是重复说明，允许匹配到任意未用函数以免误报未匹配。
+    if "解除" in segment:
+        # 只要还有未用函数就返回第一个；渲染层会因为「未点名」而只输出文本。
+        for i in free:
+            return i
+    # 仅在段数少、函数多（说明有未写进 detail 的副效果）时才吸收，
+    # 避免把真正没写进 detail 的独立效果吞掉。
+    if len(free) > len([s for s in [segment]]):
+        for i in free:
+            buffs = funcs[i].get("buffs", [])
+            if buffs and str(buffs[0].get("id", "")) in SECONDARY_BUFF_IDS:
+                return i
+    return None
+
+
+def _absorb_silent(funcs, used):
+    """把不需要单独占文本段的函数标记为已用（充能增加等）。"""
+    for i, f in enumerate(funcs):
+        if i not in used and f.get("funcType") in SILENT_FUNCTYPES:
+            used.add(i)
+
+
+def _pick_unique(seg, fns, idxs=None):
+    """同一组候选函数里，按文本挑出唯一的那一个；无法区分则返回全部。
+
+    用于「同值伴随函数」：文本只说「暴击星集中度提升」时，
+    functions 里可能同时有 技/力/迅 三张卡各自的集星函数（数值完全相同）。
+    只有文本能唯一指认时才吸收，否则宁可全部留着也不猜。
+    """
+    fns = list(fns)
+    if len(fns) <= 1:
+        return fns
+    hit = [f for f in fns if (f.get("funcPopupText") or "") in seg]
+    return hit if len(hit) == 1 else fns
+
+
+def _lock_identical(fn, funcs, used, protected=()):
+    """同值兄弟函数吸收。protected 里是本条文本显式点名/资源重定向到的函数，
+    绝不能被顺手占掉，否则后一段会用同一函数再渲染一次，出现重复数值。"""
+    cur = fn.get("funcType")
+    if cur in ("gainStar", "gainNp", "gainHp", "lossHp", "lossHpSafe"):
+        return
+    vals = [v.get("Value") for v in fn.get("svals", [])]
+    if not vals:
+        return
+    cands = [i for i in range(len(funcs))
+             if i not in used and i not in protected
+             and funcs[i].get("funcType") == cur
+             and [v.get("Value") for v in funcs[i].get("svals", [])] == vals]
+    if 1 < len(cands) <= 3:
+        for i in cands:
+            used.add(i)
+
+
+def _absorb_carried(funcs, used):
+    """吸收不单独成段的「附带函数」。
+
+    典型：沙条爱歌「雅号·异星蛸」——文本写「技指令卡集星」，数据里躺着
+    技/力/迅 三份同值函数；不吸收的话「获得暴击星」会错配到「暴击率提升:技」(15%)。
+    也处理「攻击时追加效果」这种只有内部 id 作为数值的壳函数。
+    """
+    for i, f in enumerate(funcs):
+        if i in used:
+            continue
+        ft = f.get("funcType")
+        popup = f.get("funcPopupText") or ""
+        vals = [v.get("Value") for v in f.get("svals", [])]
+        # 壳函数：数值是内部状态 id（六位数），不是可用数值。
+        # 但 popup 名有 4 字以上的（「攻击时追加效果」「毅力时发动」）是会被某段
+        # 文本点名的真效果壳，不能预先吸收（但丁·七罪的刻印）。
+        if vals and all(isinstance(v, (int, float)) and v >= 100000 for v in vals) \
+                and len(re.sub(r"[^\u4e00-\u9fff]", "", popup)) < 4:
+            names = " ".join(b.get("name") or "" for b in f.get("buffs", []))
+            if "特性" not in popup and "特性" not in names:
+                used.add(i)
+                continue
+        if ft not in ("addState", "addStateShort"):
+            continue
+        if not any(k in popup for k in ("集中", "威力", "耐性", "获得量")):
+            continue
+        # 已经在 used 里的同值兄弟 → 吸收剩余同值副本
+        sib_vals = [v.get("Value") for v in f.get("svals", [])]
+        alt_vals = None
+        for j, o in enumerate(funcs):
+            if j == i:
+                continue
+            ov = [v.get("Value") for v in o.get("svals", [])]
+            if len(ov) >= 2 and ov[0] != ov[1]:
+                alt_vals = ov
+                break
+        group = [j for j in range(len(funcs))
+                 if j != i
+                 and funcs[j].get("funcType") == ft
+                 and [v.get("Value") for v in funcs[j].get("svals", [])] == sib_vals
+                 and any(k in (funcs[j].get("funcPopupText") or "") for k in ("集中", "威力", "耐性", "获得量"))]
+        # 只在「同值副本」场景下吸收：同组里存在另一个数值不同、且带卡色/特性前缀的兄弟
+        # （雅号·异星蛸：技/力/迅 三份集星）。单条「暴击威力提升」这类没有同组兄弟，
+        # 绝不能因为文本没提卡色就被吸收。
+        card = CARD_KANJI_RE.search(f.get("funcPopupText") or "") or CARD_KANJI_RE.search(popup)
+        if group and card and alt_vals:
+            for j in group:
+                used.add(j)
+        # 同组但数值不同（真正的「另一张卡」副本）也一并吸收：
+        # 文本只会为一个效果给一组数值，多出来的同名前缀函数属于未写明副本。
+        # 只在「本函数就是被占用的那一份」时才扩展吸收同组：否则预处理阶段
+        # 就会吃掉别段要用的副本（500200 亵渎审美「力攻击耐性降低」整段丢值）。
+        if alt_vals and i in used:
+            for j, o in enumerate(funcs):
+                if j in used or j == i:
+                    continue
+                if o.get("funcType") != ft:
+                    continue
+                op = o.get("funcPopupText") or ""
+                if not any(k in op for k in ("集中", "威力", "耐性", "获得量")):
+                    continue
+                if [v.get("Value") for v in o.get("svals", [])] != alt_vals:
+                    continue
+                used.add(j)
+
+
+# 这些函数类型没有可读数值，渲染时跳过数值输出（只保留效果文本）
+NO_VALUE_FUNCTYPES = {"subState"}
+
+# detail 里表示指令卡色的用字（技/力/迅 → Arts/Buster/Quick）
+CARD_KANJI_RE = re.compile(r"(技|力|迅)指令卡")
 
 
 def format_skill_detail(sk, sk_icon=""):
@@ -609,21 +1042,76 @@ def format_skill_detail(sk, sk_icon=""):
         return "\n".join(lines)
 
     # Multi-form skill (e.g. 【第一、第二再临形象时】/【第三再临形象时】):
-    # functions correspond to the current (last) form. Only process that section.
-    multi_form_marker = None
-    if "【" in detail and "再临形象" in detail:
-        markers = re.findall(r"【[^】]*再临形象[^】]*】", detail)
-        if markers:
-            last_marker = markers[-1]
-            multi_form_marker = last_marker
-            idx = detail.rfind(last_marker)
-            detail = detail[idx:]
-            detail = detail.replace(last_marker, "", 1)
-            # Reset lines, insert marker as context heading after title
-            lines = [lines[0], "", f"> {last_marker}", ""]
+    # functions 数组只对应最后一个形态（游戏数据里存的是当前形态）。
+    # 旧逻辑只渲染最后一段，导致前几段效果错配到别的函数上。
+    # 新逻辑：按形态标记分段，逐段渲染——只有最后一段匹配 functions，
+    # 前面的段落只输出文本（无函数映射，标注"数值见游戏内"）。
+    form_sections = []   # [(marker, text)]
+    positions = []
+    mk = re.findall(r"【[^】]*(?:再临形象|阶段形象|灵基)[^】]*】", detail)
+    if mk:
+        # 按标记切段
+        positions = [(m.start(), m.group(0)) for m in re.finditer(r"【[^】]*(?:再临形象|阶段形象|灵基)[^】]*】", detail)]
+        # 有的 detail 前面还有【仅限…】之类的杂项标记，只认形态标记
+        for i, (pos, marker) in enumerate(positions):
+            start = pos + len(marker)
+            end = positions[i + 1][0] if i + 1 < len(positions) else len(detail)
+            form_sections.append((marker, detail[start:end].strip()))
+    # 形态标记之前的通用说明（如果有）单独保留
+    head = detail[:positions[0][0]].strip() if positions else ""
+    if not form_sections:
+        head = ""
 
     # Step 1: Split detail by ＆/＋
-    parts = [p.strip() for p in re.split(r'[＆&＋+]', detail) if p.strip()]
+    # 双形态技能：只有最后一个形态有 functions 数据，前几段按纯文本渲染。
+    if form_sections:
+        if head:
+            lines.append(head)
+            lines.append("")
+        used = set()
+
+        def _both_forms(text):
+            both = [p.strip() for p in re.split(r'[＆&＋+]', text) if p.strip()]
+            return len(both) >= 2 and all("第" in x and ("形象" in x or "灵基" in x) for x in both)
+
+        if len(form_sections) == 2 and _both_forms(form_sections[0][1]) and _both_forms(form_sections[1][1]):
+            # 两个形态都写了完整效果 → functions 全给「前一形态」，后一形态只给文本（缺数值）
+            a_marker, a_text = form_sections[0]
+            b_marker, b_text = form_sections[1]
+            lines.append(f"> {a_marker}")
+            lines.append("")
+            lines.extend(_render_skill_parts(a_text, sk, used))
+            lines.append("")
+            lines.append(f"> {b_marker}")
+            lines.append("")
+            segs = [p.strip() for p in re.split(r'[＆&＋+]', b_text) if p.strip()]
+            for seg in segs:
+                lines.append(seg)
+                lines.append("")
+            lines.append("> ⚠ 此形态的数值未包含在游戏数据中，以上为效果文本")
+            return "\n".join(lines)
+
+        for i, (marker, text) in enumerate(form_sections):
+            is_last = (i == len(form_sections) - 1)
+            lines.append(f"> {marker}")
+            lines.append("")
+            if is_last:
+                # 最后一段走完整的函数匹配
+                lines.extend(_render_skill_parts(text, sk))
+            else:
+                # 前几段：functions 里没有独立数据，用剩余函数做文本匹配
+                lines.extend(_render_skill_parts(text, sk, used))
+            lines.append("")
+        return "\n".join(lines)
+
+    # 单形态技能统一交给 _render_skill_parts：那里的拆段/同值吸收/特性 id 处理
+    # 都已收口，这条旧分支（自带一套简化匹配）会产生不一致的输出。
+    _body = _render_skill_parts(detail, sk, set())
+    if not lines or lines[-1] != "":
+        lines.append("")
+    return "\n".join(lines + _body)
+
+    parts = [p.strip() for p in re.split(r'[＆&＋]', detail) if p.strip()]  # noqa: unreachable
     funcs = sk.get("functions", [])
     used = set()
 
@@ -684,6 +1172,760 @@ def format_skill_detail(sk, sk_icon=""):
             used.add(fi + 1)
 
     return "\n".join(lines)
+
+
+# 机制关键词：内部名常被缩写（迅提升/防御力下降），文本则写全称
+# （迅指令卡性能提升/防御力逐渐降低）。匹配时靠它们判断「这段讲的是不是这件事」。
+_MECH_KEYS = ("指令卡性能", "性能提升", "防御力", "攻击力", "宝具值", "暴击星", "暴击率",
+              "生命值", "即死", "耐性", "威力", "集星", "获得量", "充能", "特攻", "无敌")
+
+
+
+def _name_in_part(name: str, part: str) -> bool:
+    """效果名能否在段文本里找到（容忍「的」「指令卡的」「度」这类连接字与修饰语）。
+
+    例：「暴击星集中提升」 vs 「己方单体的技指令卡的暴击星集中度提升」。
+    做法：逐字保留 name 里 >=2 字的连续块，要求它们按顺序出现在 part 中，
+    且 part 里不得夹着 name 没有的「其他效果名」（由调用方的候选打分兜底）。
+    """
+    if not name:
+        return False
+    if name in part:
+        return True
+    # 文本里常插入「度」「的」「指令卡的」「率」等字（「暴击星集中提升」vs
+    # 「暴击星集中度提升」），因此按「汉字子序列」判定：name 的字按顺序都能找到即可。
+    pos = 0
+    for ch in name:
+        i = part.find(ch, pos)
+        if i < 0:
+            return False
+        pos = i + 1
+    return True
+
+
+def _strip_card(s):
+    """去掉内部名里的卡色/场地后缀（「暴击星集中提升：水边」→「暴击星集中提升」）。"""
+    return re.sub(r"[：:][^：:]*$", "", (s or "")).strip()
+
+
+def _split_wrapper_parts(parts):
+    """把跨段的「付与「…(1回合)＆…(1回合)的状态」」合并回一段。
+
+    游戏 detail 会把壳效果的内层描述也用 ＆ 切开，于是「付与「」没闭口、
+    后半段又自带「」」收尾。逐段渲染会错位（后半段拿不到自己的数值），
+    这里先做括号平衡：unclosed「」> 0 时把后续段接回来，直到闭合。
+    """
+    out = []
+    buf = None
+    for p in parts:
+        if buf is not None:
+            buf = buf + "＆" + p
+            if buf.count("「") <= buf.count("」"):
+                out.append(buf)
+                buf = None
+            continue
+        if p.count("「") > p.count("」"):
+            buf = p
+            continue
+        out.append(p)
+    if buf is not None:
+        out.append(buf)
+    return out
+
+def _render_skill_parts(text, sk, used=None):
+    """把一段技能效果文本按 ＆/＋ 拆开，逐条匹配 functions 并渲染数值。
+    used: 可选，跨段共享的已用函数索引集合（多形态渲染时避免误配）。"""
+    # 注意：`＋`(U+FF0B) 是游戏里「另一条效果」的分隔符，`+`(ASCII) 只用于技能名/等级，
+    # 历史上把两者一起当分隔符会把「A＋B＋C」粘成一段，导致后续整段数值错位。
+    parts = [p.strip() for p in re.split(r'[＆&＋]', text) if p.strip()]
+    parts = _split_wrapper_parts(parts)
+    _single = len(parts) == 1
+    funcs = sk.get("functions", [])
+    if used is None:
+        used = set()
+    _absorb_silent(funcs, used)
+    _absorb_carried(funcs, used)
+    out = []
+    # 一个效果文本段对应多个函数（如「〔新选组〕以外小幅增加」→ gainNp + 充能）
+    _extra_pending = []
+    # 同一技能内，本段没点名到的资源类函数（NP/暴击星等）留给下一段使用
+
+    # 预扫描：找出与下一段文本对应的「跟随函数」（gainNp+充能、gainStar+暴击率）。
+    # 这类函数紧跟在其主函数后面，detail 里不单独成段，必须跳过，
+    # 否则会吞掉后一段效果对应的函数，造成数值整体错位。
+    def _is_companion(prev_fn, cur_fn):
+        if prev_fn is None:
+            return False
+        pf, cf = prev_fn.get("funcType"), cur_fn.get("funcType")
+        if pf == "gainNp" and cf == "hastenNpturn":
+            return True
+        if pf == "gainStar" and cf in ("addState", "addStateShort"):
+            ids = {str(b.get("id")) for b in cur_fn.get("buffs", [])}
+            if ids & {"144", "145"}:
+                return True
+        return False
+
+    _widxt = {id(p_): k for k, p_ in enumerate(parts)}   # 段对象 -> 真实下标（允许重复文本）
+    _claimed = {}   # fi -> 首次认领它的文本段（用于「函数被前段顺手占掉」时的归还判断）
+    for _pi, part in enumerate(parts):
+        _head = len(out)   # 本段起始位置
+        fi = match_func_to_segment(part, funcs, used)
+        orig_fi = fi
+        # 记录各段最终选中的函数：同值吸收不能把它们顺手占掉，否则后段会拿不到函数
+        _picked_here = set()
+        if fi is None:
+            # 前面某段抢用了本该属于本段的函数时会走到这里。
+            # 放开 used 限制只在「真被本段点名」的函数里找，绝不去抓完全没提到的
+            # （近藤勇·至诚 EX：「小幅增加」段曾把特性函数抢走，后一段反而丢）。
+            _free_fi = None
+            _free_cand = [i for i, f in enumerate(funcs)
+                          if i in used and _fn_named_in(f, part)]
+            if _free_cand:
+                _scored = match_func_to_segment(part, [funcs[i] for i in _free_cand], set())
+                if _scored is not None:
+                    _free_fi = _free_cand[_scored]
+            if _free_fi is None:
+                _scored = match_func_to_segment(part, funcs, set())
+                if _scored is not None and _fn_named_in(funcs[_scored], part):
+                    _free_fi = _scored
+            if _free_fi is not None:
+                fi = _free_fi
+                # 这个函数本来是别的段「顺手占掉」的（那段文本并没点名它），
+                # 现在本段真的点名了它 → 让本来属于本段，前段改为只输出文本。
+                _prev_owner = _claimed.get(fi)
+                _claimed[fi] = part
+                if _prev_owner is not None and not _fn_named_in(funcs[fi], _prev_owner):
+                    used.discard(fi)
+        if fi is None:
+            out.append(part)
+            out.append("")
+            continue
+
+        # 选中了「跟随函数」时，真正的效果函数在它前一个位置
+        # （如 NP增加 后紧跟 充能增加，获得暴击星 后紧跟 暴击率提升）
+        if (_is_companion(funcs[fi - 1] if fi > 0 else None, funcs[fi])
+                and fi - 1 >= 0 and (fi - 1) not in used):
+            fi = fi - 1
+
+        # 兜底：资源类文本（宝具值/暴击星/生命值/充能）若没落到对应的资源函数上，
+        # 直接改判到该资源函数。（如「〔新选组〕以外宝具值增加」被「付与〔新选组〕特性」抢走）
+        _RES_WORDS = (
+            # 「宝具威力提升」是威力 buff，不是 NP 增加——别被「宝具」二字骗了
+            (("宝具值",), ("增加", "提升", "上升"), "gainNp"),
+            (("暴击星",), ("获得", "掉落", "大量"), "gainStar"),
+            (("生命值", "HP"), ("回复", "恢复"), "gainHp"),
+            (("充能",), ("减少", "增加"), "hastenNpturn"),
+        )
+        cur_ft = (funcs[fi].get("funcType") or "") if fi is not None else ""
+        for w1, w2, want in _RES_WORDS:
+            if not (any(w in part for w in w1) and any(w in part for w in w2)):
+                continue
+            if cur_ft == want:
+                break
+            # 「同值优先」只在当前选中函数与目标函数「文本相似」时才用：
+            # 否则「获得暴击星」会被拉到同样 20 的「暴击率提升」上（苍穹的武练）。
+            alt = [gi for gi in range(len(funcs))
+                   if gi not in used and gi != fi and funcs[gi].get("funcType") == want]
+            # 只在本段选中的函数确实属于目标类型时才做「同值优先」；
+            # 否则「获得暴击星」会被拉到同值 20 的「暴击率提升」上（苍穹的武练）。
+            if len(alt) > 1 and fi is not None and cur_ft == want:
+                sig = [v.get("Value") for v in funcs[fi].get("svals", [])]
+                same = [gi for gi in alt
+                        if [v.get("Value") for v in funcs[gi].get("svals", [])] == sig]
+                alt = same or alt
+            if alt:
+                fi = alt[0]
+            break
+
+        # 文本本身是「付与「…」的状态」这类壳效果（内层细节写在别处）：只出文本，
+        # 不配任何数值 —— 数据里对应的只是一个包装函数（Kazuradrop 皮克西之指）
+        if _is_wrapper_effect(part) and not re.search(r"\d", part):
+            fi = None
+            out.extend([part, ""])
+            out.append("")
+            continue
+
+        # 特性函数：数值是内部特性 id，不能当百分比渲染（1000.9% 那种错）
+
+        # 状态类文本（回避/必中/无敌…）若被错配到「有数值的同名邻近函数」，
+        # 回退到真正的态函数：文本没写数值就不该输出数值表。
+        if fi is not None and not re.search(r"\d", part):
+            ft0 = funcs[fi].get("funcType")
+            pop0 = funcs[fi].get("funcPopupText") or ""
+            if ft0 in ("addState", "addStateShort") and any(
+                    k in pop0 for k in ("威力", "数值", "耐性", "率")):
+                for gi, gf in enumerate(funcs):
+                    if gi in used or gi == fi:
+                        continue
+                    gp = gf.get("funcPopupText") or ""
+                    if gp and gp in part and gf.get("funcType") in ("addState", "addStateShort"):
+                        fi = gi
+                        break
+
+        # 候选分数打平时，优先文本里写明了卡色的那个函数
+        if fi is not None:
+            sig_val = [v.get("Value") for v in funcs[fi].get("svals", [])]
+            ties = [i for i in range(len(funcs))
+                    if i not in used
+                    and funcs[i].get("funcType") == funcs[fi].get("funcType")
+                    and [v.get("Value") for v in funcs[i].get("svals", [])] == sig_val]
+            if len(ties) > 1:
+                card = CARD_KANJI_RE.search(part)
+                if card:
+                    k = card.group(1)
+                    hit = [i for i in ties if k in (funcs[i].get("funcPopupText") or "")]
+                    if len(hit) == 1:
+                        fi = hit[0]
+
+        # 数值全等 + 含义不同 → 把数值相同的「伴随函数」一并占掉，
+        # 防止文本里没写明的副函数被当成独立效果吸收。
+        # （如 雅号·异星蛸：技/力/迅 三张卡各自的集星函数同值）
+        # 本段显式选中的函数绝不能被「同值吸收」误占，否则后一段会重复用它。
+        # 注意：控制流里已经没有「＋ 二次拆分」。`＋` 在 _render_skill_parts 入口
+        # 就已被当作段分隔符切开（与 ＆ 同级），这里再拆只会重复渲染同一段。
+        # 同值同名副本（技耐性下降 / 力耐性下降 都写「耐性降低」且数值全等）：
+        # 本段点名了「力」，而前段点名的函数名里没有「力」→ 换到本段真正点名的那一份。
+        # 否则后段会落到「前段占用→本段只出文本」的分支，整段丢数值表。
+        _b0 = lambda t: re.sub(r"[^\u4e00-\u9fff]", "", t or "")
+        _fpop0 = _b0(funcs[fi].get("funcPopupText") or "")
+        _kw0 = (re.search(r"([技力迅])攻击", part) or re.search(r"([技力迅])指令卡", part)
+                or re.search(r"^([技力迅])", _b0(part)) or [None, None])[1]
+        if _kw0 is None:
+            _kw0 = next((k for k in ("技", "力", "迅") if _b0(part).startswith(k)), None)
+        if _kw0 and _fpop0 and _kw0 not in _fpop0:
+            for gi in range(len(funcs)):
+                _gp = _b0(funcs[gi].get("funcPopupText") or "")
+                if gi != fi and gi not in _picked_here and _gp and _kw0 in _gp                         and funcs[gi].get("funcType") == funcs[fi].get("funcType") \
+                        and _claimed.get(gi) is not None and not _fn_named_in(funcs[gi], _claimed[gi] or ""):
+                    fi = gi
+                    break
+
+        used.add(fi)
+        _claimed.setdefault(fi, part)
+        fn = funcs[fi]
+        # 本段文本真的点名了这个函数吗（名称/弹窗文本出现在段里）。
+        # 没被点名 = 文本只描述了别的效果，这个函数是数据里附带的，
+        # 不应把它的数值输出到这一段下面（曾导致「暴击威力提升」下冒出 10%）。
+        _ptxt = ((fn.get("funcPopupText") or "")
+                 + " " + " ".join((b.get("name") or "") for b in (fn.get("buffs") or [])))
+        _ptxt = _ptxt.replace(" ", "")
+        # 只认「长片段」命中：2~3 字的名字（提升/威力/技）到处都是，不能当点名依据。
+        def _norm(s):
+            return (s or "").replace(" ", "").replace(":", "").replace("：", "")
+        _pnorm = _norm(part)
+
+        def _best_hit(c):
+            c = _norm(c)
+            for L in range(len(c), 1, -1):
+                for k in range(len(c) - L + 1):
+                    if c[k:k + L] in _pnorm:
+                        return L
+            return 0
+
+        def _sym(c):
+            # 同义切分后的片段：「攻击力提升」≈「攻击力·提升」
+            c = _norm(c)
+            _KNOWN = ("攻击力", "防御力", "宝具值", "暴击星", "暴击率", "集星", "提升", "下降",
+                      "降低", "增加", "减少", "威力", "性能", "耐性", "概率", "获取", "获得")
+            frags, i = [], 0
+            while i < len(c):
+                for kw in _KNOWN:
+                    if c.startswith(kw, i):
+                        frags.append(kw)
+                        i += len(kw)
+                        break
+                else:
+                    i += 1
+            return frags
+        _best = max([_best_hit(fn.get("funcPopupText") or "")] +
+                    [_best_hit(b.get("name") or "") for b in (fn.get("buffs") or [])] +
+                    # 机制关键词（内部名很简略时，靠它判断「这段是不是在讲这件事」）
+                    [_best_hit(k) for k in _MECH_KEYS if k in _norm(fn.get("funcPopupText") or "")
+                     or any(k in (b.get("name") or "") for b in (fn.get("buffs") or []))] + [0])
+        _best = max(_best, 99 if _fn_named_in(fn, part) else 0)
+        _named = _best >= 4
+        _sy = 0
+        for _s in ([fn.get("funcPopupText") or ""] +
+                   [b.get("name") or "" for b in (fn.get("buffs") or [])]):
+            _fr = _sym(_s)
+            if len(_fr) >= 2 and sum(1 for f in _fr if f in _pnorm) >= 2:
+                _sy = 2
+        _picked_here.add(fi)
+        raw_vals = [v.get("Value") for v in fn.get("svals", [])]
+        # 内部状态 id 函数（>=100000，如「每回合获得暴击星的：水边」3823=5）不是可展示效果，
+        # 仅当本段点名时才渲染（且只出文本）；没点名就让给真正提到它的段。
+        if raw_vals and all((v or 0) >= 100000 for v in raw_vals) and not _fn_named_in(fn, part):
+            out.append(part)
+            out.append("")
+            continue
+        # 只保护「还没用、且和本段同 funcType」的函数：跨类型的同值伙伴（如
+        # 「自身宝具值增加 20%」＋「全体宝具值增加 10%」）本来就该由本段一起吃掉。
+        _protect = {i for i in range(len(funcs))
+                    if i not in used and funcs[i].get("funcType") == funcs[fi].get("funcType")}
+        _protect.add(fi)
+
+        # 「A提升(3回合)」这种标准效果句：即使 buff 名叫「宝具威力提升」而文本没写
+        # 「宝具」二字，也算点名（否则藤堂平助·炮术义肢会整段丢数值）。
+        _short_a = re.sub(r"[(（].*?[)）]", "", part).strip()
+        _names = [fn.get("funcPopupText") or ""] + [b.get("name") or "" for b in (fn.get("buffs") or [])]
+        if len(_short_a) >= 3:
+            for _c in _names:
+                if len(_c) >= 3 and _c in _short_a:
+                    _named = True
+                    break
+
+        def _bare(t):
+            # 去掉所有非文字内容（[(3回合)] ▲ 等），只留效果名
+            return re.sub(r"[^\u4e00-\u9fff]", "", t or "")
+        # 资源型函数（NP/星/HP）本身就是这段文本描述的东西，兜底匹配已经把它们
+        # 精确指给了这一段；此时不要求名字逐字对上（「获得暴击星」vs「获得大量暴击星」）。
+        # 「力指令卡的暴击星集中度提升」这种文案里带了「暴击星」但不是获得数量，
+        # 不能因为关键词就认自己是 gainStar 段（戈耳工 · 巨怪蹂躏）。
+        if fn.get("funcType") in ("gainStar", "gainNp", "gainHp") and any(
+                k in part for k in ("暴击星", "宝具值", "生命值", "HP")) \
+                and "集中" not in part and "掉落率" not in part and "每回合" not in part \
+                and (fn.get("funcType") != "gainStar" or "获得" in part):
+            _named = True
+        _bare_part = _bare(part)
+        if not _named and len(_bare_part) >= 3:
+            # 「防御力降低」vs「防御力下降」：核心名词（防御力/攻击力/宝具值…）一致即算点名，
+            # 提升/下降/降低 本来就可以换说法。
+            _core_kw = next((k for k in ("防御力", "攻击力", "宝具值", "暴击星", "暴击率",
+                                         "宝具威力", "暴击威力", "耐性", "掉落率", "集星",
+                                         "宝具值获得", "宝具值获取", "生命值")
+                             if k in _bare_part), None)
+            if _core_kw and _core_kw in _bare(fn.get("funcPopupText") or ""):
+                _named = True
+        if _bare_part and _bare_part in {_bare(_c) for _c in _names if _c}:
+            _named = True
+        if not _named and len(_bare_part) >= 4:
+            # 自然语言里的「防御力提升」 vs 内部名「强化(防御力提升)」：只要本段
+            # 的纯文字片段被本函数的名字整段包含，就算点名。
+            for _c in _names:
+                _bc = _bare(_c)
+                if len(_bc) >= 4 and _bare_part in _bc:
+                    _named = True
+                    break
+        if not _named and len(_bare_part) >= 4 and not any(k in _bare_part for k in _MECH_KEYS):
+            # 最后一条：这一句没有任何机制关键词，且本类型函数没有「数值不同的
+            # 兄弟」——那就按相似度认下（藤堂平助·炮术义肢「攻击力提升」曾整段丢）。
+            _same_ft_n = [i for i in range(len(funcs))
+                          if i != fi and funcs[i].get("funcType") == fn.get("funcType")]
+            if not any([v.get("Value") for v in funcs[i].get("svals", [])] != raw_vals
+                       for i in _same_ft_n):
+                _named = True
+        # 同一 buff 出 multiple 副本（基础版 + 「：水边/：技」变体）时，本段该绑到
+        # 弹窗名与文本完全一致的那个副本（凯妮斯「付与每回合获得暴击星的状态」
+        # → 「每回合获得暴击星」而不是「每回合获得暴击星：水边」）。
+
+        # 尚未处理到的段落会用到哪些函数还不知道：先把所有还没用的函数全保住，
+        # 宁可少吸收，也不要把后段真正要用的函数抢掉（曾导致「暴击威力提升」
+        # 被前一段的「特攻」按同值吸收吞成 30%）。
+        # 精确弹窗名只被本段用到（「暴击星集中提升：水边」整句只出现在这一段），
+        # 而本段选中了另一个函数 → 说明匹配把本段指错了，改指到精确命中的那个。
+        # 例：凯妮斯「仅在〔水边〕场地上时,付与每回合获得暴击星」被「暴击星」抢到
+        # 「每回合获得暴击星：水边」（内部状态 id 5），渲染成 0.5%。
+        # 规则：完整弹窗名（带卡色/场地后缀）出现在本段 → 优先级最高。
+        # 同名的「基础版」副本与「：水边」变体同时命中时，取名字最长的那个
+        # （「暴击星集中提升：水边」胜过「每回合获得暴击星：水边」）。
+        # 这一段匹配到的函数是否「真的在讲这一段」：完整弹窗名出现在文本里。
+        # 不是的话（兜底匹配到的近似函数，如「获得暴击星」落到「暴击率提升」），
+        # 允许被下面的精确命中覆盖。
+        # 「获得暴击星」这类短名会被更长的「付与每回合获得暴击星的状态」包含，
+        # 所以只保留「完整弹窗名」之外还要求它是该段的核心效果名（长度过滤）。
+        # 精确命中：完整弹窗名出现在本段 → 绑定「顺序恰当」的副本。
+        # 同名副本（「每回合获得暴击星」5/6 档与 10/20 档）在 detail 里也出现两次，
+        # 文本完全一样，只能按上一次选中的下标往后取：第 2 次出现用第 2 个副本。
+        # 只看「效果名本身」的匹配：去掉「仅在有…时,」限定前缀后再比，避免长前缀
+        # 把 popup 名的占比压到阈值以下（苍穹的武练 第 3 段曾因此匹配失败）。
+        _core_part = _strip_card(re.sub(r"^仅在有[^,，]*?场地上时[,，]?", "", part))
+        # 「暴击星集中提升：技」同时含 card 名；「暴击威力提升：技」要求「暴击星」不出现，
+        # 否则会把「技指令卡的暴击星集中度提升」也当成它。用「卡色后缀 + 主干」双向校验。
+        # 方向必须一致：文本说「降低/下降」就只能绑「下降」类函数，反之亦然。
+        # 否则「敌方全体暴击发生率降低」会落到「暴击发生率提升」（幻术 A+ 曾输出 10%＝上升档）。
+        _dir_up = any(k in part for k in ("提升", "增加", "上升", "提高"))
+        _dir_dn = any(k in part for k in ("降低", "下降", "减少", "削减"))
+        def _dir_ok(_ff):
+            _pv = (_ff.get("funcPopupText") or "") + " " + " ".join(
+                b.get("name") or "" for b in (_ff.get("buffs") or []))
+            if _dir_dn and not _dir_up:
+                return any(k in _pv for k in ("下降", "降低", "减少", "削减"))
+            if _dir_up and not _dir_dn:
+                return not any(k in _pv for k in ("下降", "降低", "减少", "削减"))
+            return True
+        # 比较前先把「提升/下降/降低…」这些方向词和介词去掉，只比效果主体。
+        def _noda(_s):
+            _s = re.sub(r"[^\u4e00-\u9fff]", "", _s or "")
+            for _k in ("提升", "提高", "增加", "上升", "降低", "下降", "减少", "削减",
+                       "敌方", "己方", "自身", "全体", "单体", "状态", "付与", "对", "的", "率"):
+                _s = _s.replace(_k, "")
+            return _s
+        # 方向校正：文本说「降低」而匹配到的函数是「提升」副本（或反之）→
+        # 在本段真正点名的同 funcType 函数里换一个（幻术 A+ 敌方暴击发生率降低）。
+        if fi is not None and not _dir_ok(funcs[fi]):
+            _dir_cand = [i for i in range(len(funcs))
+                         if i not in used and _dir_ok(funcs[i])
+                         and _name_in_part(_noda(_strip_card(funcs[i].get("funcPopupText") or "")),
+                                           _noda(part))]
+            if _dir_cand:
+                fi = _dir_cand[0]
+                fn = funcs[fi]
+                used.add(fi)
+                _claimed.setdefault(fi, part)
+        # 壳状态段（「…」的状态 / 引号里描述机制）：文本点名了哪个函数就用哪个。
+        # 数据里常有 7 份同名的〔罪之刻印〕副本，谁先出现谁被抢（但丁·七罪的刻印
+        # 段 3「毅力发动时…」曾绑到第 3 份刻印输出 10%）。
+        if re.search(r"「[^」]*攻击时[^」]*」", part):
+            # 「付与「技攻击时…的状态」」是间接机制的壳：真实数值由触发时的效果决定，
+            # 数据里只有内部状态 id。整段只输出文本，不配表（征氏姐妹·姊妹牵绊）。
+            out.extend([part, ""])
+            continue
+        # 只有「引号壳」段（内含「」的机制描述）才算；「1回合后付与自身宝具威力提升的状态」
+        # 这种普通句不能走这条分支（会把 20% 的表吞掉）。
+        if part.startswith("「") or ("「" in part and "」" in part and (
+                "的状态" in part[-12:] or part.rstrip(")）").endswith("的状态"))):
+            _quoted = "".join(re.findall(r"「([^」]*)」", part))
+            def _q_hit(_i):
+                _nm = _strip_card(funcs[_i].get("funcPopupText") or "")
+                if not _nm:
+                    return False
+                if _name_in_part(_nm, part):
+                    return True
+                if _nm in _quoted:
+                    return True
+                # 「毅力时发动」vs 引号里的「毅力发动时」：乱序子集也算
+                return len(_nm) >= 4 and all(ch in _quoted for ch in _nm)
+            _named_hit = [i for i, f in enumerate(funcs) if i not in used and _q_hit(i)]
+            # 机制壳段的关键词直绑：「攻击时…」→「攻击时追加效果」，「毅力…」→「毅力时发动」
+            for _kw, _pn in (("攻击时", "攻击时追加效果"), ("毅力", "毅力时发动"),
+                             ("宝具使用", "过量充能阶级提升"), ("每回合", "每回合")):
+                if _kw in _quoted:
+                    for _i2, _f2 in enumerate(funcs):
+                        _n2 = _strip_card(_f2.get("funcPopupText") or "")
+                        if _i2 not in used and _n2 and _pn in _n2:
+                            _named_hit.insert(0, _i2)
+                            break
+            # 同组里优先「名字更长」的（「攻击时追加效果」「毅力时发动」胜过
+            # 到处都能子序列命中的短名「罪之刻印」），长度相同才按顺序取。
+            def _kw_rank(_i):
+                _n = _strip_card(funcs[_i].get("funcPopupText") or "")
+                for _pn in ("攻击时追加效果", "毅力时发动", "过量充能阶级提升",
+                            "每回合获得暴击星", "每回合回复生命值", "每回合获取宝具值"):
+                    if _n == _pn and _pn[:2] in _quoted:
+                        return 0
+                return 1
+            _kw_first = sorted([i for i in _named_hit if _kw_rank(i) == 0])
+            _named_hit = _kw_first + [i for i in _named_hit if i not in _kw_first]
+            _named_hit.sort(key=lambda i: (-len(_strip_card(funcs[i].get("funcPopupText") or "")), i))
+            if _named_hit and (fi is None or fi not in _named_hit[:1]):
+                fi = _named_hit[0]
+                fn = funcs[fi]
+                used.add(fi)
+                _claimed.setdefault(fi, part)
+            _wrap_stage = bool(_named_hit)
+        else:
+            _wrap_stage = False
+        _pe = [] if _wrap_stage else [i for i, f in enumerate(funcs)
+               if _dir_ok(f)
+               and (f.get("funcPopupText") or "")
+               # 「暴击威力提升：技」这种带卡色后缀的 popup 在文本里是拆开写的
+               # （「技指令卡的暴击威力提升」），所以按「主干 + 卡色」拆开校验：
+               # 主干必须整段出现在效应名里，卡色字也得在句子里。
+               and _name_in_part(_strip_card(f.get("funcPopupText")), _core_part)]
+
+        if _pe:
+            _pe.sort(key=lambda i: i)
+            # 同名副本按 detail 出现顺序一一对应：文本里第 n 次出现用第 n 个未占用副本。
+            # 「仅在有〔水边〕…时,」是限定前缀，视为同一效果的再次出现。
+            def _sig(s):
+                return _strip_card(re.sub(r"^仅在有[^,，]*[的]?场地上时[,，]?", "", s or ""))
+            _occ = sum(1 for p_ in parts[:_pi] if _sig(p_) == _sig(part))
+            # 数据顺序 = detail 顺序：优先取「排在当前匹配之后」的副本，其次取最早的
+            # 只在「名字完全对得上」的候选里选；同长/同名的副本按出现次序取。
+            fi = _pe[min(_occ, len(_pe) - 1)]
+            fn = funcs[fi]
+            # 精确命中覆盖了兜底匹配的结果：把旧函数从 used 里放回去，否则后面的段
+            # 会以为它被占了而失去候选（女神变生 段 2 曾因此拿不到 50%）。
+            if orig_fi is not None and orig_fi != fi:
+                used.discard(orig_fi)
+                if _claimed.get(orig_fi) == part:
+                    _claimed.pop(orig_fi, None)
+                _picked_here.discard(orig_fi)
+            used.add(fi)
+            _claimed.setdefault(fi, part)
+
+        # 资源硬规则：「获得暴击星」类句子只能绑 gainStar；
+        # 「暴击星集中度提升」不是获得数量，不能绑 gainStar（由 _RES_WORDS 已正确区分）。
+        if "暴击星" in part and "集中" not in part and "掉落率" not in part \
+                and ("获得" in part or "大量" in part):
+            _gs = [i for i in range(len(funcs))
+                   if funcs[i].get("funcType") == "gainStar" and i not in used]
+            if _gs:
+                fi = _gs[0]
+                fn = funcs[fi]
+                used.add(fi)
+                _claimed.setdefault(fi, part)
+
+        # 资源硬规则 2：「宝具值增加/提升」类句子只能绑 gainNp（不是 gainNp 的
+        # addStateShort 伴随 buff 会输出成百分比，灾星简「己方全体宝具值小幅增加」曾出 10%）。
+        if "宝具值" in part and ("增加" in part or "提升" in part) \
+                and not any(k in part for k in ("获得量", "获取", "每回合", "减少")):
+            _gnp = [i for i in range(len(funcs))
+                    if funcs[i].get("funcType") == "gainNp" and i not in used]
+            if _gnp and (fi is None or (funcs[fi].get("funcType") or "") != "gainNp"):
+                fi = _gnp[0]
+                fn = funcs[fi]
+                used.add(fi)
+                _claimed.setdefault(fi, part)
+
+        # 名不对就不出数：本段匹配到的函数 popup 名与本段核心名毫不相干时，
+        # 改指到「名字里含本段关键词」的未占用函数（斯卡哈·斯卡蒂 原初之卢恩：
+        # 「迅指令卡暴击威力提升」曾绑到「迅提升」，输出 30% 而不是 50%）。
+        if fi is not None:
+            _lb = _bare(part)
+            _fpop = _bare(fn.get("funcPopupText") or "")
+            # 只在「效果主体」句里判（壳状态段「…」的状态 里的机制描述不算）
+            _wan = [] if _wrap_stage else [k for k in ("暴击威力", "暴击星集中", "宝具威力", "攻击力", "防御力",
+                                "暴击率", "掉落率", "宝具值") if k in _lb]
+            if _wan and not any(k in _fpop for k in _wan):
+
+                _cand = [i for i in range(len(funcs))
+                         if i not in used and any(
+                             k in _bare(funcs[i].get("funcPopupText") or "") for k in _wan)]
+                if _cand:
+                    fi = _cand[0]
+                    fn = funcs[fi]
+                    used.add(fi)
+                    _claimed.setdefault(fi, part)
+                else:
+                    _sc = match_func_to_segment(part, funcs, set())
+                    if _sc is not None:
+                        # 全表重匹配（允许已占用的函数）——本段名字对得上就该用它，
+                        # 哪怕前面某段已经把它占走了（夏夜黑寡妇「防御力降低」曾整段丢数值）。
+                        fi = _sc
+                        fn = funcs[fi]
+                        used.add(fi)
+                        _claimed.setdefault(fi, part)
+
+        # 兜底：本段匹配到了「文本里没提过的函号」（前缀误判），但另外还有个
+        # 名字完全对得上的未占用函数 → 用它（梅柳齐娜「场地版每回合获得暴击星」）。
+        if fi is not None and (fn.get("funcPopupText") or "") not in part and not _wrap_stage:
+            _alt = [i for i, f in enumerate(funcs)
+                    if i not in used and i != fi
+                    and (f.get("funcPopupText") or "")
+                    and (f.get("funcPopupText") or "") in part
+                    and len(f.get("funcPopupText") or "") >= 4]
+            if _alt:
+                _alt.sort(key=lambda i: (-len(funcs[i].get("funcPopupText") or ""), i))
+                fi = _alt[0]
+                fn = funcs[fi]
+        # 「后续段落的文本里点到名的函数」一律保护：
+        # 段 0「技指令卡的暴击星集中度提升」曾按同值吸收掉段 1 要用的
+        # 「暴击威力提升：技」（30% → 应为 50%）。
+        _rest_text = "".join(parts[_pi + 1:])
+        _protect |= {i for i, f in enumerate(funcs)
+                     if i not in used and (f.get("funcPopupText") or "")
+                     and (_strip_card(f.get("funcPopupText")) in _rest_text
+                          or (f.get("funcPopupText") or "") in _rest_text)}
+        # 「还在本段之后、且被后面某段点名」的函数可能已经被本段在前面抢进 used，
+        # 也应该保护（500200 亵渎审美「力攻击耐性降低」曾被段 0 的误判抢走 func2）。
+        _protect |= {i for i in range(len(funcs)) if i not in used}
+        # 不再做「同值副本吸收」：多段技能的副本靠 _pe 顺序绑定即可，
+        # 提前吸收只会让后面的段丢函数（女神变生：暴击威力提升拿到 30% 而非 50%）。
+        _lock_identical(fn, funcs, used, protected=set(range(len(funcs))))
+        raw_vals = [v.get("Value") for v in fn.get("svals", [])]
+        ft = fn.get("funcType", "")
+        # 同值「伴随函数」：文本只点名一种卡色，其余卡色的同值副本静默吸收。
+        # 例：雅号·异星蛸 文本写「技指令卡集星」，数据里有 技/力/迅 三份同值函数，
+        # 不吸收的话下一段「获得暴击星」会错配到「暴击率提升:技」(15%)。
+        # 但只在「同组里另有数值不同的兄弟」时才吸收：真正的独立效果（近藤勇的
+        # 「付与〔新选组〕特性」，全表同值）不能因为数值相同就被吞掉。
+        # 特性类 addState 的数值是内部特性 id，本段只输出文本、不输出数值。
+        _is_feature_fn = bool(
+            (ft in ("addState", "addStateShort")
+             and any("特性" in (b.get("name") or "") + (b.get("detail") or "")
+                     for b in (fn.get("buffs") or [])))
+            # 内部状态 id（96xxxx 之类）：只对「壳函数」成立。buff 名能在文本里
+            # 点名时（如〔强食〕〔献给世界树的活祭〕），它是真效果，文本也没写数值——
+            # 但表头必须照样输出，否则说明行后面空一片。
+            or (raw_vals and all(isinstance(v, (int, float)) and v >= 100000 for v in raw_vals)))
+        if ft in ("addState", "addStateShort") and ft not in NO_VALUE_FUNCTYPES and not _is_feature_fn:
+            popup = fn.get("funcPopupText") or ""
+            _same_ft = [i for i in range(len(funcs)) if i != fi and funcs[i].get("funcType") == ft]
+            # 同组必须存在「数值不同的兄弟」才说明本组是多卡/多目标副本集合
+            _has_sibling_diff = any(
+                [v.get("Value") for v in funcs[i].get("svals", [])] != raw_vals for i in _same_ft)
+            # 「暴击星集中提升:技」这类多卡副本：本段点名了卡色（技/力/迅）或点名了
+            # 副本里的「暴击率」时，同值但卡色不同的副本属于同一效果的另一形态，
+            # 可一并吸收（否则下一段「获得暴击星」会错配到 15%）。
+            _card_hit = bool(CARD_KANJI_RE.search(part)) or "暴击率" in part
+            if (_has_sibling_diff and _card_hit and len(parts) <= 1
+                    and any(k in popup for k in ("集中", "威力", "耐性", "获得量", "提升"))):
+                # 只在「还没被本技能任何段落点名」的候选里找副本：文本里出现了该
+                # 副本的弹窗名（凯妮斯「仅在〔水边〕场地上时,付与每回合获得暴击星」）
+                # 说明它自己有段落，不能被本段吞掉（否则那段会拿到 0.5% 的错表）。
+                _all_text = "＆".join(parts)
+                for i in range(len(funcs)):
+                    if i in used or i == fi:
+                        continue
+                    o = funcs[i]
+                    if o.get("funcType") != ft:
+                        continue
+                    # 资源函数（获得暴击星/NP）绝不能被当副本吸收：它有文本要渲染
+                    if ft in ("gainStar", "gainNp", "gainHp"):
+                        continue
+                    if [v.get("Value") for v in o.get("svals", [])] != raw_vals:
+                        continue
+                    _op = o.get("funcPopupText") or ""
+                    if _op and _strip_card(_op) and _strip_card(_op) in _all_text:
+                        continue
+                    # 候选的完整弹窗名（「每回合获得暴击星：水边」）出现在全文任意段
+                    # → 它有自己的段落，不能被本段吸收（否则那段拿不到数值）。
+                    if _op and _op in _all_text:
+                        continue
+                    # 只吸收「文本里完全没提到」的副本；它的名字出现在任何一段里
+                    # 就说明那一段会用它，必须留给那一段（女神变生：段 0 曾吞掉
+                    # 段 1 的「暴击威力提升：技」，导致输出 30% 而不是 50%）。
+                    if _op and any(_op in p_ or _strip_card(_op) in p_ for p_ in parts):
+                        continue
+                    used.add(i)
+
+        # 整段是一个文段（含 ＋ 连接的多条效果）时，把「未被任何文本提到」的函数
+        # 一并占掉：这些是数据里有、文本里没写明的附带函数。
+        # 逐个处理（不带 ＋）时不做，避免把下一段要用的函数吞掉。
+        # （已移除：单段时静默吸收「未被提到的函数」。它假设技能里只剩一段文本，
+        #   实际多段技能的每一段都会被单独渲染，吸收会吞掉后一段要用的函数，
+        #   造成数值整段消失或张冠李戴 —— 梅柳齐娜「场地版每回合获得暴击星」。）
+
+        skip_next = False
+        next_fn = None
+        b = fn.get("buffs", [])
+        if b:
+            bid = str(b[0].get("id", ""))
+            if bid in BUFF_CALC and BUFF_CALC[bid].get("has_link"):
+                skip_next = True
+        if skip_next and fi + 1 < len(funcs):
+            next_fn = funcs[fi + 1]
+
+        hv = fn.get("svals", [])
+        has_val = any(v.get("Value") for v in hv) if hv else False
+        # 特性/内部状态 id 作为数值的函数：文本已写明效果名，数值无意义
+        if _is_feature_fn:
+            # 特性 id 段：文本就是全部信息，不出数值表
+            vals, is_fixed, formatter = [], True, lambda v: ""
+        else:
+            vals, is_fixed, formatter = get_func_values(fn, next_fn)
+        if ft in ("lossHpSafe", "lossHp") and has_val:
+            # 自伤：数值就是绝对值（HP 点数），不能按百分比换算
+            vals = [int(v.get("Value", 0)) for v in hv]
+            is_fixed = False if len(set(vals)) > 1 else True
+            formatter = lambda v: str(int(v))
+
+        # 只有「充能增减」按次数显示整数；HP 变动是点数，必须保留原值
+        # 数值应当紧贴其说明文字，不允许多余空行把两者拆开
+        _chunk = [part, ""]
+        if _is_feature_fn or (not _named and not (ft == "gainStar" and "获得" in part)):
+            # 特性/内部 id 段：文本就是全部信息；未被点名的附带函数：数值不属于这段
+            pass
+        elif not vals or ft in NO_VALUE_FUNCTYPES:
+            pass
+        elif ft == "addState" and "目标集中" in _bare_part and "提升" not in part:
+            # 「付与己方单体目标集中状态(1回合)」：文本只有持续回合，没有数值描述
+            pass
+        elif ft in ("addState", "addStateShort") and vals and (
+                any(k in (fn.get("funcPopupText") or "") + " ".join(
+                    b.get("name") or "" for b in (fn.get("buffs") or []))
+                    for k in ("毅力", "回避", "无敌", "必中"))) \
+                and all(isinstance(v, (int, float)) and v <= 10 for v in vals) and _named \
+                and not any(isinstance(v, (int, float)) and v >= 100000
+                            for v in [x.get("Value") for x in fn.get("svals", [])]):
+            # 次数类数值（毅力 1 次 / 回避 2 次）不是百分比。文本里已经写了
+            # 「(1次)」就不再重复输出；文本没写次数时才补「N次」。
+            if not re.search(r"[（(][^）)]*\d\s*次", part):
+                out.append(f"{int(vals[0])}次" if len(set(vals)) == 1
+                           else "/".join(str(int(v)) for v in vals) + "次")
+                out.append("")
+        elif ft == "gainStar" and vals and "获得" in part and "集中" not in part \
+                and not any(k in part for k in ("毅力", "罪之刻印")):
+            # 暴击星是「颗数」，按整数点数显示，不套百分比刻度
+            _chunk += [(str(int(vals[0])) if is_fixed else "| " + " | ".join(str(int(v)) for v in vals[:10]) + " |"), "", ""]
+            if not is_fixed:
+                _chunk = [part, "", "| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |",
+                          "|---|---|---|---|---|---|---|---|---|---|",
+                          "| " + " | ".join(str(int(v)) for v in vals[:10]) + " |", ""]
+
+            # 「付与每回合获得暴击星的状态(3回合)」这类壳状态：数值是内部状态 id 或
+            # 后面单独那段的产出量，不属于这一行（苍穹的武练曾在此冒出孤立「20」）。
+            pass
+        elif ft in ("addState", "addStateShort", "gainStar") and not re.search(r"\d", part) \
+                and not any(k in part for k in ("提升", "提高", "增加", "上升", "下降", "降低", "获得", "大量", "威力")) \
+                and len(_bare_part) >= 5:
+            # 文本既没写数值也没写「提升/降低/获得」，这个 buff 的数值不属于这段
+            # （「付与自身目标集中状态(1回合)」曾被塞进 300%）。
+            # 短词（「暴击威力提升」这类无变化表述）仍需保留数值。
+            pass
+        elif ft in ("addState", "addStateShort") and "特性" in part:
+            # 「付与令场地获得〔阳光照射〕特性的状态」「一定概率付与场地〔森林〕特性」：
+            # 数值是场地/特性内部 id 或概率常数（2038 → 203.8%、2073 → 207.3%），
+            # 不是玩家可见的百分比 → 只出文本。
+            pass
+        elif ft in ("shortenSkill", "shortenSkillPT"):
+            # 「技能冷却减少1回合」：数字已在文本里（1回合），数值是内部时长，不渲染
+            pass
+        elif ft in ("lossHp", "lossHpSafe") and vals and not re.search(r"\d", part):
+            # 生命值消耗是点数（Value=500/3000），不是百分比 → 「500 HP」。
+            # 文本已经写了具体数字（「生命值减少500」）时不重复输出。
+            if is_fixed:
+                _chunk += [f"{int(vals[0])} HP", "", ""]
+            else:
+                _chunk = [part, "", "| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |",
+                          "|---|---|---|---|---|---|---|---|---|---|",
+                          "| " + " | ".join(f"{int(v)} HP" for v in vals[:10]) + " |", ""]
+        elif any(k in _bare_part for k in ("灼伤", "中毒", "诅咒")) and vals \
+                and ft in ("addState", "addStateShort") \
+                and not any(k in part for k in ("特攻", "特防")) \
+                and any(k in part for k in ("付与", "状态")):
+            # 灼伤/中毒/诅咒 的数值是每回合固定伤害点数（Value=300 → 300），不是百分比
+            # get_func_values 已按 divisor(10) 除过（500→50）；灼伤伤害点数是原值，
+            # 复原 ×10（50→500）。文本里已写清数值的段不需要这张表。
+            _dm = [v * 10 for v in vals]
+            if is_fixed:
+                _chunk += [f"{int(_dm[0])}", "", ""]
+            else:
+                _chunk = [part, "", "| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |",
+                          "|---|---|---|---|---|---|---|---|---|---|",
+                          "| " + " | ".join(str(int(v)) for v in _dm[:10]) + " |", ""]
+        elif ft == "gainHp" and vals and ("生命值" in _bare_part or "HP" in part) \
+                and ("回复" in _bare_part or "恢复" in _bare_part or "減少" in _bare_part):
+            # 生命值回复是点数（Value=1000/2500），不是百分比。
+            # get_func_values 已按 divisor(10) 除过，这里 ×10 复原成真实点数。
+            _hp = [v * 10 for v in vals]
+            if is_fixed:
+                _chunk += [str(int(_hp[0])), "", ""]
+            else:
+                _chunk = [part, "", "| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |",
+                          "|---|---|---|---|---|---|---|---|---|---|",
+                          "| " + " | ".join(str(int(v)) for v in _hp[:10]) + " |", ""]
+        elif ft in (NiceFuncType.delayNpturn, NiceFuncType.hastenNpturn) and vals:
+            if re.search(r"[\d一二三四五六七八九十]", part):
+                _chunk += [f"{vals[0]}", "", ""]
+            # 文本没写数字（「敌方全体的充能减少」）→ 只出文本，不出孤零零的「1」
+        elif is_fixed:
+            _chunk += [f"{formatter(vals[0])}", "", ""]
+        else:
+            cells = [formatter(v) for v in vals[:10]]
+            _chunk = [part, "", "| Lv.1 | Lv.2 | Lv.3 | Lv.4 | Lv.5 | Lv.6 | Lv.7 | Lv.8 | Lv.9 | Lv.10 |",
+                       "|---|---|---|---|---|---|---|---|---|---|",
+                       "| " + " | ".join(cells) + " |", ""]
+        while _chunk and _chunk[-1] == "":
+            _chunk.pop()
+        out.extend(_chunk)
+        out.append("")
+
+        if skip_next and fi + 1 < len(funcs):
+            used.add(fi + 1)
+
+    return out
 
 
 def format_np_new(np_data, is_current=False):
@@ -1138,20 +2380,17 @@ def generate(data):
     def render_one_skill(sk):
         sk_name = sk.get("name", "???")
         sk_icon = sk.get("icon", "")
-        sk_ss = sk.get("strengthStatus", 0)
-        sk_cq = sk.get("condQuestId", 0)
-        has_strengthen = sk_ss > 0
         h()
         h(format_skill_detail(sk, sk_icon))
         old = sk.get("_old_versions", [])
-        if old and has_strengthen:
+        if old:
             old_sk = old[0]
             h(f"◈ 强化前：{old_sk.get('name', '?')}")
             h()
             h(format_skill_detail(old_sk, old_sk.get('icon', '')))
             h(f"此技能由「{old_sk.get('name', '?')}」强化而来")
             h()
-            qid = sk_cq or old_sk.get("condQuestId", 0)
+            qid = sk.get("condQuestId") or old_sk.get("condQuestId", 0)
             if qid:
                 h(f"开放条件: 从者强化任务 (Quest ID: {qid})")
                 h()

@@ -13,6 +13,10 @@ os.makedirs(ENTITY_DIR, exist_ok=True)
 
 FULL = "--full" in sys.argv
 
+# 手工维护名单（internalId）：不参与通用渲染，MD 全靠人工维护。
+# 玛修(No.1/800100)：技能组与宝具按战斗形象(灵衣)整套切换，Atlas 数据无法可靠推导。
+MANUAL_SERVANTS = {800100}
+
 sys.path.insert(0, WIKI)
 spec = importlib.util.spec_from_file_location("generate", os.path.join(WIKI, "generate.py"))
 gen_mod = importlib.util.module_from_spec(spec)
@@ -38,6 +42,9 @@ for fp in raw_files:
         data = json.load(f)
     entity_id = str(data.get("id", sid))
     out_path = os.path.join(ENTITY_DIR, f"{entity_id}.md")
+    if entity_id.isdigit() and int(entity_id) in MANUAL_SERVANTS:
+        skipped += 1
+        continue
     if not FULL and os.path.exists(out_path):
         skipped += 1
         continue

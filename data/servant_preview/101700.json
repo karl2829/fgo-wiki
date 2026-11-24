@@ -1,0 +1,491 @@
+{
+  "sid": "101700",
+  "collectionNo": 153,
+  "servant_name": "宮本武蔵",
+  "updated_at": "2026-10-23",
+  "skills": {
+    "2": {
+      "id": 325551,
+      "num": 2,
+      "name": "天眼 A+",
+      "originalName": "天眼 A+",
+      "ruby": "てんがん",
+      "detail": "自身に無敵貫通状態を付与(1ターン)＆宝具使用時のチャージ段階を2段階引き上げる状態を付与(1回・3ターン)▲＆Busterカード性能をアップ(3回・3ターン▲)＆NPを増やす▲",
+      "unmodifiedDetail": "自身に無敵貫通状態を付与(1ターン)＆宝具使用時のチャージ段階を2段階引き上げる状態を付与(1回・3ターン)[g][o]▲[/o][/g]＆Busterカード性能をアップ[{0}](3回・3ターン[g][o]▲[/o][/g])＆NPを増やす[{0}][g][o]▲[/o][/g]",
+      "type": "active",
+      "svtId": 101700,
+      "strengthStatus": 99,
+      "priority": 2,
+      "condQuestId": 94163100,
+      "condQuestPhase": 3,
+      "condLv": 0,
+      "condLimitCount": 1,
+      "icon": "https://static.atlasacademy.io/JP/SkillIcons/skill_00312.png",
+      "coolDown": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        6,
+        6,
+        6,
+        6,
+        5
+      ],
+      "actIndividuality": [],
+      "script": {},
+      "extraPassive": [],
+      "skillAdd": [],
+      "skillSvts": [
+        {
+          "svtId": 101700,
+          "num": 2,
+          "priority": 2,
+          "script": {},
+          "strengthStatus": 99,
+          "condQuestId": 94163100,
+          "condQuestPhase": 3,
+          "condLv": 0,
+          "condLimitCount": 1,
+          "eventId": 0,
+          "flag": 0,
+          "releaseConditions": []
+        }
+      ],
+      "functions": [
+        {
+          "funcId": 510,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "無敵貫通",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_329.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 189,
+              "name": "無敵貫通",
+              "originalName": "無敵貫通",
+              "detail": "回避と無敵を無視して、攻撃によるダメージを与える",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_329.png",
+              "type": "pierceInvincible",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3059,
+                  "name": "buffInvinciblePierce"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 0
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            },
+            {
+              "Rate": 1000,
+              "Turn": 1,
+              "Count": -1
+            }
+          ]
+        },
+        {
+          "funcId": 754,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "オーバーチャージ段階UP",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_336.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 227,
+              "name": "オーバーチャージ段階UP",
+              "originalName": "オーバーチャージ段階UP",
+              "detail": "宝具発動時、オーバーチャージ段階をアップする",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_336.png",
+              "type": "upChagetd",
+              "buffGroup": 0,
+              "script": {},
+              "originalScript": {},
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                }
+              ],
+              "tvals": [],
+              "ckSelfIndv": [],
+              "ckOpIndv": [],
+              "maxRate": 5
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 1,
+              "Value": 2
+            }
+          ]
+        },
+        {
+          "funcId": 120,
+          "funcType": "addStateShort",
+          "funcTargetType": "self",
+          "funcTargetTeam": "playerAndEnemy",
+          "funcPopupText": "バスターアップ",
+          "funcPopupIcon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_314.png",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [
+            {
+              "id": 102,
+              "name": "Busterアップ",
+              "originalName": "Busterアップ",
+              "detail": "Busterカードの性能をアップ",
+              "icon": "https://static.atlasacademy.io/JP/BuffIcons/bufficon_314.png",
+              "type": "upCommandall",
+              "buffGroup": 0,
+              "script": {
+                "ProgressSelfTurn": 1
+              },
+              "originalScript": {
+                "ProgressSelfTurn": 1
+              },
+              "vals": [
+                {
+                  "id": 3004,
+                  "name": "buffPositiveEffect"
+                },
+                {
+                  "id": 3006,
+                  "name": "buffIncreaseDamage"
+                },
+                {
+                  "id": 3093,
+                  "name": "busterBuff"
+                }
+              ],
+              "tvals": [
+                {
+                  "id": 5000,
+                  "name": "canBeInBattle"
+                },
+                {
+                  "id": 4002,
+                  "name": "cardBuster"
+                }
+              ],
+              "ckSelfIndv": [
+                {
+                  "id": 4002,
+                  "name": "cardBuster"
+                }
+              ],
+              "ckOpIndv": [],
+              "maxRate": 5000
+            }
+          ],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 300
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 320
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 340
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 360
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 380
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 400
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 420
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 440
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 460
+            },
+            {
+              "Rate": 1000,
+              "Turn": 3,
+              "Count": 3,
+              "Value": 500
+            }
+          ]
+        },
+        {
+          "funcId": 460,
+          "funcType": "gainNp",
+          "funcTargetType": "self",
+          "funcTargetTeam": "player",
+          "funcPopupText": "NP増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 2000
+            },
+            {
+              "Rate": 1000,
+              "Value": 2100
+            },
+            {
+              "Rate": 1000,
+              "Value": 2200
+            },
+            {
+              "Rate": 1000,
+              "Value": 2300
+            },
+            {
+              "Rate": 1000,
+              "Value": 2400
+            },
+            {
+              "Rate": 1000,
+              "Value": 2500
+            },
+            {
+              "Rate": 1000,
+              "Value": 2600
+            },
+            {
+              "Rate": 1000,
+              "Value": 2700
+            },
+            {
+              "Rate": 1000,
+              "Value": 2800
+            },
+            {
+              "Rate": 1000,
+              "Value": 3000
+            }
+          ]
+        },
+        {
+          "funcId": 470,
+          "funcType": "hastenNpturn",
+          "funcTargetType": "self",
+          "funcTargetTeam": "enemy",
+          "funcPopupText": "チャージ増加",
+          "functvals": [],
+          "overWriteTvalsList": [],
+          "funcquestTvals": [],
+          "script": {},
+          "funcGroup": [],
+          "buffs": [],
+          "svals": [
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            },
+            {
+              "Rate": 1000,
+              "Value": 1
+            }
+          ]
+        }
+      ],
+      "jp_opened_at": "2026-10-16",
+      "event_name": "复刻版：盈月剑风帖"
+    }
+  },
+  "nps": {}
+}
