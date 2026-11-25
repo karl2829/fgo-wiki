@@ -34,8 +34,26 @@ cd ~/fgo-wiki
 
 ## 出图脚本怎么调用
 
+统一入口：**`scripts/assetlib.py`**（本地优先，缺失自动下载并落库，返回本地绝对路径）
+
+```python
+import sys; sys.path.insert(0, "scripts")
+from assetlib import class_icon, card_icon, star, skill_icon, item_icon, servant_art, servant_face, np_card, bond_ce
+
+class_icon("saber", rarity=5)   # assets/classes/saber_gold.png（⭐≥4 金 / 3 银 / 其余铜）
+card_icon("arts")               # assets/cards/arts.png
+star(4)                         # assets/stars/4star.png
+skill_icon("skill_00300")       # assets/skills/skill_00300.png（缺则从 Atlas 拉）
+item_icon(6512)                 # assets/items/6512.png
+servant_art(100100)             # assets/servants/art_100100.png（L2 缓存）
+servant_face(100100, 0)         # assets/servants/face_100100_0.png
+np_card(100100)                 # assets/servants/npcard_100100.png
+bond_ce(100100)                 # assets/servants/bondce_100100.png
+```
+
+- 新写的出图脚本**一律走 assetlib**，不要各自再写下载逻辑。
 - **从者卡**（`card-render/build_data.py`）：先查 `assets/servants/`，没有才下载并落库，再复制到渲染缓存 `card-render/assets/`。
-- **其它出图脚本**（技能卡、宝具图、羁绊礼装卡等）：同样优先读 `assets/{skills,items,classes,servants}/`，缺失再回退 Atlas。
+- 历史脚本（`render_skill_card.py`、`render_noble_phantasm*.py`、`render_bond_ce_card.py`）目前仍直连 Atlas，迁移到 assetlib 属待办。
 - MD 里的图标引用已改为相对路径（如 `../../../assets/classes/saber_gold.png`），GitHub 与本地都能直接渲染。
 
 ## 来源与授权

@@ -81,11 +81,13 @@ def _md_files() -> list[Path]:
     return [Path(p) for p in glob.glob(str(WIKI / "entities/**/*.md"), recursive=True)]
 
 
-def _referenced(prefix: str, pattern: str) -> list[str]:
-    """扫 MD 里引用过的素材文件名（去重排序）。"""
+def _referenced(prefix: str, pattern: str, skip: tuple[str, ...] = ()) -> list[str]:
+    """扫 MD 里引用过的素材文件名（去重排序）。skip 用于排除全量目录页（如 items/index.md）。"""
     rx = re.compile(pattern)
     seen: set[str] = set()
     for fp in _md_files():
+        if skip and fp.name in skip and fp.parent.name in ("items",):
+            continue
         try:
             text = fp.read_text(encoding="utf-8", errors="ignore")
         except Exception:
@@ -118,7 +120,8 @@ def fetch_skills() -> tuple[int, list[str]]:
 
 
 def fetch_items() -> tuple[int, list[str]]:
-    ids = _referenced("Items", r"Items/(\d+\.png)")
+    # 排除 items/index.md：全量道具清单里有大量本身没有图标的条目（Atlas 404）
+    ids = _referenced("Items", r"Items/(\d+\.png)", skip=("index.md",))
     print(f"道具图标：MD 引用 {len(ids)} 个唯一文件")
     ok, fail = 0, []
     for i, name in enumerate(ids, 1):
@@ -246,7 +249,7 @@ def report() -> None:
         return len(list(p.glob("*.png"))) if p.exists() else 0
 
     skills = _referenced("SkillIcons", r"SkillIcons/([a-z0-9_]+\.png)")
-    items = _referenced("Items", r"Items/(\d+\.png)")
+    items = _referenced("Items", r"Items/(\d+\.png)", skip=("index.md",))
     print("素材库现状")
     for sub, need in (("classes", 44), ("cards", 3), ("stars", 5), ("skills", len(skills)),
                       ("items", len(items)), ("servants", None)):
