@@ -66,3 +66,6 @@ card-render/assets/art_*.png
 card-render/assets/bond_ce_*.png
 card-render/assets/face_*.png
 card-render/.git-old/
+
+# 素材库 L2：从者大素材（本地缓存，可 fetch_assets.py 重新拉取）
+assets/servants/

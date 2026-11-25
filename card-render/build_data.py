@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -394,7 +395,19 @@ def fetch_assets(d: dict) -> None:
             elif d.get("class_icon_url") and _download(d["class_icon_url"], dest):
                 print(f"  职阶图标 → assets/{dest.name}（CDN）")
     sid = d.get("servant_id")
-    if d.get("art_url") and _download(d["art_url"], ASSETS / f"art_{sid}.png"):
+    wiki_srv = Path(os.path.expanduser("~/fgo-wiki/assets/servants"))
+    wiki_srv.mkdir(parents=True, exist_ok=True)
+
+    def _from_library(name: str, url: str, dest: Path) -> bool:
+        """素材库优先：assets/servants 里已有就直接复制，没有就下载到库里再复制。"""
+        lib = wiki_srv / name
+        if not lib.exists():
+            if not url or not _download(url, lib):
+                return False
+        shutil.copy(lib, dest)
+        return True
+
+    if d.get("art_url") and _from_library(f"art_{sid}.png", d["art_url"], ASSETS / f"art_{sid}.png"):
         print(f"  立绘 → assets/art_{sid}.png（{d['art_url'].rsplit('/',1)[-1]}）")
     for sk in d["skills"]:
         icon = sk["icon"]
@@ -407,7 +420,7 @@ def fetch_assets(d: dict) -> None:
         if _download(url, dest):
             print(f"  技能图标 → assets/{icon}")
     img = d.get("bond", {}).get("img_url")
-    if img and _download(img, ASSETS / f"bond_ce_{sid}.png"):
+    if img and _from_library(f"bondce_{sid}.png", img, ASSETS / f"bond_ce_{sid}.png"):
         print(f"  羁绊礼装 → assets/bond_ce_{sid}.png")
 
 

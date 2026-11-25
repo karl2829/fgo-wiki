@@ -26,7 +26,7 @@ fgo-wiki/
 │   ├── bond-ce/           # 羁绊加成礼装 → 从者归属（8 张限定礼装 + 从者反查）
 │   └── tokou/             # 特攻一览（从者/礼装/纹章）
 ├── raw/                   # 原始 API JSON（不入库，可重新拉取）
-├── assets/                # 出图素材（ui/ 原生提取，external/ 网上收集，索引见 assets/external/README.md）
+├── assets/                # 出图素材库（classes/ cards/ stars/ skills/ items/ 入库，servants/ 本地缓存；见 assets/README.md）
 ├── scripts/               # 同步、生成、渲染脚本
 ├── card-render/           # 从者卡出图管线（pytakumi，附属子项目，规则见 card-render/RULES.md）
 ├── references/            # 从者语音、资料、技能引用
@@ -73,6 +73,7 @@ fgo-wiki/
 | `scripts/render_skill_card.py` | 技能卡图片渲染（Pillow） |
 | `scripts/render_noble_phantasm.py` | 宝具图渲染 |
 | `scripts/rebuild_servants_id.py` | 从者 MD 重建（默认增量，`--full` 全量） |
+| `scripts/fetch_assets.py` | 素材库拉取（图标/技能/道具/从者素材，本地优先） |
 | `scripts/audit_servants.py` | 从者 MD 审计（字段完整性抽查） |
 | `scripts/regen_all_servants.py` | CN 从者 MD 全量重生成（备份 + 变更统计） |
 | `card-render/build_data.py` | 从者卡数据管线（MD → JSON + 资产） |

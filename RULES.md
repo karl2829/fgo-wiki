@@ -65,16 +65,22 @@
 
 ## 通用技术规范
 
-### 图标 CDN
-```
-从者头像:     https://static.atlasacademy.io/CN/Faces/f_{svt_id}{asc}.png
-从者立绘:     https://static.atlasacademy.io/CN/CharaGraph/{svt_id}/{svt_id}{asc}@1.png
-宝具图标:     https://static.atlasacademy.io/CN/Servants/Commands/{svt_id}/card_servant_np.png
-技能图标:     https://static.atlasacademy.io/CN/SkillIcons/{icon_name}.png
-道具图标:     https://static.atlasacademy.io/CN/Items/{item_id}.png
-职阶图标:     https://static.atlasacademy.io/CN/ClassIcons/class_{class_id}.png
-指令卡图标:   https://static.atlasacademy.io/CN/Servants/Commands/icon_card_{arts/buster/quick}.png
-```
+### 素材库优先（2026-11 定）
+
+**出图一律先读本地 `assets/`，缺失才回退下载**；索引与分层见 `assets/README.md`。
+
+| 素材 | 本地路径 | 兜底来源 |
+|---|---|---|
+| 职阶图标 | `assets/classes/{职阶}_{gold\|silver\|bronze}.png` | 无（fgo-images 已弃用） |
+| 指令卡 | `assets/cards/{quick,arts,buster}.png` | Atlas `Servants/Commands/icon_card_*.png` |
+| 星级 | `assets/stars/{1..5}star.png` | 无 |
+| 技能图标 | `assets/skills/{icon_name}.png` | Atlas `SkillIcons/{icon_name}.png` |
+| 道具图标 | `assets/items/{item_id}.png` | Atlas `Items/{item_id}.png` |
+| 从者立绘/头像/宝具卡图/羁绊礼装 | `assets/servants/`（本地缓存，不入库） | Atlas `CharaGraph` / `Faces` / `Servants/Commands` / `Items` |
+
+- 批量获取：`scripts/fetch_assets.py`（`--icons/--skills/--items/--servant ID/--all-servants`）
+- MD 内图标引用已改相对路径（`../../../assets/...`），不再写 CDN
+- `cdn.jsdelivr.net/gh/karl2829/fgo-images` **已弃用**，不要新增引用；卡池 banner 是唯一例外（待本地化）
 
 ### 格式化函数签名
 ```python

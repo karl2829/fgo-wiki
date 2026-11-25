@@ -58,11 +58,12 @@ bash /home/mila/ops/publish_image.sh "$PWD/out/x.png"  # → https://gen.karlhub
 
 | 资产 | 命名 | 来源 |
 |---|---|---|
-| 立绘 | `art_<内部ID>.png` | Atlas `Servants/{id}/{id}b@2.png`（按从者隔离，禁止共享单文件） |
-| 羁绊礼装 | `bond_ce_<内部ID>.png` | Atlas `Items/` |
+| 立绘 | `art_<内部ID>.png` | **素材库** `~/fgo-wiki/assets/servants/art_<id>.png`（缺失才从 Atlas 下载并落库），再复制到 `card-render/assets/` |
+| 羁绊礼装 | `bond_ce_<内部ID>.png` | 同上，库内命名 `bondce_<id>.png` |
 | 星级徽标 | `badge_<rarity>.png` | PIL 自绘 |
 | 小金星 | `stars_<n>_<tier>_glow.png` | PIL 自绘 |
-| 职阶图标 | `{职阶小写}_{gold|silver|bronze}.png` | **优先** `~/fgo-wiki/assets/classes/`，色阶按星级（≥4 金 / 3 银 / 其余铜）；CDN（jsdelivr）不可达，仅作兜底 |
+| 职阶图标 | `{职阶小写}_{gold|silver|bronze}.png` | **素材库** `~/fgo-wiki/assets/classes/`，色阶按星级（≥4 金 / 3 银 / 其余铜）；jsdelivr 已弃用 |
+| 指令卡/技能图标 | `card_{Q,A,B}.png`、`skill_*.png` | `~/fgo-wiki/assets/{cards,skills}/` |
 
 ## 8. 数值口径
 
