@@ -26,7 +26,7 @@
 6. **引用分离**：活动不存关卡，只引用 War；War 存完整关卡
 7. **API 请求间隔**：拉取外部 API 数据时，每次请求间隔至少 **0.5 秒**，避免被限流或加入黑名单。
 8. **容错优先**：字段缺失用默认值或跳过，不报错中断
-9. **目录结构统一**：所有实体类型目录下按 `{类型}/CN/` 和 `{类型}/JP/` 划分。不要在 `entities/` 下直接放文件，也不用 `_jp` 后缀。
+9. **目录结构统一**：**已分服**的类型（`servants/`、`craft-essences/`、`events/`、`gacha/`）一律用 `{类型}/CN/` 和 `{类型}/JP/` 子目录；**暂未分服**的类型（`items/`、`command-codes/`、`mystic-codes/`、`mechanics/`、`traits/`、`tokou/`、`bond-ce/`、`wars/`）直接放类型目录下，按各自规则命名。不要在 `entities/` 根下直接放文件，也不用 `_jp` 后缀。
 10. **增量生成**：单个实体独立生成，批量跑脚本
 11. **增量更新标准**：所有数据类型的增量脚本统一用 `last_sync_at` + `synced_ids` 判断：
     - **卡池**：`fetch_mooncell_gacha.py` — 从 Mooncell 主页面拉新增池
@@ -104,26 +104,30 @@ format_ce_effects(ce_data) -> str        # 礼装效果
 ```
 fgo-wiki/
 ├── entities/
-│   ├── servants/           # 从者 MD（按名称命名）
-│   ├── craft_essences/     # 礼装 MD
-│   ├── wars/               # War MD（按 War ID 命名）
-│   ├── events/             # 活动 MD（按短名命名）
-│   ├── mechanics/          # 机制文档（13个子文件）
-│   ├── traits/             # 特性统计（按职阶分类的从者合集）
-│   ├── tokou/              # 特攻一览（从者/礼装/纹章）
-│   └── items/              # 道具 DB (active_items.json)
-├── raw/
-│   ├── servants/           # 原始 API JSON
-│   ├── wars/
-│   ├── events/
-│   └── ...
-├── references/
-│   ├── skills/
-│   │   ├── class/          # 职阶技能引用
-│   │   └── append/         # 追加技能引用
-│   └── lore/               # 从者资料
-├── rules/                  # 本目录（生成规则文档）
-└── generate.py             # 主生成脚本
+│   ├── servants/{CN,JP}/    # 从者 MD（按内部 ID 命名）
+│   ├── craft-essences/{CN,JP}/  # 礼装 MD
+│   ├── events/{CN,JP}/      # 活动 MD（按短名命名）
+│   ├── gacha/{CN,JP}/       # 卡池（当前/未来 + expired_gacha 汇总）
+│   ├── items/               # 道具 MD（按 item ID 命名，未分服）
+│   ├── command-codes/       # 指令纹章（未分服）
+│   ├── mystic-codes/        # 御主礼装（未分服）
+│   ├── mechanics/           # 机制文档（未分服）
+│   ├── traits/              # 特性统计（按职阶分类的从者合集）
+│   ├── tokou/               # 特攻一览
+│   ├── bond-ce/             # 羁绊加成礼装归属索引
+│   └── wars/                # War MD（按 War ID 命名）
+├── raw/                     # 原始 API JSON（gitignore，可重新拉取）
+│   └── {类型}/{CN,JP}/{id}.json
+├── assets/                  # 出图素材（classes/ 职阶图标、external/ 网图索引）
+├── scripts/                 # 同步、生成、审计脚本
+├── card-render/             # 从者卡出图管线（pytakumi，规则见 card-render/RULES.md）
+├── references/              # 从者语音、资料、技能引用
+├── data/                    # 映射表、翻译表、同步状态
+├── rules/                   # 各实体类型的生成规则
+├── generate.py              # 从者 MD 主生成脚本
+├── RULES.md                 # 本文件（规则总索引）
+├── SCHEMA.md                # 数据结构说明
+└── README.md                # 项目说明
 ```
 
 ---
@@ -180,4 +184,4 @@ fgo-wiki/
 
 ---
 
-> 最后更新：2026-07-23 | 维护者：Mila | 对应 generate.py v3
+> 最后更新：2026-11-25 | 维护者：Mila | 规则变更：JP 从者全量存储、card-render 并入

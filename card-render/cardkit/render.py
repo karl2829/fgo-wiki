@@ -5,10 +5,10 @@
 
 用法：
     from cardkit.render import render_template
-    render_template("dark_servant_card.html", "out.png")
+    render_template("servant_card_data.html", "out.png")
 
 命令行：
-    python -m cardkit.render templates/dark_servant_card.html out.png [--width 1080] [--dpr 2]
+    python -m cardkit.render templates/servant_card_data.html out.png [--width 1080] [--dpr 2]
 """
 from __future__ import annotations
 

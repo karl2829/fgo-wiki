@@ -16,7 +16,7 @@ Fate/Grand Order (FGO) 从者数据知识库。覆盖所有从者的基础信息
 ├── log.md              # 操作日志
 ├── generate.py         # 生成脚本
 ├── raw/servants/       # 原始 API JSON（{id}.json）
-└── entities/servants/  # 生成的 Markdown 从者页面（{name}.md）
+└── entities/servants/{CN,JP}/  # 生成的 Markdown 从者页面（{内部ID}.md）
 ```
 
 ## 从者页面结构
@@ -80,4 +80,4 @@ Fate/Grand Order (FGO) 从者数据知识库。覆盖所有从者的基础信息
 
 ## 页面命名
 - raw/servants/{id}.json — 以内部 ID 命名
-- entities/servants/{name}.md — 以从者名命名，/ 替换为 ·
+- entities/servants/{CN,JP}/{内部ID}.md — 按内部 ID 命名，CN/JP 分目录

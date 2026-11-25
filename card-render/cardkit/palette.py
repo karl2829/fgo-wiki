@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """FGO 卡面暗色主题调色板。
 
-数值与 templates/dark_servant_card.html 的 :root 变量一一对应；
+数值与 templates/servant_card_data.html 的 :root 变量一一对应；
 PIL 侧需要画同风格的元素时直接引用这里，避免两套色值漂移。
 """
 

@@ -7,18 +7,20 @@
 ## 用
 
 ```bash
-cd ~/card-render
-.venv/bin/python -m cardkit templates/dark_servant_card.html out/card.png            # 2x，2200×2740
-.venv/bin/python -m cardkit templates/dark_servant_card.html out/card.png --dpr 1    # 1x，1100×1370
-.venv/bin/python -m cardkit templates/dark_servant_card.html out/card.png --margin 0 # 2x，2160×2700，零边距
+cd ~/fgo-wiki/card-render
+.venv/bin/python build_data.py <内部ID>                       # MD → data/<内部ID>.json（含立绘/图标同步）
+.venv/bin/python make_card.py <内部ID> -o out/card_x.png      # 渲染（--hero-only 只出从者区）
+bash /home/mila/ops/publish_image.sh "$PWD/out/card_x.png"    # 发布 gen.karlhub.cn/<时间戳>_card_x.png
 ```
+
+`--no-art` 已废弃：立绘固定取 `assets/art_<id>.png`，参数仅为兼容旧命令保留。
 
 视口宽度自动取 `width + 2*bleed`（默认 1080+80=1160），渲染后裁掉多余黑边只留 `margin`。
 **别再直接把 width 当视口用**——模板 body 有 40px padding，视口只给 1080 会把右边 80px 连金框一起切掉。
 
 ```python
 from cardkit.render import render_template, render_html
-render_template("dark_servant_card.html", "out/card.png")            # 用 templates/ 下的文件
+render_template("servant_card_data.html", "out/card.png")             # 用 templates/ 下的文件
 render_html(html_str, "out/x.png", base="templates")                  # 直接喂字符串
 ```
 
@@ -27,20 +29,21 @@ render_html(html_str, "out/x.png", base="templates")                  # 直接�
 ## 目录
 
 ```
+build_data.py   数据管线：CN MD 主数据 + JP 日文名 + 宝具解析 + 资产下载
+make_card.py    模板填充 + 调用渲染内核
+RULES.md        生成规则（定版，改版先改它）
 cardkit/
   render.py     渲染入口：注入字体、收集本地图片、dpr 换算、计时
   palette.py    暗色主题色值（与模板 :root 一一对应，PIL 侧也用它）
 templates/
-  servant_frame.html          从者卡通用框架（定版 2026-11-22）：头部 + 特性 + 页脚
-                              技能区/宝具区是虚线占位，数据填充下一步再做
-  dark_servant_card.html      数据卡 · 深色 · 立绘出血 + 印刷表宝具区
-  dark_servant_card_npold.html  同上，宝具区改独立数值框（make_npold.py 生成）
-  rarity_frames.html          稀有度三档金属环对照图
+  servant_card_data.html      生产模板（唯一在用）
 assets/
-  art/                        立绘池 5 张（asc1..asc4 + costume，512×724）
-  art_current.png             当前选中的立绘，模板只引这张
-  其余：职阶、指令卡、技能图标、5star.png、bond_ce.png
-pick_art.py     立绘随机选择（--art asc2 / --list / --seed N）
+  art_<id>.png                从者立绘（按从者隔离，禁止共享单文件）
+  bond_ce_<id>.png            羁绊礼装图
+  badge_<rarity>.png / stars_*  星级徽标与小金星（PIL 自绘）
+  {职阶}_{gold|silver|bronze}.png  职阶图标（取自 ~/fgo-wiki/assets/classes）
+  其余：指令卡、技能图标
+data/           中间 JSON（gitignore，可重新生成）
 out/            渲染输出
 .venv/          pytakumi 0.1.5 + pillow
 ```
@@ -67,14 +70,6 @@ out/            渲染输出
 7. 图片必须通过 `images={src: bytes}` 传入，渲染器不会自己读盘（`render.py` 已自动收集相对路径）。
 8. **空 `<div>` 不生成布局盒**：`flex-grow` / `min-height` / `margin-top:auto` 对它都不生效。要压底就 `position:absolute; bottom:0`，要留白就用带内容的元素加 `padding`。
 9. **量位置先用临时亮边框实测**（`border:2px solid #f00` + numpy 找纯色行），别按 CSS 数值推像素。
-
-## 通用框架（servant_frame.html）
-
-出图：`pick_art.py` 选立绘 → `python -m cardkit templates/servant_frame.html out/x.png`，默认 2200×3789。
-
-右栏字段顺序（宁少不多）：职阶图标 + `SERVANT ／ SABER` + 五连星 → 名字 → 日文名 → 属性行 → 分隔线 → ATK/HP → 指令卡 → 特性文字行 → 画师/声优 → 羁绊礼装块。
-立绘 432×540 贴左贴顶出血，右下角胶囊 `No.002`；底部 96px 渐隐 + 1px 淡金收口，给角标一个落点。
-星级图 `assets/5star.png`（328×86）显示 114×30。稀有度只换金属环：`.card.r3` 银 / `.card.r2` 铜。
 
 ## 支持度速查
 

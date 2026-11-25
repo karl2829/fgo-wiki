@@ -3,7 +3,7 @@
 用法：
   .venv/bin/python make_card.py 100100                 # 数据在 data/100100.json
   .venv/bin/python make_card.py 100100 -o out/card.png
-  .venv/bin/python make_card.py 100100 --no-art        # 不换立绘（沿用 art_current.png）
+  .venv/bin/python make_card.py 100100 -o out/card_002.png   # 立绘固定取 assets/art_<id>.png
 
 数据只认 data/<id>.json，字段见 data/100100.json；数值必须来自 ~/fgo-wiki 实体文件，
 本脚本不做任何补算。
@@ -146,7 +146,7 @@ def build_traits(data: dict, budget: float = 72.0) -> str:
     return html
 
 
-def render(servant_id: str, out: Path, pick: bool, hero_only: bool = False) -> dict:
+def render(servant_id: str, out: Path, hero_only: bool = False) -> dict:
     data = json.loads((ROOT / "data" / f"{servant_id}.json").read_text(encoding="utf-8"))
     html = TPL.read_text(encoding="utf-8")
     if hero_only:                       # 只出从者区模版：技能/宝具留空
@@ -203,8 +203,6 @@ def render(servant_id: str, out: Path, pick: bool, hero_only: bool = False) -> d
     built.write_text(html, encoding="utf-8")
 
     py = ROOT / ".venv" / "bin" / "python"
-    if pick:
-        subprocess.run([str(py), str(ROOT / "pick_art.py")], check=True)
     res = subprocess.run([str(py), "-m", "cardkit", str(built), str(out)],
                          check=True, capture_output=True, text=True, cwd=ROOT)
     return {"out": str(out), "log": res.stdout.strip()}
@@ -214,11 +212,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("servant_id")
     ap.add_argument("-o", "--out", default=None)
-    ap.add_argument("--no-art", action="store_true")
+    ap.add_argument("--no-art", action="store_true", help="已废弃：立绘固定为 assets/art_<id>.png，此参数仅为兼容旧命令")
     ap.add_argument("--hero-only", action="store_true", help="只渲染从者区（定模版用）")
     args = ap.parse_args()
     out = Path(args.out) if args.out else ROOT / "out" / f"card_{args.servant_id}.png"
-    r = render(args.servant_id, out, pick=not args.no_art, hero_only=args.hero_only)
+    r = render(args.servant_id, out, hero_only=args.hero_only)
     print(r["log"])
 
 

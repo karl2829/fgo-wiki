@@ -28,6 +28,7 @@ fgo-wiki/
 ├── raw/                   # 原始 API JSON（不入库，可重新拉取）
 ├── assets/                # 出图素材（ui/ 原生提取，external/ 网上收集，索引见 assets/external/README.md）
 ├── scripts/               # 同步、生成、渲染脚本
+├── card-render/           # 从者卡出图管线（pytakumi，附属子项目，规则见 card-render/RULES.md）
 ├── references/            # 从者语音、资料、技能引用
 ├── rules/                 # 各实体类型的生成规则
 ├── data/                  # 映射表、翻译表、同步状态
@@ -40,8 +41,8 @@ fgo-wiki/
 
 | 类型 | 数量 |
 |------|------|
-| 从者（国服） | 451 |
-| 从者（日服先行） | 30 |
+| 从者（国服） | 458 |
+| 从者（日服，全量） | 487 |
 | 概念礼装（国服） | 2284 |
 | 概念礼装（日服） | 333 |
 | 活动（国服） | 334 |
@@ -60,7 +61,7 @@ fgo-wiki/
 |------|------|
 | `scripts/sync_all.py` | 一键同步入口（默认跳过卡池，`--with-gacha` 开启） |
 | `scripts/fetch_servants.py` | 国服从者增量拉取 |
-| `scripts/fetch_jp_only.py` | 日服先行从者 |
+| `scripts/fetch_jp_servants.py` | 日服从者**全量**补全（日文名/宝具名/技能名数据源，2026-11 起） |
 | `scripts/generate_ce.py` | 礼装 MD 生成 + 索引重建 |
 | `scripts/gen_bond_ce.py` | 羁绊加成礼装归属索引（纯本地，生成 `entities/bond-ce/`） |
 | `scripts/fetch_events.py` | 活动增量同步 |
@@ -72,6 +73,22 @@ fgo-wiki/
 | `scripts/render_skill_card.py` | 技能卡图片渲染（Pillow） |
 | `scripts/render_noble_phantasm.py` | 宝具图渲染 |
 | `scripts/rebuild_servants_id.py` | 从者 MD 重建（默认增量，`--full` 全量） |
+| `scripts/audit_servants.py` | 从者 MD 审计（字段完整性抽查） |
+| `scripts/regen_all_servants.py` | CN 从者 MD 全量重生成（备份 + 变更统计） |
+| `card-render/build_data.py` | 从者卡数据管线（MD → JSON + 资产） |
+| `card-render/make_card.py` | 从者卡渲染（pytakumi，2200px 宽） |
+
+## 从者卡出图
+
+`card-render/` 是从者卡渲染管线，数据全部取自本仓库的 MD（CN 主数据 + JP 日文名），
+pytakumi 直接把 HTML/CSS 渲染成 PNG，不启浏览器。生成口径（效果四态、`∅`、日文名、
+资产、数值口径）见 [`card-render/RULES.md`](card-render/RULES.md)。
+
+```bash
+cd card-render
+.venv/bin/python build_data.py <内部ID>
+.venv/bin/python make_card.py <内部ID> -o out/card.png
+```
 
 ## 开源协议
 
