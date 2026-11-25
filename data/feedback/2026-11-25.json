@@ -1,11 +1,12 @@
 [
- {
-  "time": "2026-11-25T00:50:42",
-  "group": "578820016(FGO信息交流群)",
-  "user": "Mila(自查)",
-  "original_question": "光之高扬斯卡娅泳装是哪个",
-  "my_answer": "群内兔耳从者清单把光之高扬斯卡娅标注为「泳装」",
-  "feedback": "两处：1) 光之高扬斯卡娅没有泳装版本/泳装灵衣，唯一灵衣是简易灵衣「NFF兔女郎」，之前清单里的（泳装）标注是错的；2) entities/servants/CN/604200.md 卡池字段写「常驻」，Mooncell 与官方均为期间限定（2021-08-01 日服6周年实装）",
-  "status": "待审核"
- }
+  {
+    "time": "2026-11-25T00:50:42",
+    "group": "578820016(FGO信息交流群)",
+    "user": "Mila(自查)",
+    "original_question": "光之高扬斯卡娅泳装是哪个",
+    "my_answer": "群内兔耳从者清单把光之高扬斯卡娅标注为「泳装」",
+    "feedback": "两处：1) 光之高扬斯卡娅没有泳装版本/泳装灵衣，唯一灵衣是简易灵衣「NFF兔女郎」，之前清单里的（泳装）标注是错的；2) entities/servants/CN/604200.md 卡池字段写「常驻」，Mooncell 与官方均为期间限定（2021-08-01 日服6周年实装）",
+    "status": "已确认并修复",
+    "resolution": "核实成立（Mooncell：No.314 期间限定，灵衣仅简易灵衣NFF兔女郎）。1) 泳装标注出自群聊回答时生成的清单，KB 文件无此标注，costumes.json 记录正确，无需改库；2) 604200 卡池「常驻」系 Atlas type/flag 均为 normal/空所致，已在 generate.py POOL_OVERRIDE 增加 collectionNo=314→限定，并重建 CN/JP 604200 MD（raw 同步重拉）。"
+  }
 ]

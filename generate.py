@@ -2203,6 +2203,7 @@ def generate(data):
     # 卡池特殊覆盖: 个别从者 type/flag 不可靠(如 U-奥尔加玛丽 type=normal 但实际限定)
     # key = collectionNo
     POOL_OVERRIDE = {
+        314: "限定",   # 光之高扬斯卡娅(Atlas type/flag 均为 normal/空，实际期间限定)
         444: "限定",   # U-奥尔加玛丽
         2: "剧情限定",  # 阿尔托莉雅(Saber)
         70: "限定",     # 斯卡哈(Lancer)
