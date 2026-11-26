@@ -255,6 +255,22 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
             continue
         if e["desc"] or e["values"] or e.get("fixed"):
             kept.append(e)
+
+    # wiki 的强化后宝具段落有时把同一效果写两遍（生成器缺陷，数值还会被截成 10%），
+    # 同名的只留信息量最大的一条：有 5 档数值 > 有固定值 > 什么都没有。
+    def _score(e: dict) -> tuple:
+        return (1 if e.get("values") else 0, len(e.get("values") or []), 1 if e.get("fixed") else 0)
+
+    best: dict[str, tuple] = {}
+    order: list[str] = []
+    for e in kept:
+        k = e["desc"]
+        if k not in best:
+            best[k] = (_score(e), e)
+            order.append(k)
+        elif _score(e) > best[k][0]:
+            best[k] = (_score(e), e)
+    kept = [best[k][1] for k in order]
     return {"name": name, "sub": sub, "rank": rank, "note": note, "chips": chips,
             "effects": kept}
 
