@@ -167,7 +167,11 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
                     effects.append({"desc": "", "values": None, "fixed": s})
                 pending = None
                 continue
-            effects.append({"desc": re.sub(r"[▲△]", "", s).strip(), "values": None})
+            st = re.sub(r"[▲△]", "", s).strip()
+            if effects and re.fullmatch(r"[+\-]?\d+(?:\.\d+)?\s*(?:HP|%|個|个|次|星|枚)?", st):
+                effects[-1]["fixed"] = st          # 独立成行的数值：属于上一条效果
+                continue
+            effects.append({"desc": re.sub(r"<[^>]*>", "", st).strip(), "values": None})
             pending = effects[-1]
 
         skills.append({
@@ -225,6 +229,24 @@ def _parse_slot_skills(body: str) -> list[dict]:
     return [slots[k] for k in sorted(slots)]
 
 
+
+
+_PROFILE_CACHE: dict[str, dict] = {}
+
+
+def _raw_profile(sid: str, region: str = "CN") -> dict:
+    """raw JSON 里的 profile（画师/声优），MD 缺字段时兜底。"""
+    key = f"{region}/{sid}"
+    if key not in _PROFILE_CACHE:
+        prof = {}
+        path = _wiki(f"raw/servants/{region}/{sid}.json")
+        if path.is_file():
+            try:
+                prof = (json.loads(path.read_text(encoding="utf-8")).get("profile") or {})
+            except Exception:
+                prof = {}
+        _PROFILE_CACHE[key] = prof
+    return _PROFILE_CACHE[key]
 
 
 def parse_np(text: str, sid: str, region: str = "CN") -> dict:
@@ -443,7 +465,10 @@ def parse_servant(sid: str) -> dict:
     base = _kv(_table_rows(_section(text, "基础信息")))
     stats = _kv(_table_rows(_section(text, "数值")))
 
-    cards = [m.group(1) for m in re.finditer(r"cards/(\w+)\.png", base.get("指令卡", ""))]
+    # MD 里图片名是小写（quick/arts/buster），模板和渲染按首字母大写取图标
+    _CARD_CASE = {"quick": "Quick", "arts": "Arts", "buster": "Buster", "extra": "Extra"}
+    cards = [_CARD_CASE.get(m.group(1).lower(), m.group(1))
+             for m in re.finditer(r"cards/(\w+)\.png", base.get("指令卡", ""))]
     traits = [t.strip() for t in base.get("特性", "").split("、") if t.strip()]
 
     hexes = [[k, stats.get(k, "")] for k in ("筋力", "耐久", "敏捷", "魔力", "幸运")]
@@ -524,8 +549,8 @@ def parse_servant(sid: str) -> dict:
         "npgain": stats.get("NP获得率(攻击)", ""),
         "skills": cn_skills,
         "np": np_cn,
-        "artist": artist.group(1) if artist else "",
-        "cv": cv.group(1) if cv else "",
+        "artist": (artist.group(1) if artist else "") or _raw_profile(sid, region).get("illustrator", ""),
+        "cv": (cv.group(1) if cv else "") or _raw_profile(sid, region).get("cv", ""),
         "bond": parse_bond(text, sid),
         "art_url": art_url,
         "class_icon_url": class_icon_url,

@@ -1951,6 +1951,13 @@ def format_np_new(np_data, is_current=False):
     detail = np_data.get("detail", "")
     fns = np_data.get("functions", [])
 
+    # 状态分组的宝具（玉兔/UDK 这类）：detail 里带【效果根据状态变化】【〔日轮〕状态时】…
+    # 一个模组只对应一个状态，这里取第一段，避免把状态标题塞进效果名、也避免跨行加粗
+    if "状态时】" in detail:
+        segs = re.split(r"【[^】]*状态时】", detail)
+        detail = segs[1] if len(segs) > 1 else detail
+    detail = detail.replace("【效果根据状态变化】", "").strip()
+
     # Step 1: Split effects by ＆ and ＋, clean ▲
     raw_parts = re.split(r"[＆＋]", detail)
     raw_parts = [p.strip() for p in raw_parts if p.strip()]
@@ -1992,6 +1999,7 @@ def format_np_new(np_data, is_current=False):
         eff_desc = effects_clean[fi] if fi < len(effects_clean) else (buff_name or buff_det or ft)
         # Strip OC tag from base damage description (it belongs to the OC row)
         eff_desc = re.sub(r"<过量充能时特攻威力提升>", "", eff_desc).strip()
+        eff_desc = " ".join(eff_desc.split())          # 兜底：效果名永远单行
         is_damage = ft in ("damageNp", "damageNpIndividual", "damageNpPierce", "damageNpIndividualSum")
         handle_tokou = (tokou_target and is_damage and fi == tokou_effect_idx)
 
