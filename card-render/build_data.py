@@ -127,6 +127,9 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
         if cur is not None:
             cur["lines"].append(line)
 
+    if not blocks:                       # 手维护格式（多形态从者）
+        return _parse_slot_skills(body)
+
     skills = []
     for b in blocks:
         parts = b["head"].split()
@@ -177,9 +180,76 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
     return skills
 
 
+
+
+def _parse_slot_skills(body: str) -> list[dict]:
+    """手维护格式（玛修这种多形态从者）：`| 槽位 | 技能 | 阶级 | 充能 |` 概览表
+    + `**技能1 · 名称**` 分块。同名槽位若带「（强化后）」则取强化后那版。
+    """
+    # 概览表：槽位 → (阶级, 充能)
+    meta: dict[str, tuple[str, str]] = {}
+    for r in _table_rows(body):
+        if len(r) >= 4 and r[0].startswith("技能"):
+            meta[r[0].replace("（强化后）", "").strip()] = (r[2].strip(), r[3].strip())
+
+    parts = re.split(r"^\*\*技能(\d+)(（强化后）)?\s*·\s*(.+?)\*\*\s*$", body, flags=re.M)
+    slots: dict[int, dict] = {}
+    for i in range(1, len(parts) - 3, 4):
+        num, _, name, content = int(parts[i]), parts[i + 1], parts[i + 2].strip(), parts[i + 3]
+        rank, cd = meta.get(f"技能{num}", ("", ""))
+        mr = re.search(r"\s+(EX|[A-E]\+{0,2})$", name)   # 名字里可能带阶级
+        if mr:
+            name, rank = name[: mr.start()].strip(), rank or mr.group(1)
+        effects, cur = [], None
+        for line in content.splitlines():
+            st = line.strip()
+            if not st:
+                continue
+            if st.startswith("|"):
+                rows = _table_rows(st)
+                if rows and cur is not None and not rows[0][0].startswith(("Lv.1", "槽位")):
+                    cur["values"] = rows[0]
+                continue
+            mf = re.match(r"^(?:固定值|概率)[:：]\s*(.+)$", st)
+            if mf and cur is not None:
+                cur["fixed"] = mf.group(1).strip()
+                continue
+            mb = re.match(r"^(.+?)[:：]\s*(\d[\d.%]*)$", st)
+            if mb and cur is not None and "付与" in mb.group(1):
+                cur["fixed"] = f'{mb.group(1)} {mb.group(2)}'.strip()
+                continue
+            cur = {"desc": re.sub(r"[▲△]", "", st).strip(), "values": None}
+            effects.append(cur)
+        slots[num] = {"icon": "", "name": name, "rank": rank, "cd": cd,
+                      "effects": [e for e in effects if e["desc"]]}
+    return [slots[k] for k in sorted(slots)]
+
+
+
+
 def parse_np(text: str, sid: str, region: str = "CN") -> dict:
-    """解析宝具：优先取「强化后」段，无则取「未强化/强化前」段。"""
+    """解析宝具。
+
+    多宝具模组的从者（玉兔/卫宫这种，MD 里是「**宝具模组 1/2**」分段）会把每个模组
+    各解析一遍，首个作为主宝具，全部放在 ``modules`` 里，由渲染层逐块出图。
+    """
     body = _section(text, "宝具")
+    mods = re.split(r"^\*\*宝具模组\s*(\d+)\*\*\s*$", body, flags=re.M)
+    if len(mods) > 2:
+        blocks = [(mods[i], mods[i + 1]) for i in range(1, len(mods) - 1, 2)]
+        parsed = []
+        for no, block in blocks:
+            np = _parse_np_block(block, sid, region)
+            np["module"] = int(no)
+            parsed.append(np)
+        first = dict(parsed[0])
+        first["modules"] = parsed
+        return first
+    return _parse_np_block(body, sid, region)
+
+
+def _parse_np_block(body: str, sid: str, region: str = "CN") -> dict:
+    """解析单个宝具块：优先取「强化后」段，无则取「未强化/强化前」段。"""
     parts = re.split(r"^\*\*(未强化|强化前|强化后)\*\*\s*$", body, flags=re.M)
     # parts = [前言, 标签1, 内容1, 标签2, 内容2, ...]
     segs = [(parts[i].strip(), parts[i + 1]) for i in range(1, len(parts) - 1, 2)]
@@ -210,7 +280,7 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
             if effects and effects[-1]["values"] is None:
                 effects[-1]["values"] = rows[0]
             continue
-        mf = re.match(r"^固定值[:：]\s*(.+)$", s2)
+        mf = re.match(r"^(?:固定值|概率)[:：]\s*(.+)$", s2)
         if mf and effects:
             effects[-1]["fixed"] = mf.group(1).strip()
             continue
@@ -286,6 +356,9 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
     kept = []
     for e in effects:
         if e.pop("_drop", False):
+            continue
+        # 「【效果根据状态变化】」是说明行不是效果；状态已写在每条效果名前
+        if re.fullmatch(r"【效果根据状态变化】", (e.get("desc") or "").strip()):
             continue
         if e["desc"] or e["values"] or e.get("fixed"):
             kept.append(e)
