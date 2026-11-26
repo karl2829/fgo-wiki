@@ -1498,6 +1498,13 @@ def _render_skill_parts(text, sk, used=None):
                 _named = True
         if _bare_part and _bare_part in {_bare(_c) for _c in _names if _c}:
             _named = True
+        if not _named:
+            # 〔X〕括号标记命中：文本与函数名共享同一个特性/目标词（如〔魔性〕），
+            # 说明这条效果就是它，数值要贴上来（源赖光·童子切安纲两个特攻曾丢一个表）
+            _pt = set(re.findall(r"〔([^〕]+)〕", part))
+            _nt = set(re.findall(r"〔([^〕]+)〕", " ".join(_names)))
+            if _pt and _pt & _nt:
+                _named = True
         if not _named and len(_bare_part) >= 4:
             # 自然语言里的「防御力提升」 vs 内部名「强化(防御力提升)」：只要本段
             # 的纯文字片段被本函数的名字整段包含，就算点名。
@@ -1744,7 +1751,12 @@ def _render_skill_parts(text, sk, used=None):
         _is_feature_fn = bool(
             (ft in ("addState", "addStateShort")
              and any("特性" in (b.get("name") or "") + (b.get("detail") or "")
-                     for b in (fn.get("buffs") or [])))
+                     for b in (fn.get("buffs") or []))
+             # 「对〔X〕特性对象造成的伤害提升」这类是伤害/威力加成，有百分比数值，
+             # 不能当特性壳函数（源赖光的〔魔性〕特攻曾因此丢掉整张数值表）
+             and not any(k in ((b.get("name") or "") + (b.get("detail") or ""))
+                         for b in (fn.get("buffs") or [])
+                         for k in ("威力提升", "伤害提升")))
             # 内部状态 id（96xxxx 之类）：只对「壳函数」成立。buff 名能在文本里
             # 点名时（如〔强食〕〔献给世界树的活祭〕），它是真效果，文本也没写数值——
             # 但表头必须照样输出，否则说明行后面空一片。

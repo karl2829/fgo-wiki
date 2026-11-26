@@ -196,7 +196,7 @@ def _parse_slot_skills(body: str) -> list[dict]:
         if len(r) >= 4 and r[0].startswith("技能"):
             meta[r[0].replace("（强化后）", "").strip()] = (r[2].strip(), r[3].strip())
 
-    parts = re.split(r"^\*\*技能(\d+)(（强化后）)?\s*·\s*(.+?)\*\*\s*$", body, flags=re.M)
+    parts = re.split(r"^\*\*技能(\d+)(（强化后）)?\s*·\s*(.+?)\*\*\s*(?:（[^）]*）)?\s*$", body, flags=re.M)
     slots: dict[int, dict] = {}
     for i in range(1, len(parts) - 3, 4):
         num, _, name, content = int(parts[i]), parts[i + 1], parts[i + 2].strip(), parts[i + 3]
@@ -449,6 +449,121 @@ def parse_bond(text: str, sid: str) -> dict:
             "cost": meta.get("COST", ""), "img_url": img}
 
 
+def _subsection(text: str, header: str) -> str:
+    """取 `header` 开始到下一个同级 `### `/`## ` 之间的内容。"""
+    m = re.search(rf"^{header}\s*$(.*?)(?=^###\s|^##\s|\Z)", text, re.M | re.S)
+    return m.group(1) if m else ""
+
+
+def _np_meta_from_table(part: str, name: str) -> dict:
+    """从「| 宝具 | 上标 | 卡色 | 类型 | 阶级 | 种类 |」表里取该宝具的元数据。"""
+    for r in _table_rows(part):
+        if len(r) >= 5 and r[0].replace("（强化后）", "") == name:
+            return {"card": r[2], "type": r[3], "rank": r[4],
+                    "kind": r[5] if len(r) > 5 else ""}
+    return {}
+
+
+def _parse_manual_np(part: str) -> dict | None:
+    """解析手维护（玛修）宝具段：**名称**（时机）+ 效果行 / 「效果|数值」表。"""
+    blocks = re.split(r"^\*\*(.+?)\*\*(?:（(.+?)）)?\s*$", part, flags=re.M)
+    items = [(blocks[i].strip(), (blocks[i + 1] or "").strip(), blocks[i + 2])
+             for i in range(1, len(blocks) - 2, 3)]
+    if not items:
+        return None
+    name, tag, body = items[-1]
+
+    effects: list[dict] = []
+    lines = [l.strip() for l in body.splitlines()]
+    i = 0
+    while i < len(lines):
+        st = lines[i]
+        if not st or st.startswith(">"):
+            i += 1
+            continue
+
+        if st.startswith("|"):
+            block = []
+            while i < len(lines) and lines[i].startswith("|"):
+                block.append(lines[i])
+                i += 1
+            rows = _table_rows("\n".join(block))
+            if not rows:
+                continue
+            head = rows[0]
+
+            if head and head[0] == "效果":            # 「| 效果 | 数值 |」表
+                for r in rows[1:]:
+                    if not r:
+                        continue
+                    desc = re.sub(r"〈.+?〉", "", r[0]).strip()
+                    val = r[1].strip() if len(r) > 1 else ""
+                    if re.match(r"^(OC1|Lv\.1)", val):
+                        nums = [n for n in re.findall(r"[\d.]+%?", val) if re.search(r"\d", n)]
+                        effects.append({"desc": desc, "hint": "", "values": nums})
+                    elif val in ("∅", "", "—"):
+                        effects.append({"desc": desc, "hint": "", "values": None})
+                    else:
+                        effects.append({"desc": desc, "hint": "", "values": None, "fixed": val})
+                continue
+
+            if head and (head[0].startswith(("OC1", "Lv.1", "宝具", "槽位"))):
+                if head[0].startswith(("OC1", "Lv.1")) and effects and effects[-1].get("values") is None:
+                    effects[-1]["values"] = [c for c in rows[1][:5]] if len(rows) > 1 else None
+                continue        # 元数据表 / 表头行：忽略
+
+            # 其他两列小表当作 描述|数值
+            for r in rows:
+                if len(r) >= 2 and r[0]:
+                    effects.append({"desc": re.sub(r"〈.+?〉", "", r[0]).strip(),
+                                    "hint": "", "values": None, "fixed": r[1].strip()})
+            continue
+
+        m1 = re.match(r"^(.+?):\s*(.+)$", st)
+        if m1:
+            effects.append({"desc": m1.group(1).strip(), "hint": "",
+                            "values": None, "fixed": m1.group(2).strip()})
+            i += 1
+            continue
+        hint = re.search(r"〈(.+?)〉", st)
+        effects.append({"desc": re.sub(r"〈.+?〉", "", st).strip(),
+                        "hint": f"〈{hint.group(1)}〉" if hint else "", "values": None})
+        i += 1
+
+    meta = _np_meta_from_table(part, name)
+    text_all = meta.get("kind", "") + "".join(e["desc"] for e in effects)
+    scope = "全体攻击" if "全体" in text_all else ("单体攻击" if "单体" in text_all else "")
+    chips = []
+    if meta.get("card"):
+        chips.append([meta["card"], f"c-{meta['card'].lower()}"])
+    if meta.get("kind"):
+        chips.append([meta["kind"], "c-blue"])
+    if scope:
+        chips.append([scope, "c-ghost"])
+    return {"name": name, "sub": tag, "rank": meta.get("rank", ""), "note": "", "chips": chips,
+            "effects": [e for e in effects if e["desc"] or e.get("values") or e.get("fixed")]}
+
+
+def parse_forms(text: str) -> list[dict]:
+    """多形态从者（玛修）：MD 里 `### 【基础形象】/【奥特瑙斯】/【Paladin】` 各一套技能+宝具。"""
+    sk_body = _section(text, "持有技能")
+    np_body = _section(text, "宝具")
+    names = re.findall(r"^###\s*【(.+?)】\s*$", sk_body, re.M)
+    if len(names) < 2:
+        return []
+
+    forms = []
+    for name in names:
+        sk_part = _subsection(sk_body, r"###\s*【" + re.escape(name) + r"】")
+        skills = _parse_slot_skills(sk_part)
+        if not skills:
+            continue
+        np_part = _subsection(np_body, r"###\s*" + re.escape(name))
+        np = _parse_manual_np(np_part) or {}
+        forms.append({"form": name, "skills": skills, "np": np})
+    return forms
+
+
 def parse_servant(sid: str) -> dict:
     md_path = _wiki(f"entities/servants/CN/{sid}.md")
     text = md_path.read_text(encoding="utf-8")
@@ -528,6 +643,11 @@ def parse_servant(sid: str) -> dict:
     ruby = np_jp.get("sub", "")                 # JP raw 的 ruby（读音/英文名）
     np_cn["sub"] = "　／　".join(x for x in (np_cn["name_jp"], ruby) if x) or np_cn.get("sub", "")
 
+    forms = parse_forms(text)
+    if forms:                      # 多形态（玛修）：卡片按形态各出一张，技能/宝具以最终形态为准
+        cn_skills = forms[-1]["skills"] or cn_skills
+        np_cn = forms[-1]["np"] or np_cn
+
     return {
         "servant_id": int(sid),
         "collection_no": coll,
@@ -549,6 +669,7 @@ def parse_servant(sid: str) -> dict:
         "npgain": stats.get("NP获得率(攻击)", ""),
         "skills": cn_skills,
         "np": np_cn,
+        "forms": forms or None,
         "artist": (artist.group(1) if artist else "") or _raw_profile(sid, region).get("illustrator", ""),
         "cv": (cv.group(1) if cv else "") or _raw_profile(sid, region).get("cv", ""),
         "bond": parse_bond(text, sid),

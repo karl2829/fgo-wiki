@@ -162,7 +162,8 @@ def build_html(data: dict, hero_only: bool = False) -> str:
         nps = (data.get("np") or {}).get("modules") or ([data["np"]] if data.get("np") else [])
         multi = len(nps) > 1 or data.get("_module_total", 0) > 1   # 插件侧按模组拆图时会带 _module_*
         html = html.replace("<!--NP-->", "\n".join(
-            build_np(n, label=f"模组 {n.get('module', data.get('_module_no', i + 1))}" if multi else "")
+            build_np(n, label=(data.get("_form_label") or
+                               (f"模组 {n.get('module', data.get('_module_no', i + 1))}" if multi else "")))
             for i, n in enumerate(nps)))
 
     if not data.get("name_jp") or data.get("name_jp") == data.get("name"):   # 伪日文名不显示
