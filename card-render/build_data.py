@@ -24,6 +24,42 @@ WIKI = Path.home() / "fgo-wiki"
 ASSETS = ROOT / "assets"
 
 RANK_RE = re.compile(r"^(EX|[A-E]\+{0,2})$")
+
+# fgo-wiki MD 里有些宝具效果标题直接是 Atlas 的 funcType（damageNp / gainStar …），
+# 那是数据缺口不是效果名。这里按游戏内标准叫法兜底，方向/目标不明确的一律中性表述。
+FUNC_LABELS = {
+    "damageNp": "对敌方发动强大的攻击",
+    "damageNpIndividual": "对敌方单体发动强大的攻击",
+    "damageNpIndividualSum": "对敌方单体发动强大的攻击",
+    "damageNpPierce": "对敌方发动无视防御的攻击",
+    "gainStar": "获得暴击星",
+    "gainNp": "宝具值增加",
+    "lossNp": "宝具值减少",
+    "lossHp": "HP 减少",
+    "delayNpturn": "延迟宝具充能",
+    "subState": "解除状态",
+    "instantDeath": "即死效果",
+    "forceInstantDeath": "必定即死",
+    "moveToLastSubmember": "移动到替补席最后",
+    "addState": "付与状态",
+}
+FUNC_KEY_RE = re.compile(r"^[a-z][A-Za-z0-9_]*$")
+
+
+def resolve_func_key(desc: str, np_kind: str = "") -> str:
+    """把 funcType 标题翻成中文；none 返回空串（该效果整条丢弃）。"""
+    if desc == "none":
+        return ""
+    label = FUNC_LABELS.get(desc)
+    if label is None:
+        return desc                      # 不是内部键，原样返回
+    # 攻击类：按宝具类型补「单体/全体」，这是游戏内固定说法，不算编造
+    if desc.startswith("damageNp") and "单体" not in label:
+        if "对人" in np_kind:
+            return "对敌方单体发动强大的攻击"
+        if np_kind.endswith("宝具"):
+            return "对敌方全体发动强大的攻击"
+    return label
 VALUE_RE = re.compile(r"^[+\-]?\d+(?:\.\d+)?\s*(?:%|個|个|星|枚|次|回合)?$")     # 无等级差异的固定值行
 TABLE_ROW = re.compile(r"^\|(.+)\|\s*$")
 
@@ -174,9 +210,11 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
             mh = re.search(r"<(.+?)>", inner)       # hint 写在加粗内部的写法
             hint = outer_hint or (mh.group(1) if mh else "")
             desc = re.sub(r"<[^>]*>", "", inner).strip()
-            effects.append({"desc": desc,
+            resolved = resolve_func_key(desc, kind)
+            effects.append({"desc": resolved,
                             "hint": f"〈{hint.strip()}〉" if hint else "",
-                            "values": None})
+                            "values": None,
+                            "_drop": not resolved})
             continue
 
     sub = ""
@@ -211,8 +249,14 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
     if scope:
         chips.append([scope, "c-ghost"])
 
+    kept = []
+    for e in effects:
+        if e.pop("_drop", False):
+            continue
+        if e["desc"] or e["values"] or e.get("fixed"):
+            kept.append(e)
     return {"name": name, "sub": sub, "rank": rank, "note": note, "chips": chips,
-            "effects": [e for e in effects if e["desc"] or e["values"] or e.get("fixed")]}
+            "effects": kept}
 
 
 def load_jp(sid: str) -> dict:

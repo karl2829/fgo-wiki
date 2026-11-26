@@ -66,6 +66,7 @@ def render_html(
     bleed: int = 40,
     margin: int = 10,
     base: str | pathlib.Path | None = None,
+    extra_images: dict[str, bytes] | None = None,
 ) -> dict:
     """渲染一段 HTML 到 PNG。
 
@@ -74,13 +75,17 @@ def render_html(
     视口 = (width + 2*bleed) * dpr，渲染完按 margin 裁掉多余的黑边。
     """
     base_dir = pathlib.Path(base) if base else TEMPLATES
+    images = collect_images(html, base_dir)
+    if extra_images:
+        # 外部注入：立绘/羁绊礼装不在 base 相对路径下时，用模板里的 src 当 key 直接给 bytes
+        images.update(extra_images)
     t0 = time.perf_counter()
     png = pytakumi.html_to_pic(
         html,
         width=int((width + 2 * bleed) * dpr),
         device_pixel_ratio=dpr,
         format="png",
-        images=collect_images(html, base_dir) or None,
+        images=images or None,
         fonts=fonts(),
     )
     ms = (time.perf_counter() - t0) * 1000

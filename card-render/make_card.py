@@ -146,8 +146,13 @@ def build_traits(data: dict, budget: float = 72.0) -> str:
     return html
 
 
-def render(servant_id: str, out: Path, hero_only: bool = False) -> dict:
-    data = json.loads((ROOT / "data" / f"{servant_id}.json").read_text(encoding="utf-8"))
+def assets_used(html: str) -> list[str]:
+    """这张卡实际引用了 assets/ 下哪些文件（拷贝进插件时照单搬）。"""
+    return sorted(set(re.findall(r'src="\.\./assets/([^"]+)"', html)))
+
+
+def build_html(data: dict, hero_only: bool = False) -> str:
+    """把从者数据模型填进模板，返回完整 HTML（不落盘、不渲染）。"""
     html = TPL.read_text(encoding="utf-8")
     if hero_only:                       # 只出从者区模版：技能/宝具留空
         html = html.replace("<!--SKILLS-->", "").replace("<!--NP-->", "")
@@ -159,6 +164,7 @@ def render(servant_id: str, out: Path, hero_only: bool = False) -> dict:
         html = html.replace('    <div class="name-jp">{{NAME_JP}}</div>', "")
 
     # ---- 头部字段全部来自 data（build_data.py 从 fgo-wiki MD 解析）----
+    sid = str(data.get("servant_id") or data.get("id") or "")
     card_icon = {"Quick": "card_Q.png", "Arts": "card_A.png", "Buster": "card_B.png"}
     cards_html = "".join(
         '<img src="../assets/%s">' % card_icon.get(c, "card_A.png") for c in data.get("cards", []))
@@ -193,31 +199,72 @@ def render(servant_id: str, out: Path, hero_only: bool = False) -> dict:
         "HEX": hex_html,
         "ARTIST": data.get("artist", ""),
         "CV": data.get("cv", ""),
-        "ART": f"art_{data.get('servant_id', servant_id)}.png",
-        "BOND_IMG": f"bond_ce_{data.get('servant_id', servant_id)}.png",
+        "ART": f"art_{sid}.png",
+        "BOND_IMG": f"bond_ce_{sid}.png",
         "BOND_NAME": bond.get("name", ""),
         "BOND_META": bond_meta,
     }.items():
         html = html.replace("{{" + k + "}}", str(v))
-    built = ROOT / "out" / f"_built_{servant_id}.html"
+    return html
+
+
+def render_data(
+    data: dict,
+    out: Path,
+    *,
+    hero_only: bool = False,
+    extra_images: dict[str, bytes] | None = None,
+    dpr: int = 2,
+) -> dict:
+    """渲染一个从者数据模型 → PNG（进程内，不再起子进程）。
+
+    extra_images：模板里 src="../assets/art_<id>.png" 这样的资源不在 assets/ 下时，
+    用同一个 src 字符串做 key 直接喂 bytes（插件侧艺术缓存就是这样接进来的）。
+    """
+    from cardkit.render import render_html
+
+    html = build_html(data, hero_only=hero_only)
+    sid = str(data.get("servant_id") or data.get("id") or "x")
+    built = ROOT / "out" / f"_built_{sid}.html"
+    built.parent.mkdir(parents=True, exist_ok=True)
     built.write_text(html, encoding="utf-8")
 
-    py = ROOT / ".venv" / "bin" / "python"
-    res = subprocess.run([str(py), "-m", "cardkit", str(built), str(out)],
-                         check=True, capture_output=True, text=True, cwd=ROOT)
-    return {"out": str(out), "log": res.stdout.strip()}
+    out = Path(out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    r = render_html(html, out, base=TPL.parent, dpr=dpr, extra_images=extra_images)
+    log = f'{r["path"]}  {r["size"][0]}x{r["size"][1]}  {r["ms"]:.0f} ms  {r["bytes"] / 1024:.0f} KB'
+    return {"out": str(out), "log": log, "html": html, "render": r, "assets": assets_used(html)}
+
+
+def render(servant_id: str, out: Path, hero_only: bool = False) -> dict:
+    """兼容旧入口：从 data/<内部ID>.json 读数据再渲染。"""
+    data = json.loads((ROOT / "data" / f"{servant_id}.json").read_text(encoding="utf-8"))
+    return render_data(data, out, hero_only=hero_only)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("servant_id")
+    ap.add_argument("servant_id", nargs="?")
+    ap.add_argument("--json", default=None, help="直接从数据模型 JSON 渲染（插件侧走这条路）")
+    ap.add_argument("--assets-report", action="store_true", help="打印本卡引用的 assets 清单")
     ap.add_argument("-o", "--out", default=None)
     ap.add_argument("--no-art", action="store_true", help="已废弃：立绘固定为 assets/art_<id>.png，此参数仅为兼容旧命令")
     ap.add_argument("--hero-only", action="store_true", help="只渲染从者区（定模版用）")
     args = ap.parse_args()
-    out = Path(args.out) if args.out else ROOT / "out" / f"card_{args.servant_id}.png"
-    r = render(args.servant_id, out, hero_only=args.hero_only)
+    sid = args.servant_id
+    if args.json:
+        data = json.loads(Path(args.json).read_text(encoding="utf-8"))
+        sid = sid or str(data.get("servant_id") or "x")
+        out = Path(args.out) if args.out else ROOT / "out" / f"card_{sid}.png"
+        r = render_data(data, out, hero_only=args.hero_only)
+    else:
+        if not sid:
+            ap.error("要么给内部ID，要么给 --json")
+        out = Path(args.out) if args.out else ROOT / "out" / f"card_{sid}.png"
+        r = render(sid, out, hero_only=args.hero_only)
     print(r["log"])
+    if args.assets_report:
+        print("assets:", json.dumps(r["assets"], ensure_ascii=False))
 
 
 if __name__ == "__main__":
