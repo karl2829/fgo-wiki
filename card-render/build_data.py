@@ -56,7 +56,7 @@ def resolve_func_key(desc: str, np_kind: str = "") -> str:
     # 攻击类：按宝具类型补「单体/全体」，这是游戏内固定说法，不算编造
     if desc.startswith("damageNp") and "单体" not in label:
         if "对人" in np_kind:
-            return "对敌方单体发动强大的攻击"
+            return "对敌方单体发动超强大的攻击"
         if np_kind.endswith("宝具"):
             return "对敌方全体发动强大的攻击"
     return label
@@ -107,12 +107,21 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
     # 「⚠ 国服未实装：日服已强化为「X」」里的 X 是日服版本，国服不出
     unimplemented = set(re.findall(r"国服未实装：日服已强化为「(.+?)」", text))
 
-    blocks, cur = [], None
+    blocks, cur, pending_old = [], None, None
     for line in body.splitlines():
-        m = re.match(r"^###\s+!\[\]\((\S+?)\)\s+(.+?)\s{2,}充能时间：([\d→\-]+)\s*$", line.strip())
+        st = line.strip()
+        if st.startswith("◈") and "强化前" in st:
+            # 标记后面紧跟的那个块才是旧版本；不能把后面的技能 2/3 一起丢掉
+            pending_old = st.split("：", 1)[1].strip() if "：" in st else None
+            continue
+        m = re.match(r"^###\s+!\[\]\((\S+?)\)\s+(.+?)\s{2,}充能时间：([\d→\-]+)\s*$", st)
         if m:
-            cur = {"icon_url": m.group(1), "head": m.group(2).strip(),
-                   "cd": m.group(3), "lines": []}
+            head = m.group(2).strip()
+            old = bool(pending_old) and head == pending_old
+            if old:
+                pending_old = None
+            cur = {"icon_url": m.group(1), "head": head,
+                   "cd": m.group(3), "lines": [], "superseded": old}
             blocks.append(cur)
             continue
         if cur is not None:
@@ -124,7 +133,8 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
         rank = parts[-1] if parts and RANK_RE.match(parts[-1]) else ""
         name = " ".join(parts[:-1]) if rank else b["head"]
         full = f"{name} {rank}".strip()
-        if not keep_all and (name in superseded or full in superseded
+        # 同名技能有时是「当前版本 + 强化前旧版本」，只能按位置判断，不能按名字一刀切
+        if not keep_all and (b.get("superseded")
                              or name in unimplemented or full in unimplemented):
             continue
 
@@ -154,7 +164,7 @@ def parse_skills(text: str, keep_all: bool = False) -> list[dict]:
                     effects.append({"desc": "", "values": None, "fixed": s})
                 pending = None
                 continue
-            effects.append({"desc": s.rstrip("▲").strip(), "values": None})
+            effects.append({"desc": re.sub(r"[▲△]", "", s).strip(), "values": None})
             pending = effects[-1]
 
         skills.append({
@@ -210,6 +220,7 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
             mh = re.search(r"<(.+?)>", inner)       # hint 写在加粗内部的写法
             hint = outer_hint or (mh.group(1) if mh else "")
             desc = re.sub(r"<[^>]*>", "", inner).strip()
+            desc = re.sub(r"[▲△◆◇]+\s*$", "", desc).strip()
             resolved = resolve_func_key(desc, kind)
             effects.append({"desc": resolved,
                             "hint": f"〈{hint.strip()}〉" if hint else "",
@@ -248,6 +259,29 @@ def parse_np(text: str, sid: str, region: str = "CN") -> dict:
         chips.append([kind, "c-blue"])
     if scope:
         chips.append([scope, "c-ghost"])
+
+    # 用 raw 的函数表校正：Atlas 里 Rate<0 表示「上一层成功后追加的一层」，
+    # wiki MD 会把它写成独立效果（名字还是错的），这里按索引对齐后丢掉。
+    raw_np = _wiki(f"raw/servants/{region}/{sid}.json")
+    if raw_np.exists() and effects:
+        try:
+            rd = json.loads(raw_np.read_text(encoding="utf-8"))
+            nps = rd.get("noblePhantasms") or []
+            picked = next((n for n in nps if n.get("rank") == rank), nps[-1] if nps else None)
+            funcs = (picked or {}).get("functions") or []
+            if len(funcs) == len(effects):
+                for e, f in zip(effects, funcs):
+                    sv = (f.get("svals") or [{}])[0]
+                    rate = sv.get("Rate")
+                    if isinstance(rate, (int, float)) and rate < 0:
+                        e["_drop"] = True
+                        continue
+                    # 数值随血量变化的（如恺撒「HP 越少成功率越高」）：MD 只写了 0%，按 raw 补公式
+                    low = sv.get("RatioHPLow")
+                    if low and str(e.get("fixed", "")).strip() in ("0%", "0", ""):
+                        e["fixed"] = f"{low / 10:g}%×(1-当前HP/最大HP)"
+        except Exception:
+            pass
 
     kept = []
     for e in effects:
